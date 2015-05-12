@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWDIRECTION}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form prependId="false">
+				<p:panel header="#{msgs.NEWDIRECTION}" styleClass="panel-class">
+					<h:panelGrid id="newDirctionGrid" columns="3" cellpadding="5">
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirctionName" />
+						<p:inputText id="dirctionName"
+							value="#{directionBean.direction.name}" required="true"
+							requiredMessage="#{msgs.VALIDATEDIRECTION}">
+						</p:inputText>
+						<p:message for="dirctionName" />
+
+						<p:outputLabel value="#{msgs.REPRESINTATIVENAME}"
+							for="represintativeName" />
+						<p:selectOneMenu id="represintativeName"
+							value="#{directionBean.direction.representative.id}"
+							styleClass="mobile-class" required="true"
+							requiredMessage="#{msgs.VALIDATEREPRESINTATIVE}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{employeeBean.represintatives}"
+								var="represintative" itemLabel="#{represintative.name}"
+								itemValue="#{represintative.id}" />
+						</p:selectOneMenu>
+						<p:message for="represintativeName" />
+
+						<p:outputLabel value="#{msgs.DRIVERNAME}" for="driverName" />
+						<p:selectOneMenu id="driverName"
+							value="#{directionBean.direction.driver.id}"
+							styleClass="mobile-class" required="true"
+							requiredMessage="#{msgs.VALIDATEDRIVER}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{employeeBean.drivers}" var="driver"
+								itemLabel="#{driver.name}" itemValue="#{driver.id}" />
+						</p:selectOneMenu>
+						<p:message for="driverName" />
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{directionBean.addDirection}" update="newDirctionGrid"></p:commandButton>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

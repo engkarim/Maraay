@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.ALLPRODUCT}</ui:define>
+
+	<ui:define name="content">
+		<div align="left" class="div-button">
+			<p:commandButton id="addBtn" value="#{msgs.NEWPRODUCT}"
+				action="addProduct" />
+		</div>
+		<div align="center">
+			<h:form>
+				<p:dataTable id="productTable" value="#{productBean.products}"
+					filteredValue="#{productBean.filteredProducts}"
+					emptyMessage="#{msgs.NODATA}" var="product" editable="true"
+					style="margin-bottom:20px" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="#{msgs.ALLPRODUCT}" styleClass="table-header" />
+					</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{productBean.onRowEdit}"
+						update="productTable" />
+					<p:ajax event="rowEditCancel" listener="#{productBean.onRowCancel}"
+						update="productTable" />
+
+					<p:column headerText="#{msgs.PRODUCTNAME}"
+						filterBy="#{product.name}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{product.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.BARCODE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.barcode}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{product.barcode}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.MAXUNITPRICE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.maxUnitPrice}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{product.maxUnitPrice}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.MINUNITPRICE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.minUnitPrice}" />
+							</f:facet>
+							<f:facet name="input">
+								<h1>#{msgs.CANTEDITED}</h1>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.REPMAXUNITPRICE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.repMaxUnPrice}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{product.repMaxUnPrice}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.REPMinUNITPRICE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.repMinUnPrice}" />
+							</f:facet>
+							<f:facet name="input">
+								<h1>#{msgs.CANTEDITED}</h1>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.MAXMINCOUNT}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{product.maxMinCount}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{product.maxMinCount}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<!-- 		<p:column style="width:32px">
+						<p:commandButton value="#{msgs.DELETE}" icon="ui-icon-trash"
+							actionListener="#{productBean.deleteProduct(product)}"
+							update="productTable">
+							<p:confirm header="Confirmation" message="#{msgs.CONFIRMMESSAGE}"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column> -->
+					<p:column style="width:32px">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+				<!-- <p:confirmDialog global="true" showEffect="fade"
+					hideEffect="explode">
+					<p:commandButton value="#{msgs.YES}" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="#{msgs.NO}" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog> -->
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

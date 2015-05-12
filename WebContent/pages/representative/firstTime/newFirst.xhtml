@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.FIRSTTIME}</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<p:panel header="#{msgs.FIRSTTIME}">
+				<h:form prependId="false" id="firstForm">
+					<div id="dateDiv" class="date-div">
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}"
+							for="customerDirection" />
+						<p:selectOneMenu id="customerDirection"
+							value="#{repFirst.directioId}" styleClass="mobile-class"
+							required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERDIRECTION}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{directionBean.directions}"
+								var="direction" itemLabel="#{direction.name}"
+								itemValue="#{direction.id}" />
+						</p:selectOneMenu>
+						<p:message for="customerDirection" />
+						<p:outputLabel value="#{msgs.TODAYDATE}" for="today" />
+						<p:calendar id="today" required="true" effect="explode"
+							showOn="button" requiredMessage="#{msgs.VALIDATETODAYDATE}"
+							navigator="true" yearRange="c-1:c"
+							value="#{repFirst.accountDate}" pattern="yyyy-MM-dd" mask="true">
+						</p:calendar>
+						<p:message id="dateMsg" for="today" />
+						<p:commandButton id="update" value="#{msgs.ENTER}"
+							update="tablePanel" />
+					</div>
+
+
+
+
+					<h:panelGroup id="tablePanel">
+						<p:dataTable id="firstTable" var="firstValue"
+							rendered="#{repFirst.accountDate!=null}"
+							value="#{repFirst.lastTimeDate.tblRepLastTimeValueList}">
+							<p:column>
+								<h:outputText value="#{firstValue.productId.name} : " />
+							</p:column>
+
+							<p:column headerText="#{msgs.PACKET}">
+								<p:inputText id="firstMax" value="#{firstValue.maxMount}"
+									required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+									converterMessage="#{msgs.ONLYNUMBER}" disabled="true">
+									<f:convertNumber />
+								</p:inputText>
+								<p:message for="firstMax" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.BOX}">
+								<p:inputText id="firstMin" value="#{firstValue.minMount}"
+									size="5" required="true" requiredMessage="#{msgs.ENTERVALUE}"
+									converterMessage="#{msgs.ONLYNUMBER}" disabled="true">
+									<f:convertNumber />
+								</p:inputText>
+								<p:message for="firstMin" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+					<h:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						image="/resources/images/next.ico"
+						action="#{repFirst.insertNewFirst}" update="firstForm" />
+				</h:form>
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

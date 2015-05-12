@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+		<application>
+		<resource-bundle>
+			<base-name>messages</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+	</application>
+	<navigation-rule>
+		<from-view-id></from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/common/success</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>fail</from-outcome>
+			<to-view-id>/pages/common/fail</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/login</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- *********** home *********** -->
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/homepage</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- *********** Users *********** -->
+		<navigation-case>
+			<from-outcome>allUsers</from-outcome>
+			<to-view-id>/pages/user/listallusers</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>addUser</from-outcome>
+			<to-view-id>/pages/user/adduser</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- *********** emloyees ****** -->
+		<navigation-case>
+			<from-outcome>allEmployee</from-outcome>
+			<to-view-id>/pages/employee/listallemployee</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addEmployee</from-outcome>
+			<to-view-id>/pages/employee/addemployee</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allJobs</from-outcome>
+			<to-view-id>/pages/employee/listallJobs</to-view-id>
+			<redirect />
+		</navigation-case>
+
+	<navigation-case>
+			<from-outcome>addNewJob</from-outcome>
+			<to-view-id>/pages/employee/addNewJob</to-view-id>
+			<redirect />
+		</navigation-case>
+
+			<!-- ***** directions ****** -->
+		<navigation-case>
+			<from-outcome>allDirections</from-outcome>
+			<to-view-id>/pages/direction/listalldirections</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addDirection</from-outcome>
+			<to-view-id>/pages/direction/adddirection</to-view-id>
+			<redirect />
+		</navigation-case>
+                        <!-- ***** products ****** -->
+		<navigation-case>
+			<from-outcome>allProducts</from-outcome>
+			<to-view-id>/pages/product/listallproduct</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>addProduct</from-outcome>
+			<to-view-id>/pages/product/addproduct</to-view-id>
+			<redirect />
+		</navigation-case>
+
+ 			<!-- ***** customers ****** -->
+		<navigation-case>
+			<from-outcome>allCustomers</from-outcome>
+			<to-view-id>/pages/customer/listallcustomers</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>addCustomer</from-outcome>
+			<to-view-id>/pages/customer/addcustomer</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>searchCustomers</from-outcome>
+			<to-view-id>/pages/customer/searchCustomers</to-view-id>
+			<redirect />
+		</navigation-case>
+<navigation-case>
+			<from-outcome>test</from-outcome>
+			<to-view-id>/pages/customer/testcust</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<!-- ***** company ****** -->
+
+<navigation-case>
+			<from-outcome>newIncoming</from-outcome>
+			<to-view-id>/pages/company/incoming/newIncoming</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allIncoming</from-outcome>
+			<to-view-id>/pages/company/incoming/listIncoming</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateIncoming</from-outcome>
+			<to-view-id>/pages/company/incoming/updateIncoming</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>searchIncoming</from-outcome>
+			<to-view-id>/pages/company/incoming/searchIncoming</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>newBlending</from-outcome>
+			<to-view-id>/pages/company/blending/newBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateBlending</from-outcome>
+			<to-view-id>/pages/company/blending/updateBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allBlending</from-outcome>
+			<to-view-id>/pages/company/blending/listBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allBlendingRate</from-outcome>
+			<to-view-id>/pages/company/blending/listBlendingRate</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>searchBlending</from-outcome>
+			<to-view-id>/pages/company/blending/searchBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+
+
+<navigation-case>
+			<from-outcome>allDefects</from-outcome>
+			<to-view-id>/pages/company/defect/listDefects</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>newDefect</from-outcome>
+			<to-view-id>/pages/company/defect/newDefect</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateDefect</from-outcome>
+			<to-view-id>/pages/company/defect/updateDefect</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>searchDefect</from-outcome>
+			<to-view-id>/pages/company/defect/searchDefect</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allSales</from-outcome>
+			<to-view-id>/pages/company/sales/listSales</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>searchSales</from-outcome>
+			<to-view-id>/pages/company/sales/searchSales</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>allDiscounts</from-outcome>
+			<to-view-id>/pages/company/discount/listDiscounts</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>newDiscount</from-outcome>
+			<to-view-id>/pages/company/discount/newDiscount</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateDiscount</from-outcome>
+			<to-view-id>/pages/company/discount/updateDiscount</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>newEq</from-outcome>
+			<to-view-id>/pages/company/salesEquation/newEq</to-view-id>
+			<redirect />
+		</navigation-case>
+<navigation-case>
+			<from-outcome>searchEq</from-outcome>
+			<to-view-id>/pages/company/salesEquation/searchEq</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+
+<navigation-case>
+			<from-outcome>listEqs</from-outcome>
+			<to-view-id>/pages/company/salesEquation/listEqs</to-view-id>
+			<redirect />
+		</navigation-case>
+<navigation-case>
+			<from-outcome>allOffers</from-outcome>
+			<to-view-id>/pages/company/offer/listOffers</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>newOffer</from-outcome>
+			<to-view-id>/pages/company/offer/newOffer</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateOffer</from-outcome>
+			<to-view-id>/pages/company/offer/updateOffer</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>searchOffer</from-outcome>
+			<to-view-id>/pages/company/offer/searchOffer</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>editCompanyDaily</from-outcome>
+			<to-view-id>/pages/company/editCompanyDaily</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>newFirstLoad</from-outcome>
+			<to-view-id>/pages/representative/firstTime/newFirst</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>newNLoad</from-outcome>
+			<to-view-id>/pages/representative/newLoading/newNLoading</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+
+<navigation-case>
+			<from-outcome>newTotalLoading</from-outcome>
+			<to-view-id>/pages/representative/totalLoading/newTotal</to-view-id>
+			<redirect />
+		</navigation-case>
+<navigation-case>
+			<from-outcome>repNewDefect</from-outcome>
+			<to-view-id>/pages/representative/defect/newDefect</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+
+<navigation-case>
+			<from-outcome>repNewBlending</from-outcome>
+			<to-view-id>/pages/representative/blending/newBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+
+
+<navigation-case>
+			<from-outcome>repNewOffer</from-outcome>
+			<to-view-id>/pages/representative/offer/newOffer</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>repSales</from-outcome>
+			<to-view-id>/pages/representative/sales/listSales</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>repAllInvoices</from-outcome>
+			<to-view-id>/pages/representative/invoice/listInvoices</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+</faces-config>

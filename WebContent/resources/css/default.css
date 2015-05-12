@@ -1,0 +1,246 @@
+body {
+	background-color: #ffffff;
+	font-size: 12px;
+	font-family: Verdana, "Verdana CE", Arial, "Arial CE",
+		"Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+	color: #000000;
+	margin: 10px;
+	background-color: rgb(73, 69, 69);
+}
+
+/* h1 {
+	font-family: Arial, "Arial CE", "Lucida Grande CE", lucida,
+		"Helvetica CE", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0px;
+	padding: 0px;
+} */
+a:link,a:visited {
+	color: #045491;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:link:hover,a:visited:hover {
+	color: #045491;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.logoContainer {
+	margin-bottom: -118px;
+	margin-top: -50px;
+}
+
+.invText {
+	background-color: green;
+}
+
+.fath-logo {
+	width: 200px;
+	height: 200px;
+	margin-left: 1047px;
+	margin-top: -137px;
+}
+
+.date_invoice_grid {
+	margin-right: -253px;
+}
+
+.discount_invoice_grid {
+	margin-right: -447px;
+}
+
+.en-btn-div {
+	
+}
+
+.right-hidden {
+	display: none;
+	width: 20;
+	height: 20;
+}
+
+.right-show {
+	width: 20;
+	height: 20;
+}
+
+.maraay-logo {
+	width: 75px;
+	height: 75px;
+	margin-bottom: 44px;
+}
+
+.tropicana-logo {
+	width: 75px;
+	height: 75px;
+	margin-bottom: 44px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.beyti-logo {
+	width: 75px;
+	height: 75px;
+	margin-bottom: 44px;
+	margin-right: 3px;
+	margin-left: -1px;
+}
+
+.company-name>h1 {
+	margin-bottom: 41px;
+	margin-right: 3px;
+	margin-left: 28px;
+	font-size: 32px;
+	color: #00cccc;
+	text-align: center;
+}
+
+.successText {
+	color: rgb(25, 211, 40);
+}
+
+.date-div {
+	margin-left: -65px;
+	margin-bottom: 20px;
+}
+
+.div-button>button {
+	font-size: 180% !important;
+}
+
+.table-header {
+	font-size: 180% !important;
+}
+
+.mobile-class {
+	direction: ltr;
+}
+
+.rtl-class {
+	direction: rtl;
+}
+
+.panel-class {
+	font-size: 170% !important;
+}
+
+.n-n {
+	direction: ltr;
+}
+
+.current-user {
+	direction: rtl;
+	font-size: 22px;
+	margin-top: 14;
+	margin-right: 16px;
+	color: rgb(25, 211, 40);;
+}
+
+.current-user-home {
+	direction: rtl;
+	font-size: 22px;
+	margin-left: 1080px;
+	margin-top: 14;
+	margin-bottom: 10;
+	color: rgb(25, 211, 40);;
+}
+
+.no-privilidge {
+	direction: rtl;
+	color: red;
+	font-size: 22;
+}
+
+.search-form {
+	margin-top: 41px;
+}
+
+.search-customer-div {
+	margin-left: 993px;
+	margin-top: -49px;
+}
+
+.search-customer-direction {
+	direction: ltr;
+	margin-left: 50px;
+}
+
+.search-customer-days {
+	direction: ltr;
+	margin-left: 20px;
+}
+
+.search-customer-button {
+	margin-right: 361px;
+	margin-top: -23px;
+	margin-bottom: 4px;
+	font-size: 130%;
+}
+
+.search-small {
+	margin-right: 361px;
+	margin-top: -41px;
+	margin-bottom: -5px;
+	font-size: 130%;
+}
+
+.search-customer-label {
+	color: rgb(25, 211, 40);
+}
+
+.color-red {
+	color: red;
+}
+
+.color-blue {
+	color: blue;
+}
+
+#dateMsg {
+	width: 500px;
+}
+
+.minus {
+	color: red;
+}
+
+.plus {
+	color: #000;
+}
+
+.eq-panel {
+	margin-right: 24px;
+}
+
+@media print {
+	#applicationUser,#homeBtn {
+		display: none;
+	}
+	#fathImage {
+		width: 100px;
+		height: 100px;
+		margin-left: 800px;
+		margin-top: -137px;
+	}
+	#logoContainer {
+		margin-bottom: 10;
+	}
+}
+
+/
+********************** primefaces styles ********************** /
+.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td {
+	padding: 2px 2px !important;
+}
+
+.ui-datatable thead th,.ui-datatable tbody td,.ui-datatable tfoot td {
+	padding: 4px 12px !important;
+}
+
+.ui-menu {
+	padding: 0.0em !important;
+	outline: 0 none;
+}

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWCUSTOMER}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form prependId="false">
+				<p:panel header="#{msgs.NEWCUSTOMER}" styleClass="panel-class">
+					<h:panelGrid id="newCustomerGrid" columns="3" cellpadding="5">
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}"
+							for="customerDirection" />
+						<p:selectOneMenu id="customerDirection"
+							value="#{allCustomersBean.customer.direction.id}"
+							styleClass="mobile-class" required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERDIRECTION}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{directionBean.directions}"
+								var="direction" itemLabel="#{direction.name}"
+								itemValue="#{direction.id}" />
+						</p:selectOneMenu>
+						<p:message for="customerDirection" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERCLASS}" for="customerClass" />
+						<p:selectOneMenu id="customerClass"
+							value="#{allCustomersBean.customer.customerType.id}"
+							styleClass="mobile-class" required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERCLASS}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{customerTypeBean.customerTypes}"
+								var="customerType" itemLabel="#{customerType.type}"
+								itemValue="#{customerType.id}" />
+						</p:selectOneMenu>
+						<p:message for="customerClass" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="customerName" />
+						<p:inputText id="customerName"
+							value="#{allCustomersBean.customer.name}" required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERNAME}"></p:inputText>
+						<p:message for="customerName" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERADDRESS}"
+							for="customerAddress" />
+						<p:inputText id="customerAddress"
+							value="#{allCustomersBean.customer.address}" required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERADDRESS}"></p:inputText>
+						<p:message for="customerAddress" />
+
+
+						<p:outputLabel value="#{msgs.MOBILENUMBER}" for="customerMobile" />
+						<p:inputMask id="customerMobile" styleClass="mobile-class"
+							required="true" requiredMessage="#{msgs.VALIDATECUSTOMERMOBILE}"
+							value="#{allCustomersBean.customer.mobile}" mask="(999) 9999-9999" />
+						<p:message for="customerMobile" />
+
+						<p:outputLabel value="#{msgs.PHONEGROUND}" for="customerPhone" />
+						<p:inputMask id="customerPhone" styleClass="mobile-class"
+							value="#{allCustomersBean.customer.phone}" mask="(999) 999-9999" />
+						<p:message for="customerPhone" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERLABEL}" for="customerLabel" />
+						<p:inputText id="customerLabel"
+							value="#{allCustomersBean.customer.label}" required="true"
+							requiredMessage="#{msgs.VALIDATELABEL}"></p:inputText>
+						<p:message for="customerLabel" />
+
+						<p:outputLabel value="#{msgs.VISITINGDAY}" for="customerDays" />
+						<p:selectManyCheckbox id="customerDays" styleClass="days-checkbox"
+							value="#{allCustomersBean.selectedDays}" layout="grid" columns="4"
+							required="true" requiredMessage="#{msgs.VALIDATEVISITINGDAY}">
+							<f:selectItems value="#{dayWeekBean.days}" var="day"
+								itemLabel="#{day.dayName}" itemValue="#{day.dayName}" />
+							<f:selectItem itemLabel="#{msgs.ALLDAYS}" itemValue="0" />
+						</p:selectManyCheckbox>
+						<p:message for="customerDays" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERPRODUCTS}"
+							for="customerProducts" />
+						<p:selectManyCheckbox id="customerProducts" required="true"
+							requiredMessage="#{msgs.VALIDATECUSTOMERPRODUCTS}"
+							value="#{allCustomersBean.selectedProducts}" layout="grid"
+							columns="4">
+							<f:selectItems value="#{productBean.products}" var="product"
+								itemLabel="#{product.name}" itemValue="#{product.name}" />
+							<f:selectItem itemLabel="#{msgs.ALLPRODUCTS}" itemValue="0" />
+						</p:selectManyCheckbox>
+						<p:message for="customerProducts" />
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{allCustomersBean.addCustomer}" update="newCustomerGrid"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="newCustomerGrid"></p:commandButton>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

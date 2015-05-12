@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWEQ}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<h:form prependId="false" id="incomingPanel">
+				<f:event listener="#{comEquationBean.validateDate}"
+					type="postValidate" />
+				<p:panel header="#{msgs.NEWEQ}">
+
+					<h:panelGrid cellpadding="5" columns="3" styleClass="eq-panel">
+						<p:outputLabel value="#{msgs.TODAYDATE}" for="today" />
+						<p:calendar id="today" required="true" effect="explode"
+							showOn="button" requiredMessage="#{msgs.VALIDATETODAYDATE}"
+							navigator="true" yearRange="c-50:c"
+							value="#{comEquationBean.calculationEquation.date}"
+							pattern="yyyy-MM-dd" mask="true">
+						</p:calendar>
+						<p:message for="today" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:outputLabel value="#{msgs.PAYMENTTYPE}" for="payType" />
+						<p:selectOneMenu id="payType"
+							value="#{comEquationBean.comSupplyValue.payTypeId.payTypeId}"
+							styleClass="mobile-class" required="true"
+							requiredMessage="#{msgs.VALIDATEPAYTYPE}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{comEquationBean.payTypes}" var="payType"
+								itemLabel="#{payType.payType}" itemValue="#{payType.payTypeId}" />
+							<p:ajax event="change" update="cashpanel depositepanel" />
+						</p:selectOneMenu>
+						<p:message for="payType" />
+
+						<p:outputLabel value="#{msgs.SUPPLYVALUE}" for="supplyValue" />
+						<p:inputText id="supplyValue"
+							value="#{comEquationBean.comSupplyValue.supplyValue}"
+							required="true" requiredMessage="#{msgs.ENTERVALUE}"
+							converterMessage="#{msgs.ONLYNUMBER}">
+							<f:convertNumber />
+						</p:inputText>
+						<p:message for="supplyValue" />
+
+						<p:outputLabel value="#{msgs.SENDERNAME}" for="senderName" />
+						<p:inputText id="senderName"
+							value="#{comEquationBean.comSupplyValue.senderName}"
+							required="true" requiredMessage="#{msgs.ENTERVALUE}">
+						</p:inputText>
+						<p:message for="senderName" />
+					</h:panelGrid>
+
+					<h:panelGroup id="cashpanel">
+						<h:panelGrid columns="3" cellpadding="5"
+							rendered="#{comEquationBean.comSupplyValue.payTypeId.payTypeId!=2}">
+							<p:outputLabel value="#{msgs.RECIEVERNAME}" for="recName" />
+							<p:inputText id="recName"
+								value="#{comEquationBean.comSupplyValue.recieverName}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}">
+							</p:inputText>
+							<p:message for="recName" />
+						</h:panelGrid>
+					</h:panelGroup>
+
+					<h:panelGroup id="depositepanel">
+						<h:panelGrid columns="3" cellpadding="5"
+							rendered="#{comEquationBean.comSupplyValue.payTypeId.payTypeId==2}">
+							<p:outputLabel value="#{msgs.BANKNAME}" for="bankName" />
+							<p:inputText id="bankName"
+								value="#{comEquationBean.comSupplyValue.bankName}"
+								required="true" requiredMessage="#{msgs.VALIDATEBANK}">
+							</p:inputText>
+							<p:message for="bankName" />
+
+
+							<p:outputLabel value="#{msgs.DEPOSITENUMBER}" for="depNum" />
+							<p:inputText id="depNum"
+								value="#{comEquationBean.comSupplyValue.noDeposite}"
+								required="true" requiredMessage="#{msgs.VALIDATEDEPOSITENUMBER}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber integerOnly="true" />
+							</p:inputText>
+							<p:message for="depNum" />
+						</h:panelGrid>
+					</h:panelGroup>
+
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{comEquationBean.insertNewEqs}" update="incomingPanel"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="incomingPanel"></p:commandButton>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/loginTemplate.xhtml">
+	<ui:define name="title">#{msgs.LOGINDETAILS}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="loginForm">
+					<p:panelGrid>
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2">#{msgs.LOGINDETAILS}</p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column> #{msgs.USERNAME}</p:column>
+							<p:column>
+								<p:inputText id="userName" value="#{loginBean.username}"
+									required="true" requiredMessage="#{msgs.VALIDATEUSERNAME}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+							#{msgs.PASSWORD}
+						</p:column>
+							<p:column>
+								<p:password id="password" value="#{loginBean.password}"
+									required="true" requiredMessage="#{msgs.VALIDATEPASSWORD}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2" style="text-align: center">
+								<p:commandButton value="#{msgs.LOGIN}"
+									action="#{loginBean.checkUser}" ajax="true" />
+								<p:messages id="messages" autoUpdate="true" closable="true" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

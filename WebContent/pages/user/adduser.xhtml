@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWUSER}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form prependId="false">
+				<p:panel header="#{msgs.NEWUSER}" styleClass="panel-class">
+					<h:panelGrid id="newUserGrid" columns="3" cellpadding="5">
+
+						<f:event listener="#{userBean.validatePassword}"
+							type="postValidate" />
+						<p:outputLabel value="#{msgs.PRIVILEGE}" for="userPrivilege" />
+						<p:selectOneMenu id="userPrivilege"
+							value="#{userBean.user.userType.id}" styleClass="mobile-class"
+							required="true" requiredMessage="#{msgs.VALIDATEPRIVILEGE}">
+							<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+							<f:selectItems value="#{userTypeBean.userTypes}" var="userType"
+								itemLabel="#{userType.privilege}" itemValue="#{userType.id}" />
+						</p:selectOneMenu>
+						<p:message for="userPrivilege" />
+						<p:outputLabel value="#{msgs.USERNAME}" for="userName" />
+						<p:inputText id="userName" value="#{userBean.user.userName}"
+							required="true" requiredMessage="#{msgs.VALIDATEUSERNAME}">
+						</p:inputText>
+						<p:message for="userName" />
+						<p:outputLabel value="#{msgs.NAME}" for="name" />
+						<p:inputText id="name" value="#{userBean.user.name}"
+							required="true" requiredMessage="#{msgs.VALIDATEUSERNAME}">
+						</p:inputText>
+						<p:message for="userName" />
+
+						<p:outputLabel value="#{msgs.USERPASSWORD}" for="userPassword" />
+						<p:password id="userPassword" value="#{userBean.user.password}"
+							required="true" feedback="true"
+							promptLabel="#{msgs.ENTERPASSWORD}" weakLabel="#{msgs.WEAK}"
+							goodLabel="#{msgs.GOOD}" strongLabel="#{msgs.STRONG}"
+							requiredMessage="#{msgs.VALIDATEPASSWORD}" />
+						<p:message for="userPassword" />
+
+						<p:outputLabel value="#{msgs.CONFIRMPASSWORD}"
+							for="confirmPassword" />
+						<p:password id="confirmPassword" required="true"
+							requiredMessage="#{msgs.VALIDATECONFIRMPASSWORD}" />
+						<p:message for="confirmPassword" />
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{userBean.addUser}" update="newUserGrid"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="newUserGrid"></p:commandButton>
+
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

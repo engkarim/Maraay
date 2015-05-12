@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.ALLCUSTOMERS}</ui:define>
+
+	<ui:define name="content">
+		<div align="left" class="div-button">
+			<p:commandButton id="searchBtn" value="#{msgs.SEARCH}"
+				action="searchCustomers" styleClass="search-customer-button" />
+			<p:commandButton id="addBtn" value="#{msgs.NEWCUSTOMER}"
+				action="addCustomer" />
+		</div>
+		<div align="center">
+			<h:form>
+				<p:dataTable id="customerTable"
+					value="#{allCustomersBean.customers}"
+					filteredValue="#{allCustomersBean.filteredCustomers}"
+					emptyMessage="#{msgs.NODATA}" var="customer" editable="true"
+					style="margin-bottom:20px" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<f:facet name="header">
+						<h:outputText value="#{msgs.ALLCUSTOMERS}"
+							styleClass="table-header" />
+					</f:facet>
+
+					<p:ajax event="rowEdit" listener="#{allCustomersBean.onRowEdit}"
+						update="customerTable" />
+					<p:ajax event="rowEditCancel"
+						listener="#{allCustomersBean.onRowCancel}" update="customerTable" />
+
+					<p:column headerText="#{msgs.CUSTOMERID}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.id}" />
+							</f:facet>
+							<f:facet name="input">
+								<h1>#{msgs.CANTEDITED}</h1>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERNAME}"
+						filterBy="#{customer.name}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{customer.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERADDRESS}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.address}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{customer.address}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.MOBILENUMBER}"
+						styleClass="mobile-class">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.mobile}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{customer.mobile}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.PHONEGROUND}"
+						styleClass="mobile-class">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.phone}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{customer.phone}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERLABEL}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.label}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{customer.label}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERCLASS}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.customerType.type}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu
+									value="#{allCustomersBean.customer.customerType.id}"
+									styleClass="mobile-class" required="true"
+									requiredMessage="#{msgs.VALIDATECUSTOMERCLASS}">
+									<f:selectItems value="#{allCustomersBean.allTypes}"
+										var="customerType" itemLabel="#{customerType.type}"
+										itemValue="#{customerType.id}" />
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="#{msgs.DIRECTIONNAME}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{customer.direction.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<h1>#{msgs.CANTEDITED}</h1>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+
+					<c:forEach items="#{productBean.products}" var="p">
+						<p:column headerText="#{p.name}">
+							<ui:repeat value="#{customer.productsList}" var="i">
+								<h:graphicImage url="/resources/images/right.png"
+									styleClass="#{p.id!=i.id?'right-hidden':'right-show'}"></h:graphicImage>
+							</ui:repeat>
+						</p:column>
+					</c:forEach>
+
+
+
+
+					<!-- 			<p:column headerText="#{msgs.VISITINGDAY}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:selectManyCheckbox id="customerDays" layout="grid"
+									columns="3">
+									<f:selectItems value="#{customer.daysList}" var="day"
+										itemLabel="#{day.dayName}" itemValue="#{day.dayName}" />
+								</p:selectManyCheckbox>
+							</f:facet>
+							<f:facet name="input">
+								<p:selectManyCheckbox value="#{allCustomersBean.selectedDays}"
+									layout="grid" columns="4" required="true"
+									requiredMessage="#{msgs.VALIDATEVISITINGDAY}">
+									<f:selectItems value="#{allCustomersBean.allDays}" var="day"
+										itemLabel="#{day.dayName}" itemValue="#{day.dayName}" />
+									<f:selectItem itemLabel="#{msgs.ALLDAYS}" itemValue="0" />
+								</p:selectManyCheckbox>
+							</f:facet>
+						</p:cellEditor>
+					</p:column> -->
+					<p:column style="width:32px">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+				<!-- <p:confirmDialog global="true" showEffect="fade"
+					hideEffect="explode">
+					<p:commandButton value="#{msgs.YES}" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="#{msgs.NO}" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog> -->
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

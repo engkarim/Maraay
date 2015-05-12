@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.ALLDIRECTIONS}</ui:define>
+
+	<ui:define name="content">
+		<div align="left" class="div-button">
+			<p:commandButton id="addBtn" value="#{msgs.NEWDIRECTION}"
+				action="addDirection" />
+		</div>
+		<div align="center">
+			<h:form>
+				<p:dataTable id="directionTable" value="#{directionBean.directions}"
+					filteredValue="#{directionBean.filteredDirections}"
+					emptyMessage="#{msgs.NODATA}" var="direction" editable="true"
+					style="margin-bottom:20px" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="#{msgs.ALLDIRECTIONS}"
+							styleClass="table-header" />
+					</f:facet>
+					<p:column headerText="#{msgs.DIRECTIONNAME}"
+						filterBy="#{direction.name}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{direction.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{direction.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.REPRESINTATIVENAME}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{direction.representative.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{direction.representative.name}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.REPRESINTATIVEMobile}"
+						styleClass="mobile-class">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{direction.representative.mobile}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{direction.representative.mobile}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.DRIVERNAME}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{direction.driver.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{direction.driver.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.DRIVERMOBILE}"
+						styleClass="mobile-class">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{direction.driver.mobile}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{direction.driver.mobile}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+			<!-- 		<p:column style="width:32px">
+						<p:commandButton value="#{msgs.DELETE}" icon="ui-icon-trash"
+							actionListener="#{directionBean.deleteDirection(direction)}"
+							update="directionTable">
+							<p:confirm header="Confirmation" message="#{msgs.CONFIRMMESSAGE}"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column> -->
+				</p:dataTable>
+				<p:confirmDialog global="true" showEffect="fade"
+					hideEffect="explode">
+					<p:commandButton value="#{msgs.YES}" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="#{msgs.NO}" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

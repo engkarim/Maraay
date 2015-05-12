@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.INCOMINGSEARCH}</ui:define>
+
+	<ui:define name="content">
+
+		<h:form prependId="false" id="searchIncomingForm">
+			<h:panelGrid cellpadding="5" columns="3" id="searchIncomingGrid">
+				<p:outputLabel value="#{msgs.STARTDATE}" for="startDate"
+					styleClass="search-customer-label" />
+				<p:calendar id="startDate" required="true" effect="explode"
+					showOn="button" requiredMessage="#{msgs.VALIDATETODAYDATE}"
+					navigator="true" yearRange="c-50:c"
+					value="#{comIncomingBean.startDate}" pattern="yyyy-MM-dd"
+					mask="true">
+				</p:calendar>
+				<p:message for="startDate" />
+
+				<p:outputLabel value="#{msgs.ENDDATE}" for="endDate"
+					styleClass="search-customer-label" />
+				<p:calendar id="endDate" required="true" effect="explode"
+					showOn="button" requiredMessage="#{msgs.VALIDATETODAYDATE}"
+					navigator="true" yearRange="c-50:c"
+					value="#{comIncomingBean.endDate}" pattern="yyyy-MM-dd" mask="true">
+				</p:calendar>
+				<p:message for="endDate" />
+
+			</h:panelGrid>
+			<p:commandButton id="searchBtn" value="#{msgs.SEARCH}"
+				styleClass="search-small" update="searchIncomingGrid grop" />
+			<h:panelGroup id="grop">
+				<div align="center">
+					<p:dataTable id="incomingTable"
+						rendered="#{comIncomingBean.startDate!=null}"
+						value="#{comIncomingBean.searchedIncomingDates}"
+						emptyMessage="#{msgs.NODATA}" var="incomingDate"
+						style="margin-bottom:20px" rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+
+						<f:facet name="header">
+							<h:outputText value="#{msgs.RESULT}" styleClass="table-header" />
+						</f:facet>
+
+						<p:column headerText="#{msgs.TODAYDATE}">
+							<h:outputText value="#{incomingDate.date}">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+2" />
+							</h:outputText>
+							<f:facet name="footer">
+								<h:outputText value="#{msgs.TOTAL}" />
+							</f:facet>
+						</p:column>
+
+						<c:forEach items="#{productBean.products}" var="p">
+							<p:column headerText="#{p.name}">
+								<ui:repeat value="#{incomingDate.tblComIncomingValueList}"
+									var="i">
+									<h:outputText value="#{p.id!=i.productId.id?'':i.showenMount}" />
+								</ui:repeat>
+							</p:column>
+						</c:forEach>
+
+
+						<p:column headerText="#{msgs.TOTALBEFORE}">
+							<h:outputText value="#{incomingDate.totalBefore}">
+								<f:convertNumber minFractionDigits="2" />
+							</h:outputText>
+							<f:facet name="footer">
+								<h:outputText value="#{comIncomingBean.totTotalBefore}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column headerText="#{msgs.DISCOUNTVALUE}">
+							<h:outputText value="#{incomingDate.discountValue}">
+								<f:convertNumber minFractionDigits="2" />
+							</h:outputText>
+							<f:facet name="footer">
+								<h:outputText value="#{comIncomingBean.totDiscount}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column headerText="#{msgs.TOTALAFTER}">
+							<h:outputText value="#{incomingDate.totalAfter}">
+								<f:convertNumber minFractionDigits="2" />
+							</h:outputText>
+							<f:facet name="footer">
+								<h:outputText value="#{comIncomingBean.totTotalAfter}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+					</p:dataTable>
+
+				</div>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

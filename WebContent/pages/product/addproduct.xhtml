@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWPRODUCT}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form prependId="false">
+				<p:panel header="#{msgs.NEWPRODUCT}" styleClass="panel-class">
+					<h:panelGrid id="newProductGrid" columns="3" cellpadding="5">
+						<p:outputLabel value="#{msgs.PRODUCTNAME}" for="productName" />
+						<p:inputText id="productName" value="#{productBean.product.name}"
+							required="true" requiredMessage="#{msgs.VALIDATEPRODUCTNAME}">
+						</p:inputText>
+						<p:message for="productName" />
+
+
+						<p:outputLabel value="#{msgs.BARCODE}" for="productBarcode" />
+						<p:inputText id="productBarcode"
+							value="#{productBean.product.barcode}" required="true"
+							requiredMessage="#{msgs.VALIDATEBARCODE}">
+						</p:inputText>
+						<p:message for="productBarcode" />
+
+						<p:outputLabel value="#{msgs.MAXMINCOUNT}" for="minMaxCount" />
+						<p:inputText id="minMaxCount"
+							value="#{productBean.product.maxMinCount}" required="true"
+							requiredMessage="#{msgs.VALIDATEMAXMINCOUNT}">
+						</p:inputText>
+						<p:message for="minMaxCount" />
+
+
+						<p:outputLabel value="#{msgs.MAXUNITPRICE}" for="maxUnitPrice" />
+						<p:inputText id="maxUnitPrice"
+							value="#{productBean.product.maxUnitPrice}" required="true"
+							requiredMessage="#{msgs.VALIDATEMAXPRICE}">
+							<!-- <p:ajax event="keyup" update="minUnitPrice" /> -->
+						</p:inputText>
+						<p:message for="maxUnitPrice" />
+
+						<p:outputLabel value="#{msgs.REPMAXUNITPRICE}"
+							for="repMaxunitPrice" />
+						<p:inputText id="repMaxunitPrice" required="true"
+							requiredMessage="#{msgs.VALIDATEMAXPRICE}"
+							value="#{productBean.product.repMaxUnPrice}" />
+						<p:message for="repMaxunitPrice" />
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{productBean.addProduct}" update="newProductGrid"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="newEmployeeGrid"></p:commandButton>
+
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

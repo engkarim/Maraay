@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{localizationBean.locale}" />
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="title">Default Template</ui:insert></title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/resources/css/default.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/resources/css/cssLayout.css" />
+	<script src="#{request.contextPath}/js/jquery-1.10.2.js"
+		type="text/javascript"></script>
+	<script src="#{request.contextPath}/resources/js/jsNeeds.js"
+		type="text/javascript"></script>
+	<!-- 	<script type="text/javascript"
+		src="#{request.contextPath}/resources/js/primeScripts.js"> 	</script>-->
+
+
+</h:head>
+
+<h:body>
+	<div id="top">
+		<ui:insert name="top">
+			<div align="center">
+				<div id="applicationUser" class="current-user">
+					<h:outputLabel id="appUserName" value="#{msgs.CURRENTUSER}" />
+					<h:outputText id="currentuser" value="#{loginBean.name}" />
+				</div>
+				<!-- 	<p:commandButton id="homeBtn" value="#{msgs.HOME}" action="home"
+					style="font-size: 150% !important;" /> -->
+			</div>
+
+			<div id="logoContainer" class="logoContainer">
+				<h:graphicImage url="/resources/images/beyti.png"
+					styleClass="beyti-logo"></h:graphicImage>
+				<h:graphicImage url="/resources/images/tropicana.jpg"
+					styleClass="tropicana-logo"></h:graphicImage>
+				<h:graphicImage url="/resources/images/maraay.png"
+					styleClass="maraay-logo"></h:graphicImage>
+				<div id="fathImage" class="fath-logo">
+					<h:graphicImage value="/resources/images/fath.png"></h:graphicImage>
+				</div>
+			</div>
+
+		</ui:insert>
+	</div>
+
+	<div id="content" class="center_content">
+		<div align="center">
+			<h:form dir="rtl">
+				<p:menubar style="font-size: 180% !important;">
+					<p:submenu label="
+				#{msgs.EMPLOYEES}" styleClass="rtl-class">
+						<p:menuitem value="#{msgs.ALLEMPLOYEE}"
+							url="/pages/employee/listallemployee.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.ADDNEWEMPLOYEE}"
+							url="/pages/employee/addemployee.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.ADDNEWJOB}"
+							url="/pages/employee/addNewJob.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.JOBS}"
+							url="/pages/employee/listallJobs.xhtml?redirect-faces=true" />
+					</p:submenu>
+					<p:submenu label="
+				#{msgs.ALLDIRECTIONS}"
+						styleClass="rtl-class">
+						<p:menuitem value="#{msgs.ALLDIRECTIONS}"
+							url="/pages/direction/listalldirections.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.NEWDIRECTION}"
+							url="/pages/direction/adddirection.xhtml?redirect-faces=true" />
+					</p:submenu>
+
+					<p:submenu label="
+				#{msgs.ALLPRODUCT}" styleClass="rtl-class">
+						<p:menuitem value="#{msgs.ALLPRODUCT}"
+							url="/pages/product/listallproduct.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.NEWPRODUCT}"
+							url="/pages/product/addproduct.xhtml?redirect-faces=true" />
+					</p:submenu>
+
+					<p:submenu label="
+				#{msgs.ALLCUSTOMERS}" styleClass="rtl-class">
+						<p:menuitem value="#{msgs.ALLCUSTOMERS}"
+							url="/pages/customer/listallcustomers.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.NEWCUSTOMER}"
+							url="/pages/customer/addcustomer.xhtml?redirect-faces=true" />
+					</p:submenu>
+
+
+					<p:submenu label="
+				#{msgs.ALLUSERS}" styleClass="rtl-class">
+						<p:menuitem value="#{msgs.ALLUSERS}"
+							url="/pages/user/listallusers.xhtml?redirect-faces=true" />
+						<p:menuitem value="#{msgs.NEWUSER}"
+							url="/pages/user/adduser.xhtml?redirect-faces=true" />
+					</p:submenu>
+
+					<p:submenu label="
+				#{msgs.COMPANYCALC}" styleClass="rtl-class">
+
+						<p:menuitem value="#{msgs.DISCOUNTS}"
+							url="/pages/company/discount/listDiscounts.xhtml?redirect-faces=true" />
+
+
+
+						<p:menuitem value="#{msgs.INCOMING}"
+							url="/pages/company/incoming/listIncoming.xhtml?redirect-faces=true" />
+
+
+
+						<p:menuitem value="#{msgs.OFFERS}"
+							url="/pages/company/offer/listOffers.xhtml?redirect-faces=true" />
+
+
+						<p:submenu label="#{msgs.BLENDING}" styleClass="rtl-class">
+
+							<p:menuitem value="#{msgs.BLENDING}"
+								url="/pages/company/blending/listBlending.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.BLENDINGRATE}"
+								url="/pages/company/blending/listBlendingRate.xhtml?redirect-faces=true" />
+						</p:submenu>
+
+						<p:menuitem value="#{msgs.DEFECTS}"
+							url="/pages/company/defect/listDefects.xhtml?redirect-faces=true" />
+
+						<p:menuitem value="#{msgs.INCOMINGNET}"
+							url="/pages/company/sales/listSales.xhtml?redirect-faces=true" />
+
+						<p:submenu label="#{msgs.SALESCALC}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.NEWEQ}"
+								url="/pages/company/salesEquation/newEq.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.ALLEQS}"
+								url="/pages/company/salesEquation/listEqs.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.ACCOUNTDETAILS}"
+								url="/pages/company/salesEquation/salesDetails.xhtml?redirect-faces=true" />
+						</p:submenu>
+						<p:submenu label="#{msgs.DAILYACCOUNT}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.NEWDAILYACCOUNT}"
+								url="/pages/company/discount/newDiscount.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.EDITDAILYACCOUNT}"
+								url="/pages/company/editCompanyDaily.xhtml?redirect-faces=true" />
+						</p:submenu>
+					</p:submenu>
+
+					<p:submenu label="#{msgs.REPCALC}" styleClass="rtl-class">
+						<p:submenu label="#{msgs.INVOICES}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.ENTERVOICE}"
+								url="/pages/representative/invoice/newInvoice.xhtml?redirect-faces=true" />
+
+							<p:menuitem value="#{msgs.ALLINVOICES}"
+								url="/pages/representative/invoice/listInvoices.xhtml?redirect-faces=true" />
+
+
+						</p:submenu>
+
+						<p:submenu label="#{msgs.DAILYACCOUNT}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.ENTERLASTTIME}"
+								url="/pages/representative/lastTime/newLast.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.NEWDAILYACCOUNT}"
+								url="/pages/representative/firstTime/newFirst.xhtml?redirect-faces=true" />
+
+
+
+						</p:submenu>
+					</p:submenu>
+
+					<f:facet name="options">
+						<p:commandButton value="#{msgs.LOGOUT}"
+							action="#{loginBean.logout}" icon="ui-icon-extlink" ajax="false" />
+					</f:facet>
+				</p:menubar>
+			</h:form>
+		</div>
+		<ui:insert name="content"></ui:insert>
+	</div>
+
+	<div id="bottom">
+		<ui:insert name="bottom">
+			<div class="company-name">
+				<h1 align="center" dir="rtl">مؤسسة الفتح وكيل شركة المراعى</h1>
+			</div>
+		</ui:insert>
+	</div>
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage url="/resources/images/loader.gif" />
+	</p:dialog>
+</h:body>
+</html>

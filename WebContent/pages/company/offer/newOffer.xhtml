@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWOFFER}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<h:form prependId="false" id="offerForm">
+				<p:panel header="#{msgs.NEWOFFER}">
+
+					<p:dataTable id="offerTable" var="offerValue"
+						value="#{comOfferBean.offerValues}">
+						<p:column headerText="#{msgs.TYPE}">
+							<h:outputText value="#{offerValue.productId.name} : " />
+						</p:column>
+
+						<p:column headerText="#{msgs.PACKET}">
+							<p:inputText id="offerMax" value="#{offerValue.maxMount}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="offerMax" />
+						</p:column>
+
+
+						<p:column headerText="#{msgs.BOX}">
+							<p:inputText id="offerMin" value="#{offerValue.minMount}"
+								size="5" required="true" requiredMessage="#{msgs.ENTERVALUE}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="offerMin" />
+						</p:column>
+
+
+					</p:dataTable>
+					<h:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						image="/resources/images/next.ico"
+						action="#{comOfferBean.insertNewOffer}" update="offerForm" />
+					<!-- <p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="offerForm"></p:commandButton> -->
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+<!--
+
+<f:event listener="#{comOfferBean.validateDate}"
+						type="postValidate" />
+
+					<div id="dateDiv" class="date-div">
+						<p:outputLabel value="#{msgs.TODAYDATE}" for="today" />
+						<p:calendar id="today" required="true" effect="explode"
+							showOn="button" requiredMessage="#{msgs.VALIDATETODAYDATE}"
+							navigator="true" yearRange="c-50:c"
+							value="#{comOfferBean.offerDate.date}" pattern="yyyy-MM-dd"
+							mask="true">
+						</p:calendar>
+						<p:message id="dateMsg" for="today" />
+					</div>
+
+  -->

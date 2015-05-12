@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{localizationBean.locale}" />
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="title">Default Template</ui:insert></title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/resources/css/default.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/resources/css/cssLayout.css" />
+</h:head>
+<h:body>
+
+	<div id="top">
+		<ui:insert name="top">
+			<div id="logoContainer">
+				<h:graphicImage url="/resources/images/beyti.png"
+					styleClass="beyti-logo"></h:graphicImage>
+				<h:graphicImage url="/resources/images/tropicana.jpg"
+					styleClass="tropicana-logo"></h:graphicImage>
+				<h:graphicImage url="/resources/images/maraay.png"
+					styleClass="maraay-logo"></h:graphicImage>
+				<h:graphicImage value="/resources/images/fath.png"
+					styleClass="fath-logo"></h:graphicImage>
+
+			</div>
+		</ui:insert>
+	</div>
+
+	<div id="content" class="center_content">
+		<ui:insert name="content"></ui:insert>
+	</div>
+
+	<div id="bottom">
+		<ui:insert name="bottom">
+			<div class="company-name">
+				<h1 align="center" dir="rtl">مؤسسة الفتح وكيل شركة المراعى</h1>
+			</div>
+		</ui:insert>
+	</div>
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage url="/resources/images/loader.gif" />
+	</p:dialog>
+</h:body>
+
+</html>

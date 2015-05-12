@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{comIncomingBean.prerender}" />
+	</f:metadata>
+	<ui:define name="title">#{msgs.UPDATEINCOMING}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<h:form prependId="false" id="incomingPanel">
+				<p:panel header="#{msgs.UPDATEINCOMING}">
+					<p:dataTable id="incomingTable" var="incomingValue"
+						value="#{comIncomingBean.updatedIncomingDate.tblComIncomingValueList}">
+						<p:column headerText="#{msgs.TYPE}">
+							<h:outputText value="#{incomingValue.productId.name} : " />
+						</p:column>
+
+						<p:column headerText="#{msgs.PACKET}">
+							<p:inputText id="incomingMax" value="#{incomingValue.maxMount}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="incomingMax" />
+						</p:column>
+
+
+						<p:column headerText="#{msgs.BOX}">
+							<p:inputText id="incomingMin" value="#{incomingValue.minMount}"
+								size="5" required="true" requiredMessage="#{msgs.ENTERVALUE}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="incomingMin" />
+						</p:column>
+
+
+					</p:dataTable>
+					<h:commandButton id="saveBtn" image="/resources/images/next.ico"
+						action="#{comIncomingBean.updateIncoming}"
+						update="incomingPanel"/>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

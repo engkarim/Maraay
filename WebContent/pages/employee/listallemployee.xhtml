@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.ALLEMPLOYEE}</ui:define>
+
+	<ui:define name="content">
+		<div align="left" class="div-button">
+			<p:commandButton id="addBtn" value="#{msgs.ADDNEWEMPLOYEE}"
+				action="addEmployee" />
+
+		</div>
+		<div align="center">
+			<h:form>
+				<p:dataTable id="employeeTable" value="#{employeeBean.employeeList}"
+					filteredValue="#{employeeBean.filteredEmployees}"
+					emptyMessage="#{msgs.NODATA}" var="employee" editable="true"
+					style="margin-bottom:20px" rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="#{msgs.ALLEMPLOYEE}"
+							styleClass="table-header" />
+					</f:facet>
+					<p:ajax event="rowEdit" listener="#{employeeBean.onRowEdit}"
+						update="employeeTable" />
+					<p:ajax event="rowEditCancel"
+						listener="#{employeeBean.onRowCancel}" update="employeeTable" />
+
+					<p:column headerText="#{msgs.NAME}" filterBy="#{employee.name}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{employee.name}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.JOB}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.employeeType.job}" />
+							</f:facet>
+							<f:facet name="input">
+								<h1>#{msgs.CANTEDITED}</h1>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.ADDRESS}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.address}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{employee.address}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.MOBILE}" styleClass="mobile-class">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.mobile}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{employee.mobile}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.BASICSALARY}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.basicSalary}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{employee.basicSalary}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.NATIONALID}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.nationalId}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{employee.nationalId}" style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.EMPLOYMENTDATE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.employment_date}">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:calendar id="employmentDate" effect="explode" showOn="button"
+									value="#{employee.employment_date}" pattern="yyyy-MM-dd"
+									mask="true" lang="#{msgs.LANG}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="#{msgs.DEPARTUREDATE}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{employee.departure_date}">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />
+								</h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:calendar id="departureDate" effect="explode" showOn="button"
+									value="#{employee.departure_date}" pattern="yyyy-MM-dd"
+									mask="true" lang="#{msgs.LANG}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<!-- 	<p:column style="width:32px">
+						<p:commandButton value="#{msgs.DELETE}" icon="ui-icon-trash"
+							action="#{employeeBean.deleteEmployee(employee)}"
+							update="employeeTable">
+							<p:confirm header="Confirmation" message="#{msgs.CONFIRMMESSAGE}"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column> -->
+					<p:column style="width:32px">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+				<!-- <p:confirmDialog global="true" showEffect="fade"
+					hideEffect="explode">
+					<p:commandButton value="#{msgs.YES}" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="#{msgs.NO}" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog> -->
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

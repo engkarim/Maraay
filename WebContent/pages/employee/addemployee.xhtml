@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.ADDNEWEMPLOYEE}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form prependId="false">
+				<p:panel header="#{msgs.ADDNEWEMPLOYEE}" styleClass="panel-class">
+					<h:panelGrid id="newEmployeeGrid" columns="3" cellpadding="5">
+						<p:outputLabel value="#{msgs.JOB}" for="empJob" />
+						<p:selectOneMenu id="empJob" styleClass="mobile-class"
+							value="#{employeeBean.employee.employeeType.id}" required="true"
+							requiredMessage="#{msgs.VALIDATEEMPLOYMENT}">
+							<f:selectItem itemLabel="#{msgs.JOBSELECT}" itemValue="0" />
+							<f:selectItems value="#{employeeBean.employeeTypes}"
+								var="employeeType" itemLabel="#{employeeType.job}"
+								itemValue="#{employeeType.id}" />
+						</p:selectOneMenu>
+						<p:message for="empJob" />
+						<p:outputLabel value="#{msgs.NAME}" for="empName" />
+						<p:inputText id="empName" value="#{employeeBean.employee.name}"
+							required="true" requiredMessage="#{msgs.VALIDATENAME}">
+						</p:inputText>
+						<p:message for="empName">
+						</p:message>
+						<p:outputLabel value="#{msgs.ADDRESS}" for="empAddress" />
+						<p:inputText id="empAddress"
+							value="#{employeeBean.employee.address}" required="true"
+							requiredMessage="#{msgs.VALIDATEADDRESS}"></p:inputText>
+						<p:message for="empAddress" />
+						<p:outputLabel value="#{msgs.MOBILE}" for="empMobile" />
+						<p:inputMask id="empMobile" styleClass="mobile-class"
+							required="true" requiredMessage="#{msgs.VALIDATEMOBILE}"
+							value="#{employeeBean.employee.mobile}" mask="(999) 9999-9999" />
+						<p:message for="empMobile" />
+						<p:outputLabel value="#{msgs.BASICSALARY}" for="empSalary" />
+						<p:inputText id="empSalary" styleClass="mobile-class"
+							required="true" requiredMessage="#{msgs.VALIDATESALARY}"
+							converterMessage="#{msgs.MUSTNUMBER}"
+							value="#{employeeBean.employee.basicSalary}">
+							<f:convertNumber />
+						</p:inputText>
+						<p:message for="empSalary" />
+						<p:outputLabel value="#{msgs.NATIONALID}" for="empNationalId" />
+						<p:inputText id="empNationalId" styleClass="mobile-class"
+							required="true" requiredMessage="#{msgs.VALIDATENATIONALID}"
+							value="#{employeeBean.employee.nationalId}"
+							converterMessage="#{msgs.MUSTNUMBER}">
+							<f:convertNumber />
+						</p:inputText>
+
+						<p:message for="empNationalId" />
+						<p:outputLabel value="#{msgs.EMPLOYMENTDATE}" for="employmentDate" />
+						<p:calendar id="employmentDate" required="true" effect="explode"
+							requiredMessage="#{msgs.VALIDATEDATEEMPLOYMENT}"
+							value="#{employeeBean.employee.employment_date}" navigator="true"
+							yearRange="c-50:c" pattern="yyyy-MM-dd" mask="true"
+							lang="#{msgs.LANG}" />
+						<p:message for="employmentDate" />
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						action="#{employeeBean.addEmployee}" update="newEmployeeGrid"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						action="#{employeeBean.addEmployee}" update="newEmployeeGrid"></p:commandButton>
+
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

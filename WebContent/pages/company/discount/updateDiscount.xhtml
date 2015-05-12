@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{comDiscountBean.prerender}" />
+	</f:metadata>
+	<ui:define name="title">#{msgs.UPDATEDISCOUNT}</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<h:form prependId="false" id="discountPanel">
+				<p:panel header="#{msgs.UPDATEDISCOUNT}">
+					<h:dataTable id="discountTable" var="discountValue"
+						value="#{comDiscountBean.updatedDiscountDate.tblComDiscountValueList}">
+						<h:column>
+							<h:outputText value="#{discountValue.productId.name} : " />
+						</h:column>
+
+						<h:column>
+							<p:inputText id="discount" value="#{discountValue.discountValue}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+						</h:column>
+						<h:column>
+							<p:message for="discount" />
+						</h:column>
+					</h:dataTable>
+					<h:commandButton id="saveBtn" image="/resources/images/next.ico"
+						action="#{comDiscountBean.updateDiscount}"
+						update="discountPanel"/>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

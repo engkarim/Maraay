@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<f:metadata>
+		<f:event listener="#{repDefect.prerendre}" type="preRenderView" />
+	</f:metadata>
+	<ui:define name="title">#{msgs.NEWDEFECTS}</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<p:messages showDetail="true" closable="true" />
+			<p:panel header="#{msgs.NEWDEFECTS}">
+				<h:form prependId="false" id="newForm">
+					<p:dataTable id="newTable" var="newValue"
+						value="#{repDefect.defectValues}">
+						<p:column>
+							<h:outputText value="#{newValue.productId.name} : " />
+						</p:column>
+
+						<p:column headerText="#{msgs.PACKET}">
+							<p:inputText id="newMax" value="#{newValue.maxMount}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="newMax" />
+						</p:column>
+						<p:column headerText="#{msgs.BOX}">
+							<p:inputText id="newMin" value="#{newValue.minMount}" size="5"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="newMin" />
+						</p:column>
+					</p:dataTable>
+					<h:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						image="/resources/images/next.ico"
+						action="#{repDefect.insertNewDefect}" update="newForm" />
+				</h:form>
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

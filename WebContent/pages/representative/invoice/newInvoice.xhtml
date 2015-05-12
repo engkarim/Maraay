@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.NEWINVOICE}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="newInvoiceForm" prependId="false">
+				<p:panel header="#{msgs.NEWINVOICE}" styleClass="panel-class">
+					<h:panelGrid columns="9" cellpadding="5">
+						<p:outputLabel value="#{msgs.CUSTOMERKEY}" for="custKey" />
+						<p:inputText id="custKey" required="true"
+							requiredMessage="#{msgs.CUSTKEYVALIDATE}"
+							value="#{repInvoiceBean.customerId}">
+							<p:ajax event="keyup" update="custName dirName" />
+						</p:inputText>
+						<p:message for="custKey" />
+						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="custName" />
+						<p:inputText id="custName" value="#{repInvoiceBean.customer.name}" />
+
+
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
+						<p:inputText id="dirName"
+							value="#{repInvoiceBean.customer.direction.name}" />
+					</h:panelGrid>
+					<h:panelGrid columns="6" cellpadding="5"
+						styleClass="date_invoice_grid">
+						<p:outputLabel value="#{msgs.INVOICENUMBER}" for="invNumber" />
+						<p:inputText id="invNumber" converterMessage="#{msgs.ONLYNUMBER}"
+							value="#{repInvoiceBean.newInvoice.invoiceNumber}"
+							required="true" requiredMessage="#{msgs.INVNUMVALIDATE}">
+							<f:convertNumber integerOnly="true" />
+						</p:inputText>
+						<p:message for="invNumber" />
+
+						<p:outputLabel value="#{msgs.INVOICEDATE}" for="invDate" />
+						<p:calendar id="invDate" required="true" effect="explode"
+							requiredMessage="#{msgs.VALIDATEDATEDATE}"
+							value="#{repInvoiceBean.newInvoice.invoiceDate}" navigator="true"
+							yearRange="c-1:c" pattern="yyyy-MM-dd" mask="true"
+							lang="#{msgs.LANG}" />
+						<p:message for="invDate" />
+					</h:panelGrid>
+
+					<p:dataTable id="valuesTable" var="itemValue"
+						value="#{repInvoiceBean.invoiceValues}">
+
+						<p:column headerText="#{msgs.TYPE}">
+							<h:outputText value="#{itemValue.productId.name} : " />
+						</p:column>
+
+						<p:column headerText="#{msgs.PACKET}">
+							<p:inputText id="itemMax" value="#{itemValue.maxMount}"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+							<p:message for="itemMax" />
+						</p:column>
+
+						<p:column headerText="#{msgs.BOX}">
+							<p:inputText id="itemMin" value="#{itemValue.minMount}" size="5"
+								required="true" requiredMessage="#{msgs.ENTERVALUE}"
+								converterMessage="#{msgs.ONLYNUMBER}">
+								<f:convertNumber />
+							</p:inputText>
+						</p:column>
+					</p:dataTable>
+					<h:panelGrid columns="6" cellpadding="5"
+						styleClass="discount_invoice_grid">
+						<p:outputLabel value="#{msgs.DISCOUNTRATE}" />
+						<p:inputText id="disRate"
+							value="#{repInvoiceBean.newInvoice.discountRate}" size="5" />
+						<p:message for="disRate" />
+
+						<p:outputLabel value="#{msgs.ADDTIONALDISCOUNT}" />
+						<p:inputText id="addDis"
+							value="#{repInvoiceBean.newInvoice.additionalDiscount}" size="5" />
+						<p:message for="addDis" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="6" cellpadding="10"
+						styleClass="discount_invoice_grid">
+						<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
+						<p:inputText id="disValue"  disabled="true"
+							styleClass="invText" />
+
+
+						<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
+						<p:inputText id="invValue" disabled="true"
+							styleClass="invText" />
+
+
+						<p:outputLabel value="#{msgs.INVOICENET}: " />
+						<p:inputText id="invNet"  disabled="true"
+							styleClass="invText" />
+
+					</h:panelGrid>
+					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						update="newInvoiceForm" action="#{repInvoiceBean.insertNewInvoice}"></p:commandButton>
+					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
+						update="newInvoiceForm"></p:commandButton>
+
+				</p:panel>
+
+
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>

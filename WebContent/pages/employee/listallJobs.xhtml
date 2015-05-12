@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.JOBS}</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form>
+				<p:dataTable id="jobsTable"
+					value="#{employeeTypeBean.emlployeeTypes}"
+					emptyMessage="#{msgs.NODATA}" var="job" style="margin-bottom:20px"
+					rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<h:outputText value="#{msgs.JOBS}" styleClass="table-header" />
+					</f:facet>
+					<p:column headerText="#{msgs.JOB}">
+						<h:outputText value="#{job.job}" />
+					</p:column>
+					<p:column style="width:32px">
+						<p:button value="#{msgs.EDIT}" outcome="editJob?jobId=#{job.id}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+
+
+
+</ui:composition>
