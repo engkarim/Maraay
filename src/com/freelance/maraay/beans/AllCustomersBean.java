@@ -20,7 +20,7 @@ import com.freelance.maraay.model.DayWeek;
 import com.freelance.maraay.model.Product;
 import com.freelance.maraay.primeFacesService.Service;
 import com.freelance.maraay.utils.Performance;
-
+////sgdjglsdglsdgjskldjgsld
 @ManagedBean
 @ViewScoped
 public class AllCustomersBean implements Serializable {
