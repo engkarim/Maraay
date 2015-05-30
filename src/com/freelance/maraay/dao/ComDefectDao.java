@@ -146,6 +146,7 @@ public class ComDefectDao {
 			tx = session.beginTransaction();
 			Criteria criteria = session
 					.createCriteria(TblComDefectsDate.class);
+			criteria.createCriteria("tblComDefectsValueList", "tblComDefectsValueList");
 			criteria.add(Restrictions.eq("date", date));
 
 			TblComDefectsDate  defectDate = (TblComDefectsDate) criteria.uniqueResult();

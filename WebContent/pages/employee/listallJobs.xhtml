@@ -27,8 +27,21 @@
 					<p:column style="width:32px">
 						<p:button value="#{msgs.EDIT}" outcome="editJob?jobId=#{job.id}" />
 					</p:column>
+					<p:column style="width:32px">
+						<p:commandButton id="saveBtn" value="#{msgs.DELETE}"
+							action="#{employeeTypeBean.deleteJob(job)}">
+							<p:confirm header="Confirmation" message="#{msgs.CONFIRMMESSAGE}"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 			</h:form>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="#{msgs.YES}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="#{msgs.NO}" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</div>
 	</ui:define>
 

@@ -66,6 +66,28 @@ public class EmployeeTypeDao implements Serializable {
 		}
 
 	}
+	
+	public String deleteJob(EmployeeType job) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			session.delete(job);
+			tx.commit();
+			return "success";
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+
+	}
+	
+	
 
 	public List<EmployeeType> listEmployeeTypes() {
 		List<EmployeeType> employeeTypesList = new ArrayList<EmployeeType>();

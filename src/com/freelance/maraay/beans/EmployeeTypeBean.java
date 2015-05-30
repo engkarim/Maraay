@@ -79,6 +79,15 @@ public class EmployeeTypeBean implements Serializable {
 			return "fail";
 		}
 	}
+	
+	public String deleteJob(EmployeeType delEmployeeType) {
+		try {
+			employeeTypeDao.deleteJob(delEmployeeType);
+			return "allJobs";
+		} catch (Exception e) {
+			return "fail";
+		}
+	}
 
 	public String editJob() {
 		try {
@@ -107,25 +116,12 @@ public class EmployeeTypeBean implements Serializable {
 		String jobId = uiInputJob.getClientId();
 
 		EmployeeType retrievedJob = employeeTypeDao.findByName(job);
-		EmployeeType editedRetrivedJob = null;
-		if (editedJob != null) {
-			editedRetrivedJob = employeeTypeDao.findByNameAndId(
-					editedJob.getJob(), editedJob.getId());
-		}
-
 		// Let required="true" do its job.
 		if (job.isEmpty()) {
 			return;
 		}
 
 		if (retrievedJob != null) {
-			FacesMessage msg = new FacesMessage(jobMessage);
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(jobId, msg);
-			fc.renderResponse();
-		}
-
-		if (editedRetrivedJob != null) {
 			FacesMessage msg = new FacesMessage(jobMessage);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			fc.addMessage(jobId, msg);
@@ -153,8 +149,8 @@ public class EmployeeTypeBean implements Serializable {
 
 		EmployeeType editedRetrivedJob = null;
 		if (editedJob != null) {
-			editedRetrivedJob = employeeTypeDao.findByNameAndId(
-					job, editedJob.getId());
+			editedRetrivedJob = employeeTypeDao.findByNameAndId(job,
+					editedJob.getId());
 		}
 
 		// Let required="true" do its job.

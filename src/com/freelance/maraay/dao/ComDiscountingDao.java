@@ -168,6 +168,38 @@ public class ComDiscountingDao implements Serializable {
 		}
 	}
 
+	public List<TblComDiscountDate> findByCompletedCalue(Integer comVal) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session
+					.createCriteria(TblComDiscountDate.class);
+			criteria.createAlias("tblComDiscountValueList",
+					"tblComDiscountValueList");
+			criteria.add(Restrictions.eq("isCompleted", comVal));
+			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+			List<TblComDiscountDate> discountDateList = criteria.list();
+			for (TblComDiscountDate d : discountDateList) {
+				for (TblComDiscountValue v : d.getTblComDiscountValueList()) {
+					System.out.println(v.getDiscountValue());
+				}
+			}
+
+			tx.commit();
+			return discountDateList;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+
 	public TblComDiscountValue findByDateAndProduct(Long discountDateId,
 			Product product) {
 		Session session = null;

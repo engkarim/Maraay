@@ -32,6 +32,7 @@ import com.freelance.maraay.model.TblComBlendingDate;
 import com.freelance.maraay.model.TblComBlendingValue;
 import com.freelance.maraay.model.TblComDefectsDate;
 import com.freelance.maraay.model.TblComDefectsValue;
+import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.TblComDiscountValue;
 import com.freelance.maraay.model.TblComIncomingDate;
 import com.freelance.maraay.model.TblComIncomingValue;
@@ -358,6 +359,12 @@ public class ComDefectBean implements Serializable {
 			session.update(salesDate);
 			tx = session.beginTransaction();
 			tx.commit();
+
+			// update discountdate object to complete
+			TblComDiscountDate discountDate = ComDiscountingDao.getInstance()
+					.findByDate(defectDate.getDate());
+			discountDate.setIsCompleted(1);
+			ComDiscountingDao.getInstance().updateDate(discountDate);
 			return "allSales";
 		} catch (Exception e) {
 			tx.rollback();
@@ -496,103 +503,96 @@ public class ComDefectBean implements Serializable {
 				System.out.println("1111111111111111111111111111111111");
 				for (TblComSalesValue updatedSalesvalue : salesDate
 						.getTblComSalesValueList()) {
-//					if (updatedSalesvalue.getProductId() == defectValue
-//							.getProductId()) {
-						System.out
-								.println("on second for looooooooooooooooooooooooooop%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-						// get incoming value
-						TblComIncomingValue incomingValue = comIncomingDao
+					// if (updatedSalesvalue.getProductId() == defectValue
+					// .getProductId()) {
+					System.out
+							.println("on second for looooooooooooooooooooooooooop%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+					// get incoming value
+					TblComIncomingValue incomingValue = comIncomingDao
+							.findByDateAndProduct(
+									incomingDate.getIncomingDateId(),
+									defectValue.getProductId());
+
+					// get blending value
+					TblComBlendingValue blendingValue = comBlendingDao
+							.findByDateAndProduct(
+									blendingDate.getBlendingDateId(),
+									defectValue.getProductId());
+
+					if (offerDate == null) {
+						salesTotalMount = incomingValue.getTotalMount()
+								- (blendingValue.getTotalMount() + defectValue
+										.getTotalMount());
+
+						salesMaxMount = incomingValue.getMaxMount()
+								- (blendingValue.getMaxMount() + defectValue
+										.getMaxMount());
+
+						salesMinMount = incomingValue.getMinMount()
+								- (blendingValue.getMinMount() + defectValue
+										.getMinMount());
+
+						salesShowenMount = salesMaxMount + "." + salesMinMount;
+
+						salesMountPrice_before = incomingValue.getTotalBefore()
+								- (blendingValue.getTotalBefore() + defectValue
+										.getTotalBefore());
+
+						salesMountPrice_after = incomingValue.getTotalAfter()
+								- (blendingValue.getTotalAfter() + defectValue
+										.getTotalAfter());
+
+					} else {
+						// get offer value
+						TblComOfferValue offerValue = comOfferDao
 								.findByDateAndProduct(
-										incomingDate.getIncomingDateId(),
+										offerDate.getOfferDateId(),
 										defectValue.getProductId());
 
-						// get blending value
-						TblComBlendingValue blendingValue = comBlendingDao
-								.findByDateAndProduct(
-										blendingDate.getBlendingDateId(),
-										defectValue.getProductId());
-
-						if (offerDate == null) {
-							salesTotalMount = incomingValue.getTotalMount()
-									- (blendingValue.getTotalMount() + defectValue
+						salesTotalMount = incomingValue.getTotalMount()
+								- (blendingValue.getTotalMount()
+										+ defectValue.getTotalMount() + offerValue
 											.getTotalMount());
 
-							salesMaxMount = incomingValue.getMaxMount()
-									- (blendingValue.getMaxMount() + defectValue
+						salesMaxMount = incomingValue.getMaxMount()
+								- (blendingValue.getMaxMount()
+										+ defectValue.getMaxMount() + offerValue
 											.getMaxMount());
 
-							salesMinMount = incomingValue.getMinMount()
-									- (blendingValue.getMinMount() + defectValue
+						salesMinMount = incomingValue.getMinMount()
+								- (blendingValue.getMinMount()
+										+ defectValue.getMinMount() + offerValue
 											.getMinMount());
 
-							salesShowenMount = salesMaxMount + "."
-									+ salesMinMount;
+						salesShowenMount = salesMaxMount + "." + salesMinMount;
 
-							salesMountPrice_before = incomingValue
-									.getTotalBefore()
-									- (blendingValue.getTotalBefore() + defectValue
+						salesMountPrice_before = incomingValue.getTotalBefore()
+								- (blendingValue.getTotalBefore()
+										+ defectValue.getTotalBefore() + offerValue
 											.getTotalBefore());
 
-							salesMountPrice_after = incomingValue
-									.getTotalAfter()
-									- (blendingValue.getTotalAfter() + defectValue
+						salesMountPrice_after = incomingValue.getTotalAfter()
+								- (blendingValue.getTotalAfter()
+										+ defectValue.getTotalAfter() + offerValue
 											.getTotalAfter());
 
-						} else {
-							// get offer value
-							TblComOfferValue offerValue = comOfferDao
-									.findByDateAndProduct(
-											offerDate.getOfferDateId(),
-											defectValue.getProductId());
+					}
 
-							salesTotalMount = incomingValue.getTotalMount()
-									- (blendingValue.getTotalMount()
-											+ defectValue.getTotalMount() + offerValue
-												.getTotalMount());
+					salesTotalMount = Utils.getInstance().roundDouble(
+							salesTotalMount, 2);
+					updatedSalesvalue.setTotalMount(salesTotalMount);
+					updatedSalesvalue.setShowenMount(salesShowenMount);
+					updatedSalesvalue.setTotalBefore(salesMountPrice_before);
+					updatedSalesvalue.setTotalAfter(salesMountPrice_after);
+					updatedSalesvalue.setProductId(updatedSalesvalue
+							.getProductId());
+					updatedSalesvalue.setSalesDateId(salesDate);
 
-							salesMaxMount = incomingValue.getMaxMount()
-									- (blendingValue.getMaxMount()
-											+ defectValue.getMaxMount() + offerValue
-												.getMaxMount());
-
-							salesMinMount = incomingValue.getMinMount()
-									- (blendingValue.getMinMount()
-											+ defectValue.getMinMount() + offerValue
-												.getMinMount());
-
-							salesShowenMount = salesMaxMount + "."
-									+ salesMinMount;
-
-							salesMountPrice_before = incomingValue
-									.getTotalBefore()
-									- (blendingValue.getTotalBefore()
-											+ defectValue.getTotalBefore() + offerValue
-												.getTotalBefore());
-
-							salesMountPrice_after = incomingValue
-									.getTotalAfter()
-									- (blendingValue.getTotalAfter()
-											+ defectValue.getTotalAfter() + offerValue
-												.getTotalAfter());
-
-						}
-
-						salesTotalMount = Utils.getInstance().roundDouble(
-								salesTotalMount, 2);
-						updatedSalesvalue.setTotalMount(salesTotalMount);
-						updatedSalesvalue.setShowenMount(salesShowenMount);
-						updatedSalesvalue
-								.setTotalBefore(salesMountPrice_before);
-						updatedSalesvalue.setTotalAfter(salesMountPrice_after);
-						updatedSalesvalue.setProductId(updatedSalesvalue
-								.getProductId());
-						updatedSalesvalue.setSalesDateId(salesDate);
-
-						session = SessionFactoryUtil.getSession();
-						session.update(updatedSalesvalue);
-//					} else {
-//						continue;
-//					}
+					session = SessionFactoryUtil.getSession();
+					session.update(updatedSalesvalue);
+					// } else {
+					// continue;
+					// }
 
 				}
 

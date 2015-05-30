@@ -13,8 +13,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.User;
+import com.freelance.maraay.dao.ComDiscountingDao;
 import com.freelance.maraay.dao.UserDao;
+import com.freelance.maraay.utils.AppUtils;
 import com.freelance.maraay.utils.Performance;
 
 @ManagedBean(name = "loginBean")
@@ -131,6 +134,11 @@ public class LoginBean implements Serializable {
 				this.setName(users.get(0).getName());
 				this.setUsername(users.get(0).getUserName());
 				this.setUserType(users.get(0).getUserType().getId());
+				// check company account if non completed operations
+				
+				List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
+			    AppUtils appUtils = new AppUtils();
+			    appUtils.deleteNonCompletedCom(checkedDiscountList);
 				Performance.releaseMemory();
 				return "home";
 			} else {

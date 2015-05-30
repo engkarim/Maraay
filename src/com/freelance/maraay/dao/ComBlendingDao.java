@@ -150,6 +150,7 @@ public class ComBlendingDao implements Serializable {
 			tx = session.beginTransaction();
 			Criteria criteria = session
 					.createCriteria(TblComBlendingDate.class);
+			criteria.createCriteria("tblComBlendingValueList", "tblComBlendingValueList");
 			criteria.add(Restrictions.eq("date", date));
 			TblComBlendingDate blendingDate = (TblComBlendingDate) criteria
 					.uniqueResult();

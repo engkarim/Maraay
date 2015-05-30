@@ -155,7 +155,6 @@ public class ComIncomingDao implements Serializable {
 			Criteria criteria = session
 					.createCriteria(TblComIncomingDate.class);
 			criteria.setFetchMode("tblComIncomingValueList", FetchMode.JOIN);
-			criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
 			criteria.add(Restrictions.eq("date", date));
 
 			TblComIncomingDate incomingDate = (TblComIncomingDate) criteria

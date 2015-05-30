@@ -10,83 +10,98 @@
 	template="/templates/maraayTemplate.xhtml">
 	<ui:define name="title">#{msgs.CUSTOMERSEARCH}</ui:define>
 
-	<ui:define name="content">
 
-		<h:form prependId="false" styleClass="search-form">
-			<div class="search-customer-div">
-				<h:panelGrid cellpadding="1" columns="6" id="searchCustomerGrid">
-					<p:outputLabel value="#{msgs.DIRECTIONNAME}"
-						for="customerDirection" styleClass="search-customer-label" />
-					<p:selectOneMenu id="customerDirection"
-						value="#{customerBean.searchedDirection}" required="true"
-						styleClass="search-customer-direction">
-						<f:selectItems value="#{directionBean.directions}" var="direction"
-							itemLabel="#{direction.name}" itemValue="#{direction.id}" />
-					</p:selectOneMenu>
-					<p:outputLabel value="#{msgs.VISITINGDAY}"
-						for="searcheCustomerDays" styleClass="search-customer-label" />
-					<p:selectOneMenu id="searcheCustomerDays"
-						value="#{customerBean.searchedDay}" required="true"
-						styleClass="search-customer-days">
-						<f:selectItems value="#{allCustomersBean.allDays}" var="searchDay"
-							itemLabel="#{searchDay.dayName}" itemValue="#{searchDay.id}" />
-					</p:selectOneMenu>
-				</h:panelGrid>
-				<p:commandButton id="searchBtn" value="#{msgs.SEARCH}"
-					styleClass="search-small" update="grop" />
-			</div>
-			<div align="center">
-				<h:panelGroup id="grop">
 
-					<p:dataTable id="serchedCustomersTable"
-						value="#{customerBean.searchedCustomers}"
-						emptyMessage="#{msgs.NODATA}" var="customer">
 
-						<p:column headerText="#{msgs.CUSTOMERID}">
-							<h:outputText value="#{customer.id}" />
+
+
+
+
+
+
+
+
+
+
+
+
+	 <ui:define name="content"> 
+
+	<h:form prependId="false" styleClass="search-form">
+		<div class="search-customer-div">
+			<h:panelGrid cellpadding="1" columns="6" id="searchCustomerGrid">
+				<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="customerDirection"
+					styleClass="search-customer-label" />
+				<p:selectOneMenu id="customerDirection"
+					value="#{customerBean.searchedDirection}" required="true"
+					styleClass="search-customer-direction">
+					<f:selectItems value="#{directionBean.directions}" var="direction"
+						itemLabel="#{direction.name}" itemValue="#{direction.id}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="#{msgs.VISITINGDAY}" for="searcheCustomerDays"
+					styleClass="search-customer-label" />
+				<p:selectOneMenu id="searcheCustomerDays"
+					value="#{customerBean.searchedDay}" required="true"
+					styleClass="search-customer-days">
+					<f:selectItems value="#{allCustomersBean.allDays}" var="searchDay"
+						itemLabel="#{searchDay.dayName}" itemValue="#{searchDay.id}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+			<p:commandButton id="searchBtn" value="#{msgs.SEARCH}"
+				styleClass="search-small" update="grop" />
+		</div>
+		<div align="center">
+			<h:panelGroup id="grop" >
+
+				<p:dataTable id="serchedCustomersTable" rendered="#{customerBean.searchedDirection!=null}"
+					value="#{customerBean.searchedCustomers}"
+					emptyMessage="#{msgs.NODATA}" var="customer">
+
+					<p:column headerText="#{msgs.CUSTOMERID}">
+						<h:outputText value="#{customer.id}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERNAME}">
+						<h:outputText value="#{customer.name}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERADDRESS}">
+						<h:outputText value="#{customer.address}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.MOBILENUMBER}"
+						styleClass="mobile-class">
+						<h:outputText value="#{customer.mobile}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.PHONEGROUND}"
+						styleClass="mobile-class">
+						<h:outputText value="#{customer.phone}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERLABEL}">
+						<h:outputText value="#{customer.label}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.CUSTOMERCLASS}">
+						<h:outputText value="#{customer.customerType.type}" />
+					</p:column>
+
+					<p:column headerText="#{msgs.DIRECTIONNAME}">
+						<h:outputText value="#{customer.direction.name}" />
+					</p:column>
+
+					<c:forEach items="#{productBean.products}" var="p">
+						<p:column headerText="#{p.name}">
+							<ui:repeat value="#{customer.productsList}" var="i">
+								<h:graphicImage url="/resources/images/right.png"
+									styleClass="#{p.id!=i.id?'right-hidden':'right-show'}"></h:graphicImage>
+							</ui:repeat>
 						</p:column>
-
-						<p:column headerText="#{msgs.CUSTOMERNAME}">
-							<h:outputText value="#{customer.name}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.CUSTOMERADDRESS}">
-							<h:outputText value="#{customer.address}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.MOBILENUMBER}"
-							styleClass="mobile-class">
-							<h:outputText value="#{customer.mobile}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.PHONEGROUND}"
-							styleClass="mobile-class">
-							<h:outputText value="#{customer.phone}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.CUSTOMERLABEL}">
-							<h:outputText value="#{customer.label}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.CUSTOMERCLASS}">
-							<h:outputText value="#{customer.customerType.type}" />
-						</p:column>
-
-						<p:column headerText="#{msgs.DIRECTIONNAME}">
-							<h:outputText value="#{customer.direction.name}" />
-						</p:column>
-
-						<c:forEach items="#{productBean.products}" var="p">
-							<p:column headerText="#{p.name}">
-								<ui:repeat value="#{customer.productsList}" var="i">
-									<h:graphicImage url="/resources/images/right.png"
-										styleClass="#{p.id!=i.id?'right-hidden':'right-show'}"></h:graphicImage>
-								</ui:repeat>
-							</p:column>
-						</c:forEach>
-					</p:dataTable>
-				</h:panelGroup>
-			</div>
-		</h:form>
-	</ui:define>
+					</c:forEach>
+				</p:dataTable>
+			</h:panelGroup>
+		</div>
+	</h:form>
+	 	</ui:define> 
 </ui:composition>

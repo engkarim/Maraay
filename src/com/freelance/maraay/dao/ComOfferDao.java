@@ -142,6 +142,7 @@ public class ComOfferDao {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblComOfferDate.class);
+			criteria.createCriteria("tblComOfferValueList", "tblComOfferValueList");
 			criteria.add(Restrictions.eq("date", date));
 			TblComOfferDate offerDate = (TblComOfferDate) criteria
 					.uniqueResult();

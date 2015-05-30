@@ -15,6 +15,7 @@ import com.freelance.maraay.dao.RepLastLoadingDao;
 import com.freelance.maraay.dao.RepTotalLoadingDao;
 import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.model.Product;
+import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.TblRepFirstTimeValue;
 import com.freelance.maraay.model.TblRepInvoice;
 import com.freelance.maraay.model.TblRepTotalLoadingDate;
@@ -35,12 +36,10 @@ public class TestHb {
 		Date date1 = formatter.parse(dateInString1);
 		Date date2 = formatter.parse(dateInString2);
 
-//		TblRepTotalLoadingValue date = RepTotalLoadingDao.getInstance()
-//				.findByDateAndProduct(date2, new Product(7), new Direction(4));
 		
-		List<TblRepInvoice> in = RepInvoiceDao.getInstance().listAll();
-		
-		System.out.println(in.size());
+		List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
+		AppUtils appUtils = new AppUtils();
+		appUtils.deleteNonCompletedCom(checkedDiscountList);
 
 
 	}

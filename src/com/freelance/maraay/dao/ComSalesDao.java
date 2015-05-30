@@ -142,6 +142,7 @@ public class ComSalesDao {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblComSalesDate.class);
+			criteria.createCriteria("tblComSalesValueList", "tblComSalesValueList");
 			criteria.add(Restrictions.eq("date", date));
 			TblComSalesDate salesDate = (TblComSalesDate) criteria
 					.uniqueResult();

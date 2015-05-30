@@ -51,7 +51,7 @@
 		</ui:insert>
 	</div>
 
-	<div id="content" class="center_content">
+	<div id="cc" class="center_content">
 		<div align="center">
 			<h:form dir="rtl">
 				<p:menubar style="font-size: 180% !important;">
@@ -89,6 +89,8 @@
 							url="/pages/customer/listallcustomers.xhtml?redirect-faces=true" />
 						<p:menuitem value="#{msgs.NEWCUSTOMER}"
 							url="/pages/customer/addcustomer.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.CUSTOMERSEARCH}"
+							url="/pages/customer/searchCustomers.xhtml?redirect-faces=true" />
 					</p:submenu>
 
 
@@ -163,9 +165,6 @@
 								url="/pages/representative/lastTime/newLast.xhtml?redirect-faces=true" />
 							<p:menuitem value="#{msgs.NEWDAILYACCOUNT}"
 								url="/pages/representative/firstTime/newFirst.xhtml?redirect-faces=true" />
-
-
-
 						</p:submenu>
 					</p:submenu>
 
