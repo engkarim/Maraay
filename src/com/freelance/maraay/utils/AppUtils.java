@@ -31,9 +31,8 @@ public class AppUtils {
 			Session session = null;
 			Transaction tx = null;
 			try {
-				
+				session = SessionFactoryUtil.getSession();
 				for (TblComDiscountDate disDate : checkedDiscountList) {
-					session = SessionFactoryUtil.getSession();
 					// delete date all values for discount
 					deleteItemValues(disDate.getTblComDiscountValueList(), session);
 					session.delete(disDate);

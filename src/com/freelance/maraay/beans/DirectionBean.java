@@ -1,17 +1,27 @@
 package com.freelance.maraay.beans;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
 import com.freelance.maraay.model.Direction;
+import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.dao.DirectionDao;
 import com.freelance.maraay.primeFacesService.Service;
 import com.freelance.maraay.utils.Performance;
+import com.freelance.maraay.utils.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -76,6 +86,40 @@ public class DirectionBean implements Serializable {
 			return "fail";
 		} finally {
 			Performance.releaseMemory();
+		}
+	}
+
+	/******************* validation logic ****************/
+
+	public void validateName(ComponentSystemEvent event) throws ParseException {
+		// get access to resource bundle
+		String baseName = "messages";
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, FacesContext
+				.getCurrentInstance().getViewRoot().getLocale());
+		String duplicatedNameMsg = bundle.getString("DUPLICATENAME");
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		UIComponent components = event.getComponent();
+
+		// get password
+		UIInput uiInputName = (UIInput) components
+				.findComponent("dirctionName");
+		String name = uiInputName.getLocalValue() == null ? "" : uiInputName
+				.getLocalValue().toString();
+
+		String nameId = uiInputName.getClientId();
+		Direction direction = DirectionDao.getInstance().findByName(name);
+
+		// Let required="true" do its job.
+		if (name.isEmpty()) {
+			return;
+		}
+		if (direction != null) {
+			FacesMessage msg = new FacesMessage(duplicatedNameMsg);
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(nameId, msg);
+			fc.renderResponse();
+
 		}
 	}
 

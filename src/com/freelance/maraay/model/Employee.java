@@ -45,11 +45,11 @@ public class Employee implements Serializable {
 	// consider using these annotations to enforce field validation
 	private Double basicSalary;
 	private String nationalId;
-	private List<Direction> directionList;
-	private List<Direction> directionList1;
 	private EmployeeType employeeType = new EmployeeType();
 	private Date employment_date;
 	private Date departure_date;
+	private List<TblLuDirRepDriv> tblLuDirRepDrivList;
+	private List<TblLuDirRepDriv> tblLuDirRepDrivList1;
 
 	public Employee() {
 	}
@@ -131,24 +131,6 @@ public class Employee implements Serializable {
 		this.departure_date = departure_date;
 	}
 
-	@OneToMany(mappedBy = "representative", fetch = FetchType.LAZY)
-	public List<Direction> getDirectionList() {
-		return directionList;
-	}
-
-	public void setDirectionList(List<Direction> directionList) {
-		this.directionList = directionList;
-	}
-
-	@OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
-	public List<Direction> getDirectionList1() {
-		return directionList1;
-	}
-
-	public void setDirectionList1(List<Direction> directionList1) {
-		this.directionList1 = directionList1;
-	}
-
 	@JoinColumn(name = "employee_type", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	public EmployeeType getEmployeeType() {
@@ -157,6 +139,25 @@ public class Employee implements Serializable {
 
 	public void setEmployeeType(EmployeeType employeeType) {
 		this.employeeType = employeeType;
+	}
+
+	@OneToMany(mappedBy = "drivId", fetch = FetchType.LAZY)
+	public List<TblLuDirRepDriv> getTblLuDirRepDrivList() {
+		return tblLuDirRepDrivList;
+	}
+
+	public void setTblLuDirRepDrivList(List<TblLuDirRepDriv> tblLuDirRepDrivList) {
+		this.tblLuDirRepDrivList = tblLuDirRepDrivList;
+	}
+
+	@OneToMany(mappedBy = "repId", fetch = FetchType.LAZY)
+	public List<TblLuDirRepDriv> getTblLuDirRepDrivList1() {
+		return tblLuDirRepDrivList1;
+	}
+
+	public void setTblLuDirRepDrivList1(
+			List<TblLuDirRepDriv> tblLuDirRepDrivList1) {
+		this.tblLuDirRepDrivList1 = tblLuDirRepDrivList1;
 	}
 
 	@Override

@@ -37,9 +37,14 @@ public class TestHb {
 		Date date2 = formatter.parse(dateInString2);
 
 		
-		List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
-		AppUtils appUtils = new AppUtils();
-		appUtils.deleteNonCompletedCom(checkedDiscountList);
+//		List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
+//		AppUtils appUtils = new AppUtils();
+//		appUtils.deleteNonCompletedCom(checkedDiscountList);
+		
+		
+		for (TblComDiscountDate d : ComDiscountingDao.getInstance().listAllDiscountDates()){
+			System.out.println(d.getDate());
+		}
 
 
 	}

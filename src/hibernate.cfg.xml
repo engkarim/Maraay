@@ -86,6 +86,7 @@
 		<mapping class="com.freelance.maraay.model.TblRepTotalLoadingValue" />
 		<mapping class="com.freelance.maraay.model.TblRepDefectDate" />
 		<mapping class="com.freelance.maraay.model.TblRepDefectValue" />
+		<mapping class="com.freelance.maraay.model.TblLuDirRepDriv" />
 	</session-factory>
 </hibernate-configuration>
 

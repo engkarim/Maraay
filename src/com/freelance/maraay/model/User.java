@@ -57,6 +57,7 @@ public class User implements Serializable {
 	private List<TblRepBlendingDate> tblRepBlendingDateList;
 	private List<TblRepLastTimeDate> tblRepLastTimeDateList;
 	private List<TblRepTotalLoadingDate> tblRepTotalLoadingDateList;
+	private List<TblLuDirRepDriv> tblLuDirRepDrivList;
 
 	public User() {
 	}
@@ -267,6 +268,15 @@ public class User implements Serializable {
 	public void setTblRepTotalLoadingDateList(
 			List<TblRepTotalLoadingDate> tblRepTotalLoadingDateList) {
 		this.tblRepTotalLoadingDateList = tblRepTotalLoadingDateList;
+	}
+
+	@OneToMany(mappedBy = "byUserId", fetch = FetchType.LAZY)
+	public List<TblLuDirRepDriv> getTblLuDirRepDrivList() {
+		return tblLuDirRepDrivList;
+	}
+
+	public void setTblLuDirRepDrivList(List<TblLuDirRepDriv> tblLuDirRepDrivList) {
+		this.tblLuDirRepDrivList = tblLuDirRepDrivList;
 	}
 
 	@Override

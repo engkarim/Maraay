@@ -137,7 +137,6 @@ public class DirectionDao implements Serializable{
 					Restrictions.eq("name", name));
 			Direction direction = (Direction) criteria.uniqueResult();
 			tx.commit();
-			System.out.println(direction.getId());
 			return direction;
 		} catch (RuntimeException re) {
 			throw re;

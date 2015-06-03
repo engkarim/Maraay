@@ -32,8 +32,6 @@ public class Direction implements Serializable {
 
 	private Integer id;
 	private String name;
-	private Employee representative = new Employee();
-	private Employee driver = new Employee();
 	private List<Customer> customerList;
 	private List<TblRepOfferDate> tblRepOfferDateList;
 	private List<TblRepFirstTimeDate> tblRepFirstTimeDateList;
@@ -43,6 +41,7 @@ public class Direction implements Serializable {
 	private List<TblRepBlendingDate> tblRepBlendingDateList;
 	private List<TblRepLastTimeDate> tblRepLastTimeDateList;
 	private List<TblRepTotalLoadingDate> tblRepTotalLoadingDateList;
+	private List<TblLuDirRepDriv> tblLuDirRepDrivList;
 
 	public Direction() {
 	}
@@ -70,26 +69,6 @@ public class Direction implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@JoinColumn(name = "representative", referencedColumnName = "id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	public Employee getRepresentative() {
-		return representative;
-	}
-
-	public void setRepresentative(Employee representative) {
-		this.representative = representative;
-	}
-
-	@JoinColumn(name = "driver", referencedColumnName = "id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	public Employee getDriver() {
-		return driver;
-	}
-
-	public void setDriver(Employee driver) {
-		this.driver = driver;
 	}
 
 	@OneToMany(mappedBy = "direction", fetch = FetchType.LAZY)
@@ -177,6 +156,15 @@ public class Direction implements Serializable {
 	public void setTblRepTotalLoadingDateList(
 			List<TblRepTotalLoadingDate> tblRepTotalLoadingDateList) {
 		this.tblRepTotalLoadingDateList = tblRepTotalLoadingDateList;
+	}
+
+	@OneToMany(mappedBy = "directionId", fetch = FetchType.LAZY)
+	public List<TblLuDirRepDriv> getTblLuDirRepDrivList() {
+		return tblLuDirRepDrivList;
+	}
+
+	public void setTblLuDirRepDrivList(List<TblLuDirRepDriv> tblLuDirRepDrivList) {
+		this.tblLuDirRepDrivList = tblLuDirRepDrivList;
 	}
 
 	@Override

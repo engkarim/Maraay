@@ -1,33 +1,33 @@
 package com.freelance.maraay.dao;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 
+import com.freelance.maraay.model.TblLuDirRepDriv;
 import com.freelance.maraay.utils.SessionFactoryUtil;
-import com.freelance.maraay.model.Employee;
 
-public class EmployeeDao implements Serializable{
+public class LuDirRepDrivDao implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static EmployeeDao uniqueInstance;
+	private static LuDirRepDrivDao uniqueInstance;
 
-	public static EmployeeDao getInstance() {
+	public static LuDirRepDrivDao getInstance() {
 		if (uniqueInstance == null) {
-			uniqueInstance = new EmployeeDao();
+			uniqueInstance = new LuDirRepDrivDao();
 		}
 		return uniqueInstance;
 	}
 
-	public String insertEmployee(Employee transientInstance) {
+	public String insertNew(TblLuDirRepDriv transientInstance) {
 		Session session = null;
 		Transaction tx = null;
 
@@ -47,27 +47,7 @@ public class EmployeeDao implements Serializable{
 
 	}
 
-	public String deleteEmployee(Employee persistentInstance) {
-
-		Session session = null;
-		Transaction tx = null;
-
-		try {
-			session = SessionFactoryUtil.getSession();
-			tx = session.beginTransaction();
-			session.delete(persistentInstance);
-			tx.commit();
-			return "success";
-		} catch (RuntimeException re) {
-			throw re;
-		} finally {
-			if (session.isOpen())
-				session.close();
-			tx = null;
-		}
-	}
-
-	public String updateEmployee(Employee persistentInstance) {
+	public String updateRecord(TblLuDirRepDriv persistentInstance) {
 
 		Session session = null;
 		Transaction tx = null;
@@ -87,15 +67,17 @@ public class EmployeeDao implements Serializable{
 		}
 	}
 
-	public List<Employee> listAllEmployee() {
+	public List<TblLuDirRepDriv> listAll() {
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Employee.class);
-			List<Employee> results = criteria.list();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("repId", "repId");
+			criteria.createCriteria("drivId", "drivId");
+			List<TblLuDirRepDriv> results = criteria.list();
 			tx.commit();
 			return results;
 		} catch (RuntimeException re) {
@@ -108,19 +90,18 @@ public class EmployeeDao implements Serializable{
 
 	}
 
-	public List<Employee> findByExample(Employee employee) {
+	public TblLuDirRepDriv findByDate() {
 		Session session = null;
 		Transaction tx = null;
-
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
-			List<Employee> results = (List<Employee>) session
-					.createCriteria(Employee.class)
-					.add(Example.create(employee)).list();
-
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("repId", "repId");
+			criteria.createCriteria("drivId", "drivId");
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
-			return results;
+			return result;
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {
@@ -130,42 +111,20 @@ public class EmployeeDao implements Serializable{
 		}
 	}
 
-	public Employee findByName_type(String name, int type) {
+	public TblLuDirRepDriv findDrivByName(String name, Date date) {
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Employee.class)
-					.add(Restrictions.eq("this.name", name))
-					.add(Restrictions.eq("this.employeeType.id", type));
-			Employee employee = (Employee) criteria.uniqueResult();
-			System.out.println(employee.getName());
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("drivId", "drivId");
+			criteria.add(Restrictions.eq("drivId.name", name));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
-			return employee;
-		} catch (RuntimeException re) {
-			throw re;
-		} finally {
-			if (session.isOpen())
-				session.close();
-			tx = null;
-		}
-
-	}
-	
-	public Employee findByName(String name) {
-		Session session = null;
-		Transaction tx = null;
-
-		try {
-			session = SessionFactoryUtil.getSession();
-			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Employee.class)
-					.add(Restrictions.eq("this.name", name));
-			Employee employee = (Employee) criteria.uniqueResult();
-			tx.commit();
-			return employee;
+			return result;
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {
@@ -176,18 +135,20 @@ public class EmployeeDao implements Serializable{
 
 	}
 
-	public List<Employee> findAllRepresintative() {
+	public TblLuDirRepDriv findDrivById(int id, Date date) {
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Employee.class).add(
-					Restrictions.eq("this.employeeType.id", 2));
-			List<Employee> represintativeList = criteria.list();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("drivId", "drivId");
+			criteria.add(Restrictions.eq("drivId.id", id));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
-			return represintativeList;
+			return result;
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {
@@ -198,18 +159,20 @@ public class EmployeeDao implements Serializable{
 
 	}
 
-	public List<Employee> findAllDrivers() {
+	public TblLuDirRepDriv findRepByName(String name, Date date) {
 		Session session = null;
 		Transaction tx = null;
 
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(Employee.class).add(
-					Restrictions.eq("this.employeeType.id", 3));
-			List<Employee> driversList = criteria.list();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("repId", "repId");
+			criteria.add(Restrictions.eq("repId.name", name));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
-			return driversList;
+			return result;
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {
@@ -220,4 +183,26 @@ public class EmployeeDao implements Serializable{
 
 	}
 
+	public TblLuDirRepDriv findRepById(int id, Date date) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("repId", "repId");
+			criteria.add(Restrictions.eq("repId.id", id));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
 }

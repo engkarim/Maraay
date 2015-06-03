@@ -12,6 +12,8 @@
 	<ui:define name="content">
 		<div align="center">
 			<h:form prependId="false">
+			<f:event listener="#{employeeBean.validateName}"
+						type="postValidate" />
 				<p:panel header="#{msgs.ADDNEWEMPLOYEE}" styleClass="panel-class">
 					<h:panelGrid id="newEmployeeGrid" columns="3" cellpadding="5">
 						<p:outputLabel value="#{msgs.JOB}" for="empJob" />
