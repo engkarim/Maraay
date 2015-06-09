@@ -341,6 +341,13 @@
 			<to-view-id>/pages/representative/invoice/listInvoices</to-view-id>
 			<redirect />
 		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>repAllDirRepDriv</from-outcome>
+			<to-view-id>/pages/representative/reps/repReviewing</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 </faces-config>

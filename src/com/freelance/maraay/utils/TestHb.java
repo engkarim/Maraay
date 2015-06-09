@@ -3,23 +3,8 @@ package com.freelance.maraay.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-import com.freelance.maraay.beans.ComEquationBean;
-import com.freelance.maraay.dao.ComDiscountingDao;
-import com.freelance.maraay.dao.ComEquationDao;
-import com.freelance.maraay.dao.ComIncomingDao;
-import com.freelance.maraay.dao.RepFirstLoadingDao;
-import com.freelance.maraay.dao.RepInvoiceDao;
-import com.freelance.maraay.dao.RepLastLoadingDao;
-import com.freelance.maraay.dao.RepTotalLoadingDao;
-import com.freelance.maraay.model.Direction;
-import com.freelance.maraay.model.Product;
-import com.freelance.maraay.model.TblComDiscountDate;
-import com.freelance.maraay.model.TblRepFirstTimeValue;
-import com.freelance.maraay.model.TblRepInvoice;
-import com.freelance.maraay.model.TblRepTotalLoadingDate;
-import com.freelance.maraay.model.TblRepTotalLoadingValue;
+import com.freelance.maraay.dao.LuDirRepDrivDao;
 
 public class TestHb {
 
@@ -32,20 +17,14 @@ public class TestHb {
 		 */
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateInString1 = "2015-01-1";
-		String dateInString2 = "2015-04-26";
+		String dateInString2 = "2015-06-10";
 		Date date1 = formatter.parse(dateInString1);
 		Date date2 = formatter.parse(dateInString2);
 
 		
-//		List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
-//		AppUtils appUtils = new AppUtils();
-//		appUtils.deleteNonCompletedCom(checkedDiscountList);
-		
-		
-		for (TblComDiscountDate d : ComDiscountingDao.getInstance().listAllDiscountDates()){
-			System.out.println(d.getDate());
-		}
-
+		System.out.println(	LuDirRepDrivDao.getInstance().findRepByIdUpdate(7, date2,12));
+	
+	
 
 	}
 }

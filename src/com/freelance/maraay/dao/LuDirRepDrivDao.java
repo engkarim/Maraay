@@ -75,6 +75,7 @@ public class LuDirRepDrivDao implements Serializable {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("directionId", "directionId");
 			criteria.createCriteria("repId", "repId");
 			criteria.createCriteria("drivId", "drivId");
 			List<TblLuDirRepDriv> results = criteria.list();
@@ -89,16 +90,63 @@ public class LuDirRepDrivDao implements Serializable {
 		}
 
 	}
-
-	public TblLuDirRepDriv findByDate() {
+	
+	public TblLuDirRepDriv findById(long id) {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("directionId", "directionId");
 			criteria.createCriteria("repId", "repId");
 			criteria.createCriteria("drivId", "drivId");
+			criteria.add(Restrictions.eq("dirRepDrivId", id));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+
+	public TblLuDirRepDriv findByDateِAndDir(Date date , int dirId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("directionId", "directionId");
+			criteria.add(Restrictions.eq("directionId.id", dirId));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	public TblLuDirRepDriv findByDateِAndDirUpdate(Date date , int dirId , long id) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("directionId", "directionId");
+			criteria.add(Restrictions.eq("directionId.id", dirId));
+			criteria.add(Restrictions.eq("date", date));
+			criteria.add(Restrictions.ne("dirRepDrivId", id));
 			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
 			return result;
@@ -158,6 +206,31 @@ public class LuDirRepDrivDao implements Serializable {
 		}
 
 	}
+	
+	public TblLuDirRepDriv findDrivByIdUpdate(int drivId, Date date , long id) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("drivId", "drivId");
+			criteria.add(Restrictions.eq("drivId.id", drivId));
+			criteria.add(Restrictions.eq("date", date));
+			criteria.add(Restrictions.ne("dirRepDrivId", id));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+
+	}
 
 	public TblLuDirRepDriv findRepByName(String name, Date date) {
 		Session session = null;
@@ -194,6 +267,30 @@ public class LuDirRepDrivDao implements Serializable {
 			criteria.createCriteria("repId", "repId");
 			criteria.add(Restrictions.eq("repId.id", id));
 			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	public TblLuDirRepDriv findRepByIdUpdate(int repId, Date date , long id) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.createCriteria("repId", "repId");
+			criteria.add(Restrictions.eq("repId.id", repId));
+			criteria.add(Restrictions.eq("date", date));
+			criteria.add(Restrictions.ne("dirRepDrivId", id));
 			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
 			tx.commit();
 			return result;

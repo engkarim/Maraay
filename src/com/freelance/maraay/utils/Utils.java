@@ -1,5 +1,6 @@
 package com.freelance.maraay.utils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -10,7 +11,11 @@ import java.util.Date;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-public class Utils {
+public class Utils implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Utils uniqueInstance;
 
 	private Utils() {
