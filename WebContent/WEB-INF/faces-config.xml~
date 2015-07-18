@@ -70,6 +70,12 @@
 			<redirect />
 		</navigation-case>
 
+	<navigation-case>
+			<from-outcome>editJob</from-outcome>
+			<to-view-id>/pages/employee/editJob</to-view-id>
+			<redirect />
+		</navigation-case>
+
 			<!-- ***** directions ****** -->
 		<navigation-case>
 			<from-outcome>allDirections</from-outcome>

@@ -27,21 +27,27 @@
 						<h:outputText value="#{msgs.ALLINVOICES}"
 							styleClass="table-header" />
 					</f:facet>
+					
+					<p:column headerText="#{msgs.INVOICENUMBER}"
+						filterBy="#{invoice.invoiceNumber}" filterMatchMode="contains">
+						<h:outputText value="#{invoice.invoiceNumber}">
+						</h:outputText>
+					</p:column>
 
 					<p:column headerText="#{msgs.TODAYDATE}"
 						filterBy="#{invoice.invoiceDate}" filterMatchMode="contains">
 						<h:outputText value="#{invoice.invoiceDate}">
-							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+2" />
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />
 						</h:outputText>
 					</p:column>
 
-					<c:forEach items="#{productBean.products}" var="p">
+				<!-- 	<c:forEach items="#{productBean.products}" var="p">
 						<p:column headerText="#{p.name}">
 							<ui:repeat value="#{invoice.tblRepInvoiceValuesList}" var="i">
 								<h:outputText value="#{p.id!=i.productId.id?'':i.showenMount}" />
 							</ui:repeat>
 						</p:column>
-					</c:forEach>
+					</c:forEach> -->
 
 					<p:column headerText="#{msgs.INVOICEVALUE}">
 						<h:outputText value="#{invoice.totalPriceBefore}">
@@ -58,6 +64,11 @@
 						<h:outputText value="#{invoice.totalPriceAfter}">
 							<f:convertNumber minFractionDigits="2" />
 						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:32px">
+						<p:button value="#{msgs.REVIEW}"
+							outcome="/pages/representative/invoice/showInvoice.xhtml?id=#{invoice.invoiceId}" />
 					</p:column>
 				</p:dataTable>
 			</h:form>

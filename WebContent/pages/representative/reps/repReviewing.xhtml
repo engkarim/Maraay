@@ -40,12 +40,12 @@
 
 					<p:column headerText="#{msgs.REPRESINTATIVENAME}"
 						filterBy="#{dirRepDriv.repId.name}" filterMatchMode="contains">
-						<h:outputText value="#{dirRepDriv.repId.name}">
+						<h:outputText value="#{dirRepDriv.repId!=null?dirRepDriv.repId.name:msgs.NOSELECT}">
 						</h:outputText>
 					</p:column>
 					<p:column headerText="#{msgs.DRIVERNAME}"
 						filterBy="#{dirRepDriv.drivId.name}" filterMatchMode="contains">
-						<h:outputText value="#{dirRepDriv.drivId.name}">
+						<h:outputText value="#{dirRepDriv.drivId!=null?dirRepDriv.drivId.name:msgs.NOSELECT}">
 						</h:outputText>
 					</p:column>
 					<p:column style="width:32px">

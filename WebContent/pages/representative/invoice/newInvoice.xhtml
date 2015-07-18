@@ -12,25 +12,10 @@
 	<ui:define name="content">
 		<div align="center">
 			<h:form id="newInvoiceForm" prependId="false">
+			<f:event listener="#{repInvoiceBean.validateNum}"
+					type="postValidate" />
 				<p:panel header="#{msgs.NEWINVOICE}" styleClass="panel-class">
 					<h:panelGrid columns="9" cellpadding="5">
-						<p:outputLabel value="#{msgs.CUSTOMERKEY}" for="custKey" />
-						<p:inputText id="custKey" required="true"
-							requiredMessage="#{msgs.CUSTKEYVALIDATE}"
-							value="#{repInvoiceBean.customerId}">
-							<p:ajax event="keyup" update="custName dirName" />
-						</p:inputText>
-						<p:message for="custKey" />
-						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="custName" />
-						<p:inputText id="custName" value="#{repInvoiceBean.customer.name}" />
-
-
-						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
-						<p:inputText id="dirName"
-							value="#{repInvoiceBean.customer.direction.name}" />
-					</h:panelGrid>
-					<h:panelGrid columns="6" cellpadding="5"
-						styleClass="date_invoice_grid">
 						<p:outputLabel value="#{msgs.INVOICENUMBER}" for="invNumber" />
 						<p:inputText id="invNumber" converterMessage="#{msgs.ONLYNUMBER}"
 							value="#{repInvoiceBean.newInvoice.invoiceNumber}"
@@ -46,6 +31,27 @@
 							yearRange="c-1:c" pattern="yyyy-MM-dd" mask="true"
 							lang="#{msgs.LANG}" />
 						<p:message for="invDate" />
+
+						<p:outputLabel value="#{msgs.CUSTOMERKEY}" for="custKey" />
+						<p:inputText id="custKey" required="true"
+							requiredMessage="#{msgs.CUSTKEYVALIDATE}"
+							value="#{repInvoiceBean.customerId}">
+							<p:ajax event="keyup" update="custName dirName" />
+						</p:inputText>
+						<p:message for="custKey" />
+					</h:panelGrid>
+					<h:panelGrid columns="6" cellpadding="5"
+						styleClass="date_invoice_grid">
+						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="custName" />
+						<p:inputText id="custName" value="#{repInvoiceBean.customer.name}" />
+
+
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
+						<p:inputText id="dirName"
+							value="#{repInvoiceBean.customer.direction.name}" />
+				
+							
+							
 					</h:panelGrid>
 
 					<p:dataTable id="valuesTable" var="itemValue"
@@ -88,22 +94,20 @@
 					<h:panelGrid columns="6" cellpadding="10"
 						styleClass="discount_invoice_grid">
 						<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
-						<p:inputText id="disValue"  disabled="true"
-							styleClass="invText" />
+						<p:inputText id="disValue" disabled="true" styleClass="invText" />
 
 
 						<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
-						<p:inputText id="invValue" disabled="true"
-							styleClass="invText" />
+						<p:inputText id="invValue" disabled="true" styleClass="invText" />
 
 
 						<p:outputLabel value="#{msgs.INVOICENET}: " />
-						<p:inputText id="invNet"  disabled="true"
-							styleClass="invText" />
+						<p:inputText id="invNet" disabled="true" styleClass="invText" />
 
 					</h:panelGrid>
 					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
-						update="newInvoiceForm" action="#{repInvoiceBean.insertNewInvoice}"></p:commandButton>
+						update="newInvoiceForm"
+						action="#{repInvoiceBean.insertNewInvoice}"></p:commandButton>
 					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
 						update="newInvoiceForm"></p:commandButton>
 

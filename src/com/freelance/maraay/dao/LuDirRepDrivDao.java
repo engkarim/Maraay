@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -76,8 +77,10 @@ public class LuDirRepDrivDao implements Serializable {
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
 			criteria.createCriteria("directionId", "directionId");
-			criteria.createCriteria("repId", "repId");
-			criteria.createCriteria("drivId", "drivId");
+			criteria.setFetchMode("repId", FetchMode.SELECT);
+			criteria.setFetchMode("drivId", FetchMode.SELECT);
+			// criteria.createCriteria("repId", "repId");
+			// criteria.createCriteria("drivId", "drivId");
 			List<TblLuDirRepDriv> results = criteria.list();
 			tx.commit();
 			return results;
@@ -90,7 +93,7 @@ public class LuDirRepDrivDao implements Serializable {
 		}
 
 	}
-	
+
 	public TblLuDirRepDriv findById(long id) {
 		Session session = null;
 		Transaction tx = null;
@@ -114,7 +117,7 @@ public class LuDirRepDrivDao implements Serializable {
 		}
 	}
 
-	public TblLuDirRepDriv findByDateِAndDir(Date date , int dirId) {
+	public TblLuDirRepDriv findByDateِAndDir(Date date, int dirId) {
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -122,6 +125,8 @@ public class LuDirRepDrivDao implements Serializable {
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
 			criteria.createCriteria("directionId", "directionId");
+			criteria.createCriteria("repId", "repId");
+			criteria.createCriteria("drivId", "drivId");
 			criteria.add(Restrictions.eq("directionId.id", dirId));
 			criteria.add(Restrictions.eq("date", date));
 			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
@@ -135,8 +140,8 @@ public class LuDirRepDrivDao implements Serializable {
 			tx = null;
 		}
 	}
-	
-	public TblLuDirRepDriv findByDateِAndDirUpdate(Date date , int dirId , long id) {
+
+	public TblLuDirRepDriv findByDateِAndDirUpdate(Date date, int dirId, long id) {
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -206,8 +211,8 @@ public class LuDirRepDrivDao implements Serializable {
 		}
 
 	}
-	
-	public TblLuDirRepDriv findDrivByIdUpdate(int drivId, Date date , long id) {
+
+	public TblLuDirRepDriv findDrivByIdUpdate(int drivId, Date date, long id) {
 		Session session = null;
 		Transaction tx = null;
 
@@ -278,8 +283,8 @@ public class LuDirRepDrivDao implements Serializable {
 			tx = null;
 		}
 	}
-	
-	public TblLuDirRepDriv findRepByIdUpdate(int repId, Date date , long id) {
+
+	public TblLuDirRepDriv findRepByIdUpdate(int repId, Date date, long id) {
 		Session session = null;
 		Transaction tx = null;
 

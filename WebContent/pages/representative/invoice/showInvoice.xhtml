@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/templates/maraayTemplate.xhtml">
+	<ui:define name="title">#{msgs.REVIEWINVOICE}</ui:define>
+	<f:metadata>
+		<f:viewParam name="id" value="#{repInvoiceBean.passedParam}" />
+		<f:event type="preRenderView" listener="#{repInvoiceBean.prerender}" />
+	</f:metadata>
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="newInvoiceForm" prependId="false">
+				<p:panel header="#{msgs.REVIEWINVOICE}" styleClass="panel-class">
+					<h:panelGrid columns="9" cellpadding="20">
+						<p:outputLabel value="#{msgs.INVOICENUMBER}" for="invNumber" />
+						<h:outputText id="invNumber" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.invoiceNumber}" />
+						<p:outputLabel value="#{msgs.INVOICEDATE}" for="invDate" />
+						<h:outputText id="invDate" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.invoiceDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />
+						</h:outputText>
+						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="custName" />
+						<h:outputText id="custName" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.customerId.name}" />
+						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
+						<h:outputText id="dirName" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.customerId.direction.name}" />
+					</h:panelGrid>
+					<p:dataTable id="valuesTable" var="itemValue"
+						value="#{repInvoiceBean.reviewedInvoice.tblRepInvoiceValuesList}">
+						<p:column headerText="#{msgs.TYPE}">
+							<h:outputText value="#{itemValue.productId.name} : " />
+						</p:column>
+						<p:column headerText="#{msgs.PACKET}">
+							<h:outputText value="#{itemValue.maxMount}"
+								styleClass="show-in-val" />
+						</p:column>
+						<p:column headerText="#{msgs.BOX}">
+							<h:outputText value="#{itemValue.minMount}"
+								styleClass="show-in-val" />
+						</p:column>
+					</p:dataTable>
+					<h:panelGrid columns="10" cellpadding="20">
+
+
+						<p:outputLabel value="#{msgs.DISCOUNTRATE}" />
+						<h:outputText id="disRate" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.discountRate}" size="5" />
+
+						<p:outputLabel value="#{msgs.ADDTIONALDISCOUNT}" />
+						<h:outputText id="addDis" styleClass="show-in-val"
+							value="#{repInvoiceBean.reviewedInvoice.additionalDiscount}"
+							size="5" />
+
+						<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
+						<h:outputText id="disValue"
+							value="#{repInvoiceBean.reviewedInvoice.discountValue}"
+							styleClass="show-in-val">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText>
+
+
+						<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
+						<h:outputText id="invValue"
+							value="#{repInvoiceBean.reviewedInvoice.totalPriceBefore}"
+							styleClass="show-in-val">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText>
+
+						<p:outputLabel value="#{msgs.INVOICENET}: " />
+						<h:outputText id="invNet"
+							value="#{repInvoiceBean.reviewedInvoice.totalPriceAfter}"
+							styleClass="show-in-val">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText>
+
+					</h:panelGrid>
+
+					<p:button value="#{msgs.EDIT}" styleClass="edit-in-btn"
+						outcome="/pages/representative/invoice/editInvoice.xhtml?id=#{repInvoiceBean.reviewedInvoice.invoiceId}" />
+				</p:panel>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
