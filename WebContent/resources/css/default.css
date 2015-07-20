@@ -51,8 +51,17 @@ a:link:hover,a:visited:hover {
 .discount_invoice_grid {
 	margin-right: -447px;
 }
-.inv-table{
+
+.inv-table {
 	margin-bottom: 20px !important;
+}
+
+.nameGrid {
+	margin-right: -300px;
+}
+
+.green {
+	color: rgb(25, 211, 40);
 }
 
 .show-in-val {

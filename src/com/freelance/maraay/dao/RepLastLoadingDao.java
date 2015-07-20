@@ -11,7 +11,6 @@ import org.hibernate.criterion.Restrictions;
 
 import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.model.Product;
-import com.freelance.maraay.model.TblRepDefectValue;
 import com.freelance.maraay.model.TblRepLastTimeDate;
 import com.freelance.maraay.model.TblRepLastTimeValue;
 import com.freelance.maraay.utils.SessionFactoryUtil;
@@ -45,6 +44,29 @@ public class RepLastLoadingDao implements Serializable {
 			criteria.setFetchMode("tblRepLastTimeValueList", FetchMode.JOIN);
 			criteria.createAlias("tblRepLastTimeValueList.productId",
 					"productId");
+			criteria.add(Restrictions.eq("directionId.id", directionId));
+			criteria.add(Restrictions.eq("date", date));
+			TblRepLastTimeDate lastTimeDate = (TblRepLastTimeDate) criteria
+					.uniqueResult();
+			tx.commit();
+			return lastTimeDate;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	public TblRepLastTimeDate findByDateNoJoins(Date date, int directionId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session
+					.createCriteria(TblRepLastTimeDate.class);
 			criteria.add(Restrictions.eq("directionId.id", directionId));
 			criteria.add(Restrictions.eq("date", date));
 			TblRepLastTimeDate lastTimeDate = (TblRepLastTimeDate) criteria

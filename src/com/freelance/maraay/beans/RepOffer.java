@@ -203,7 +203,7 @@ public class RepOffer implements Serializable {
 
 			tx = session.beginTransaction();
 			tx.commit();
-			return "repSales";
+			return "success";
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {

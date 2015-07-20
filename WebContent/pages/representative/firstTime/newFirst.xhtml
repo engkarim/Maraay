@@ -10,10 +10,11 @@
 	<ui:define name="title">#{msgs.FIRSTTIME}</ui:define>
 	<ui:define name="content">
 		<div align="center">
-			<p:messages showDetail="true" closable="true" />
+			<!-- <p:messages showDetail="false" closable="true" /> -->
 			<p:panel header="#{msgs.FIRSTTIME}">
 				<h:form prependId="false" id="firstForm">
-					<div id="dateDiv" class="date-div">
+				<f:event listener="#{repFirst.validateDate}" type="postValidate" />
+					<h:panelGrid columns="7" cellpadding="5">
 						<p:outputLabel value="#{msgs.DIRECTIONNAME}"
 							for="customerDirection" />
 						<p:selectOneMenu id="customerDirection"
@@ -32,13 +33,27 @@
 							navigator="true" yearRange="c-1:c"
 							value="#{repFirst.accountDate}" pattern="yyyy-MM-dd" mask="true">
 						</p:calendar>
-						<p:message id="dateMsg" for="today" />
-						<p:commandButton id="update" value="#{msgs.ENTER}"
-							update="tablePanel" />
-					</div>
+						<p:message for="today" />
+
+						<h:commandButton id="update" value="#{msgs.ENTER}" 
+							update="tablePanel namePanel" />
+					</h:panelGrid>
 
 
 
+					<h:panelGroup id="namePanel">
+						<h:panelGrid columns="4" cellpadding="50" styleClass="nameGrid"
+							rendered="#{repFirst.accountDate!=null}">
+
+							<p:outputLabel value="#{msgs.REPRESINTATIVENAME}" />
+							<h:outputText value="#{repFirst.dirRepDriv.repId.name}"
+								styleClass="green" />
+
+							<p:outputLabel value="#{msgs.DRIVERNAME}" />
+							<h:outputText id="drivText"
+								value="#{repFirst.dirRepDriv.drivId.name}" styleClass="green" />
+						</h:panelGrid>
+					</h:panelGroup>
 
 					<h:panelGroup id="tablePanel">
 						<p:dataTable id="firstTable" var="firstValue"

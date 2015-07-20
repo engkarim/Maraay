@@ -58,6 +58,29 @@ public class RepFirstLoadingDao implements Serializable {
 			tx = null;
 		}
 	}
+	
+	public TblRepFirstTimeDate findByDateWithNoJoins(Date date, int directionId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session
+					.createCriteria(TblRepFirstTimeDate.class);
+			criteria.add(Restrictions.eq("directionId.id", directionId));
+			criteria.add(Restrictions.eq("date", date));
+			TblRepFirstTimeDate firstTimeDate = (TblRepFirstTimeDate) criteria
+					.uniqueResult();
+			tx.commit();
+			return firstTimeDate;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
 
 	public TblRepFirstTimeValue findByDateAndProduct(Long firstDateId,
 			Product product, Direction directionId) {
