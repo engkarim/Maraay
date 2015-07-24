@@ -63,7 +63,7 @@
 							url="/pages/employee/addemployee.xhtml?redirect-faces=true" />
 						<p:menuitem value="#{msgs.ADDNEWJOB}"
 							url="/pages/employee/addNewJob.xhtml?redirect-faces=true" />
-							<p:menuitem value="#{msgs.JOBS}"
+						<p:menuitem value="#{msgs.JOBS}"
 							url="/pages/employee/listallJobs.xhtml?redirect-faces=true" />
 					</p:submenu>
 					<p:submenu label="
@@ -89,7 +89,7 @@
 							url="/pages/customer/listallcustomers.xhtml?redirect-faces=true" />
 						<p:menuitem value="#{msgs.NEWCUSTOMER}"
 							url="/pages/customer/addcustomer.xhtml?redirect-faces=true" />
-							<p:menuitem value="#{msgs.CUSTOMERSEARCH}"
+						<p:menuitem value="#{msgs.CUSTOMERSEARCH}"
 							url="/pages/customer/searchCustomers.xhtml?redirect-faces=true" />
 					</p:submenu>
 
@@ -150,31 +150,35 @@
 					</p:submenu>
 
 					<p:submenu label="#{msgs.REPCALC}" styleClass="rtl-class">
-						<p:submenu label="#{msgs.INVOICES}" styleClass="rtl-class">
-							<p:menuitem value="#{msgs.ENTERVOICE}"
-								url="/pages/representative/invoice/newInvoice.xhtml?redirect-faces=true" />
-
-							<p:menuitem value="#{msgs.ALLINVOICES}"
-								url="/pages/representative/invoice/listInvoices.xhtml?redirect-faces=true" />
-
-
-						</p:submenu>
-
-						<p:submenu label="#{msgs.DAILYACCOUNT}" styleClass="rtl-class">
-							<p:menuitem value="#{msgs.ENTERLASTTIME}"
-								url="/pages/representative/lastTime/newLast.xhtml?redirect-faces=true" />
-							<p:menuitem value="#{msgs.NEWDAILYACCOUNT}"
-								url="/pages/representative/firstTime/newFirst.xhtml?redirect-faces=true" />
-						</p:submenu>
-						
 						<p:submenu label="#{msgs.REPDIST}" styleClass="rtl-class">
 							<p:menuitem value="#{msgs.REPCHOOSING}"
 								url="/pages/representative/reps/repDist.xhtml?redirect-faces=true" />
 							<p:menuitem value="#{msgs.REPREVIEWING}"
 								url="/pages/representative/reps/repReviewing.xhtml?redirect-faces=true" />
 						</p:submenu>
-					</p:submenu>
 
+
+						<p:submenu label="#{msgs.INVOICES}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.ENTERVOICE}"
+								url="/pages/representative/invoice/newInvoice.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.ALLINVOICES}"
+								url="/pages/representative/invoice/listInvoices.xhtml?redirect-faces=true" />
+						</p:submenu>
+
+						<p:submenu label="#{msgs.LASTTIME}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.ENTERLASTTIME}"
+								url="/pages/representative/lastTime/newLast.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.EDITLASTTIME}"
+								url="/pages/representative/lastTime/newLast.xhtml?redirect-faces=true" />
+						</p:submenu>
+
+						<p:submenu label="#{msgs.DAILYACCOUNT}" styleClass="rtl-class">
+							<p:menuitem value="#{msgs.NEWDAILYACCOUNT}"
+								url="/pages/representative/firstTime/newFirst.xhtml?redirect-faces=true" />
+							<p:menuitem value="#{msgs.EDITDAILYACCOUNT}"
+								url="/pages/representative/editRepDaily.xhtml?redirect-faces=true" />
+						</p:submenu>
+					</p:submenu>
 					<f:facet name="options">
 						<p:commandButton value="#{msgs.LOGOUT}"
 							action="#{loginBean.logout}" icon="ui-icon-extlink" ajax="false" />

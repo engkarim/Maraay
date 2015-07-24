@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.freelance.maraay.model.Direction;
+import com.freelance.maraay.model.TblRepBlendingDate;
 import com.freelance.maraay.model.TblRepSalesDate;
 import com.freelance.maraay.model.TblRepSalesValue;
 import com.freelance.maraay.model.TblRepSalesDate;
@@ -98,23 +99,46 @@ public class RepSalesDao {
 
 	}
 
-	public TblRepSalesDate findByDate(Date date) {
+	public TblRepSalesDate findByDate(Date date , int directionId) {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblRepSalesDate.class);
+			criteria.setFetchMode("tblRepSalesValueList", FetchMode.JOIN);
+			criteria.createAlias("tblRepSalesValueList.productId",
+					"productId");
+			criteria.add(Restrictions.eq("directionId.id", directionId));
 			criteria.add(Restrictions.eq("date", date));
 			TblRepSalesDate salesDate = (TblRepSalesDate) criteria
 					.uniqueResult();
-			if (salesDate != null) {
-				for (TblRepSalesValue v : salesDate.getTblRepSalesValueList()) {
-					System.out.println(v.getProductId());
-				}
-			}
 			tx.commit();
 			return salesDate;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	public TblRepSalesValue findByproductId(int productId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblRepSalesValue.class);
+			criteria.createAlias("productId",
+					"productId");
+			criteria.add(Restrictions.eq("productId.id", productId));
+
+			TblRepSalesValue salesValue= (TblRepSalesValue) criteria
+					.uniqueResult();
+			tx.commit();
+			return salesValue;
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {

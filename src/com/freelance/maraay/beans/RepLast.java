@@ -22,10 +22,10 @@ import org.hibernate.Transaction;
 
 import com.freelance.maraay.dao.RepLastLoadingDao;
 import com.freelance.maraay.model.Product;
-import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.TblRepLastTimeDate;
 import com.freelance.maraay.model.TblRepLastTimeValue;
 import com.freelance.maraay.model.User;
+import com.freelance.maraay.utils.Constants;
 import com.freelance.maraay.utils.SessionFactoryUtil;
 import com.freelance.maraay.utils.Utils;
 
@@ -40,6 +40,7 @@ public class RepLast implements Serializable {
 
 	@ManagedProperty("#{productBean}")
 	private ProductBean productBean;
+	Utils utils = Utils.getInstance();
 
 	public void setProductBean(ProductBean productBean) {
 		this.productBean = productBean;
@@ -149,6 +150,128 @@ public class RepLast implements Serializable {
 			tx = null;
 		}
 	}
+	
+	/********************* update logic **********************/
+	private Date updatedDate;
+	private int updateDir;
+
+	public int getUpdateDir() {
+		return updateDir;
+	}
+
+	public void setUpdateDir(int updateDir) {
+		this.updateDir = updateDir;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	private TblRepLastTimeDate updatedLastDate;
+
+	public TblRepLastTimeDate getUpdatedLastDate() {
+		return updatedLastDate;
+	}
+
+	public void setUpdatedLastDate(TblRepLastTimeDate updatedLastDate) {
+		this.updatedLastDate = updatedLastDate;
+	}
+
+	public void prerender(ComponentSystemEvent event) {
+		TblRepLastTimeDate searchedLastDate = RepLastLoadingDao.getInstance()
+				.findByDate(utils.decrementDate(loginBean.getUpdateRepDailyDate()) , loginBean.getUpdateRepDirectionId());
+		if (searchedLastDate == null) {
+			utils.sendRedirect(Constants.loginPage, false);
+		} else {
+			setUpdatedLastDate(searchedLastDate);
+		}
+	}
+
+	public String navigateToUpdate() {
+		loginBean.setUpdateRepDailyDate(updatedDate);
+		loginBean.setUpdateRepDirectionId(updateDir);
+		return "updateLast";
+	}
+
+	public String updateLast() {
+		
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+
+			List<TblRepLastTimeValue> lastLastValues = new ArrayList<TblRepLastTimeValue>();
+
+			double total = 0.0;
+
+			// insert incoming date
+			updatedLastDate.setByUserId(new User(loginBean.getId()));
+			session.update(updatedLastDate);
+
+			// insert incoming values
+			for (TblRepLastTimeValue lastValue : updatedLastDate.getTblRepLastTimeValueList()) {
+				// calculate mount price
+
+				// get total mount
+
+				double productPriceMax = lastValue.getProductId()
+						.getRepMaxUnPrice();
+
+				double mountPriceMax = productPriceMax
+						* lastValue.getMaxMount();
+
+				double productPriceMin = lastValue.getProductId()
+						.getRepMinUnPrice();
+
+				double mountPriceMin = productPriceMin
+						* lastValue.getMinMount();
+				// get total before discount
+				double totalPrice = mountPriceMax + mountPriceMin;
+
+				// get shown mount
+				String shown_mount = lastValue.getMaxMount() + "."
+						+ lastValue.getMinMount();
+
+				lastValue.setShowenMount(shown_mount);
+				lastValue.setMaxMountPrice(mountPriceMax);
+				lastValue.setMinMountPrice(mountPriceMin);
+				lastValue.setTotalPrice(totalPrice);
+				lastValue.setLastTimeDateId(updatedLastDate);
+				lastLastValues.add(lastValue);
+
+				session = SessionFactoryUtil.getSession();
+				session.update(lastValue);
+
+				total = total + totalPrice;
+
+			}
+			updatedLastDate.setTotal(total);
+			updatedLastDate.setTblRepLastTimeValueList(lastLastValues);
+			session.update(updatedLastDate);
+			tx = session.beginTransaction();
+			tx.commit();
+			return "updateFirst";
+		} catch (Exception e) {
+			tx.rollback();
+			return "fail";
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	/****************** validate logic ******************/
 
 	public void validateDate(ComponentSystemEvent event) throws ParseException {
 		// get access to resource bundle

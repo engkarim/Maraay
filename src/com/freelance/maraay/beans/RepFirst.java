@@ -22,11 +22,14 @@ import org.hibernate.Transaction;
 import com.freelance.maraay.dao.LuDirRepDrivDao;
 import com.freelance.maraay.dao.RepFirstLoadingDao;
 import com.freelance.maraay.dao.RepLastLoadingDao;
+import com.freelance.maraay.model.Direction;
+import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.TblLuDirRepDriv;
 import com.freelance.maraay.model.TblRepFirstTimeDate;
 import com.freelance.maraay.model.TblRepFirstTimeValue;
 import com.freelance.maraay.model.TblRepLastTimeDate;
 import com.freelance.maraay.model.TblRepLastTimeValue;
+import com.freelance.maraay.utils.Constants;
 import com.freelance.maraay.utils.SessionFactoryUtil;
 import com.freelance.maraay.utils.Utils;
 
@@ -41,11 +44,15 @@ public class RepFirst implements Serializable {
 	RepLastLoadingDao lastLoadingDao = RepLastLoadingDao.getInstance();
 	private TblRepLastTimeDate lastTimeDate = new TblRepLastTimeDate();
 	private TblLuDirRepDriv dirRepDriv = new TblLuDirRepDriv();
-
+	Utils utils = Utils.getInstance();
 
 
 	private Integer directioId;
 	private Date accountDate;
+
+
+	
+
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 
@@ -68,6 +75,7 @@ public class RepFirst implements Serializable {
 	public void setDirectioId(Integer directioId) {
 		this.directioId = directioId;
 	}
+	
 
 	public TblRepLastTimeDate getLastTimeDate() {
 		lastTimeDate = lastLoadingDao.findByDate(Utils.getInstance()
@@ -78,9 +86,10 @@ public class RepFirst implements Serializable {
 	
 	public TblLuDirRepDriv getDirRepDriv() {
 		dirRepDriv = LuDirRepDrivDao.getInstance().findByDateِAndDir(accountDate, directioId);
-		System.out.println(dirRepDriv + "............................");
 		return dirRepDriv;
 	}
+	
+	
 	public String insertNewFirst() {
 		Session session = null;
 		Transaction tx = null;
@@ -123,6 +132,79 @@ public class RepFirst implements Serializable {
 		return "newNLoad";
 
 	}
+	
+	
+	/********************* update logic **********************/
+
+	private TblRepLastTimeDate updatedLastDate;
+	private TblLuDirRepDriv updateDirRepDriv = new TblLuDirRepDriv();
+	
+	public TblLuDirRepDriv getUpdateDirRepDriv() {
+		updateDirRepDriv = LuDirRepDrivDao.getInstance().
+				findByDateِAndDir(loginBean.getUpdateRepDailyDate(), loginBean.getUpdateRepDirectionId());
+		return updateDirRepDriv;
+	}
+
+
+	public TblRepLastTimeDate getUpdatedLastDate() {
+		return updatedLastDate;
+	}
+
+	public void setUpdatedLastDate(TblRepLastTimeDate updatedLastDate) {
+		this.updatedLastDate = updatedLastDate;
+	}
+
+	public void prerender(ComponentSystemEvent event) {
+		TblRepLastTimeDate searchedLastDate = RepLastLoadingDao.getInstance()
+				.findByDate(utils.decrementDate(loginBean.getUpdateRepDailyDate()) , loginBean.getUpdateRepDirectionId());
+		if (searchedLastDate == null) {
+			utils.sendRedirect(Constants.loginPage, false);
+		} else {
+			setUpdatedLastDate(searchedLastDate);
+		}
+	}
+	
+	
+	public String updateFirst() {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			TblRepFirstTimeDate firstTimeDate = RepFirstLoadingDao.getInstance().findByDate(loginBean.getUpdateRepDailyDate(), loginBean.getUpdateRepDirectionId());
+			firstTimeDate.setByUserId(updatedLastDate.getByUserId());
+			firstTimeDate.setDate(loginBean.getUpdateRepDailyDate());
+			firstTimeDate.setDirectionId(updatedLastDate.getDirectionId());
+			firstTimeDate.setTotal(updatedLastDate.getTotal());
+
+			session = SessionFactoryUtil.getSession();
+			for (TblRepLastTimeValue lastValue : updatedLastDate
+					.getTblRepLastTimeValueList()) {
+				TblRepFirstTimeValue firstValue = RepFirstLoadingDao.getInstance().findByDateAndProduct(firstTimeDate.getFirstTimeDateId(), lastValue.getProductId(), new Direction(loginBean.getUpdateRepDirectionId()));
+				firstValue.setProductId(lastValue.getProductId());
+				firstValue.setMaxMount(lastValue.getMaxMount());
+				firstValue.setMaxMountPrice(lastValue.getMaxMountPrice());
+				firstValue.setMinMount(lastValue.getMinMount());
+				firstValue.setMinMountPrice(lastValue.getMinMountPrice());
+				firstValue.setTotalPrice(lastValue.getTotalPrice());
+				firstValue.setShowenMount(lastValue.getShowenMount());
+				firstValue.setFirstTimeDateId(firstTimeDate);
+				session = SessionFactoryUtil.getSession();
+				session.update(firstValue);
+			}
+			session = SessionFactoryUtil.getSession();
+			session.update(firstTimeDate);
+			tx = session.beginTransaction();
+			tx.commit();
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+		return "updateNewNLoading";
+	}
+	
+
 	
 //	
 //	public void validateDrivRep(ComponentSystemEvent event) throws ParseException {
@@ -200,6 +282,53 @@ public class RepFirst implements Serializable {
 			fc.addMessage(todayId, msg);
 			fc.renderResponse();
 		}
+		if (todayDate.after(today)) {
+			FacesMessage msg = new FacesMessage(InvalidDateMsg);
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(todayId, msg);
+			fc.renderResponse();
+		}
+	}
+	
+	public void validateUpdatedDate(ComponentSystemEvent event)
+			throws ParseException {
+		// get access to resource bundle
+		String baseName = "messages";
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, FacesContext
+				.getCurrentInstance().getViewRoot().getLocale());
+		String NOTFOUNDDateMsg = bundle.getString("UPDATEDDATENOTFOUND");
+		String InvalidDateMsg = bundle.getString("INVALIDDATE");
+
+		FacesContext fc = FacesContext.getCurrentInstance();
+		UIComponent components = event.getComponent();
+		
+		// get direction
+		UIInput uiInputDir = (UIInput) components.findComponent("customerDirection");
+		Integer dir = (Integer) uiInputDir.getLocalValue();
+
+		// get date 
+		UIInput uiInputDate = (UIInput) components.findComponent("today");
+		Date todayDate = (Date) uiInputDate.getLocalValue();
+		String todayId = uiInputDate.getClientId();
+
+		Date today = Utils.getInstance().getCurrentDate();
+
+		TblRepFirstTimeDate searchedDate = RepFirstLoadingDao.getInstance()
+				.findByDateWithNoJoins(todayDate , dir);
+
+		// Let required="true" do its job.
+		if (todayDate == null) {
+			return;
+		}
+
+		if (searchedDate == null) {
+			FacesMessage msg = new FacesMessage(NOTFOUNDDateMsg);
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(todayId, msg);
+			fc.renderResponse();
+
+		}
+
 		if (todayDate.after(today)) {
 			FacesMessage msg = new FacesMessage(InvalidDateMsg);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);

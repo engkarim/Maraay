@@ -12,12 +12,17 @@ import javax.faces.event.ComponentSystemEvent;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.freelance.maraay.dao.RepBlendingDao;
+import com.freelance.maraay.dao.RepDefectDao;
 import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.model.Product;
+import com.freelance.maraay.model.TblRepBlendingDate;
 import com.freelance.maraay.model.TblRepDefectDate;
 import com.freelance.maraay.model.TblRepDefectValue;
 import com.freelance.maraay.model.User;
+import com.freelance.maraay.utils.Constants;
 import com.freelance.maraay.utils.SessionFactoryUtil;
+import com.freelance.maraay.utils.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -104,6 +109,79 @@ public class RepDefect implements Serializable {
 			tx = session.beginTransaction();
 			tx.commit();
 			return "repNewOffer";
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+
+	}
+	
+	/********************* update logic **********************/
+
+	TblRepDefectDate updateDefectDate = new TblRepDefectDate();
+
+
+
+	public TblRepDefectDate getUpdateDefectDate() {
+		return updateDefectDate;
+	}
+
+	public void setUpdateDefectDate(TblRepDefectDate updateDefectDate) {
+		this.updateDefectDate = updateDefectDate;
+	}
+
+	public void prerenderUpdate(ComponentSystemEvent event) {
+		TblRepDefectDate	searchedDate = RepDefectDao.getInstance().findByDate(
+				loginBean.getUpdateRepDailyDate() , loginBean.getUpdateRepDirectionId());
+
+		if (searchedDate == null) {
+			Utils.getInstance().sendRedirect(Constants.loginPage, false);
+		} else {
+			setUpdateDefectDate(searchedDate);
+		}
+	}
+	
+	public String updateDefect() {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			updateDefectDate.setByUserId(new User(loginBean.getId()));
+			updateDefectDate.setDate(loginBean.getUpdateRepDailyDate());
+			updateDefectDate.setDirectionId(new Direction(loginBean
+					.getUpdateRepDirectionId()));
+			session.update(updateDefectDate);
+
+			double allTotalPrice = 0.0;
+			for (TblRepDefectValue defectValue : updateDefectDate.getTblRepDefectValueList()) {
+
+				double maxPrice = defectValue.getMaxMount()
+						* defectValue.getProductId().getRepMaxUnPrice();
+				double minPrice = defectValue.getMinMount()
+						* defectValue.getProductId().getRepMinUnPrice();
+				double totalPrice = maxPrice + minPrice;
+				String shown_mount = defectValue.getMaxMount() + "."
+						+ defectValue.getMinMount();
+
+				defectValue.setMaxMountPrice(maxPrice);
+				defectValue.setMinMountPrice(minPrice);
+				defectValue.setTotalPrice(totalPrice);
+				defectValue.setShowenMount(shown_mount);
+				defectValue.setDefectDateId(updateDefectDate);
+				session = SessionFactoryUtil.getSession();
+				session.update(defectValue);
+				allTotalPrice = allTotalPrice + totalPrice;
+			}
+
+			updateDefectDate.setTotal(allTotalPrice);
+			session = SessionFactoryUtil.getSession();
+			session.update(updateDefectDate);
+			tx = session.beginTransaction();
+			tx.commit();
+			return "repUpdateOffer";
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {

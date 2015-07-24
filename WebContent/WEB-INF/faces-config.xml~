@@ -341,6 +341,55 @@
 			<to-view-id>/pages/representative/invoice/listInvoices</to-view-id>
 			<redirect />
 		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>repAllDirRepDriv</from-outcome>
+			<to-view-id>/pages/representative/reps/repReviewing</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateLast</from-outcome>
+			<to-view-id>/pages/representative/lastTime/updateLast</to-view-id>
+			<redirect />
+		</navigation-case>
+<navigation-case>
+			<from-outcome>updateFirst</from-outcome>
+			<to-view-id>/pages/representative/firstTime/updateFirst</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateNewNLoading</from-outcome>
+			<to-view-id>/pages/representative/newLoading/updateNewNLoading</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+<navigation-case>
+			<from-outcome>updateTotalLoading</from-outcome>
+			<to-view-id>/pages/representative/totalLoading/updateTotalLoading</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>repUpdateBlending</from-outcome>
+			<to-view-id>/pages/representative/blending/repUpdateBlending</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>repUpdateDefect</from-outcome>
+			<to-view-id>/pages/representative/defect/repUpdateDefect</to-view-id>
+			<redirect />
+		</navigation-case>
+
+<navigation-case>
+			<from-outcome>updateOffer</from-outcome>
+			<to-view-id>/pages/representative/offer/updateOffer</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 </faces-config>

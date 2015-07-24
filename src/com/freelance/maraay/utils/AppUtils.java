@@ -79,16 +79,13 @@ public class AppUtils {
 					tx.commit();
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
-//				System.out.println("111111111111111111111111111");
-//				e.printStackTrace();
+				e.printStackTrace();
 			}finally{
 				if(session != null){
 					if (session.isOpen()){
 						session.close();
 					}
 				}
-				
 				tx = null;
 			}
 		}

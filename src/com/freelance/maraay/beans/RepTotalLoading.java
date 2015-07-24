@@ -10,11 +10,15 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ComponentSystemEvent;
 
 import com.freelance.maraay.dao.ComSalesDao;
+import com.freelance.maraay.dao.RepNewLoadingDao;
 import com.freelance.maraay.dao.RepSalesDao;
 import com.freelance.maraay.dao.RepTotalLoadingDao;
 import com.freelance.maraay.model.TblComSalesDate;
+import com.freelance.maraay.model.TblRepNewLoadingDate;
 import com.freelance.maraay.model.TblRepSalesDate;
 import com.freelance.maraay.model.TblRepTotalLoadingDate;
+import com.freelance.maraay.utils.Constants;
+import com.freelance.maraay.utils.Utils;
 
 @ManagedBean
 @ViewScoped
@@ -45,6 +49,32 @@ public class RepTotalLoading implements Serializable {
 	public void prerendre(ComponentSystemEvent event) {
 		getTotalLoadingDate();
 	}
+	
+	/********************* update logic **********************/
+
+	TblRepTotalLoadingDate updateTotalLoadingDate = new TblRepTotalLoadingDate();
+
+	public TblRepTotalLoadingDate getUpdateTotalLoadingDate() {
+		return updateTotalLoadingDate;
+	}
+
+	public void setUpdateTotalLoadingDate(
+			TblRepTotalLoadingDate updateTotalLoadingDate) {
+		this.updateTotalLoadingDate = updateTotalLoadingDate;
+	}
+
+	public void prerenderUpdate(ComponentSystemEvent event) {
+		TblRepTotalLoadingDate	searchedDate = repTotalLoadingDao.findByDate(
+				loginBean.getUpdateRepDailyDate() , loginBean.getUpdateRepDirectionId());
+
+		if (searchedDate == null) {
+			Utils.getInstance().sendRedirect(Constants.loginPage, false);
+		} else {
+			setUpdateTotalLoadingDate(searchedDate);
+		}
+	}
+	
+	
 
 	/******************** search logic ***********************/
 

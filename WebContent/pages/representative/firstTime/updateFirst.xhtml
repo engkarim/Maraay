@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/maraayTemplate.xhtml">
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{repFirst.prerender}" />
+	</f:metadata>
+	<ui:define name="title">#{msgs.FIRSTTIME}</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<!-- <p:messages showDetail="false" closable="true" /> -->
+			<p:panel header="#{msgs.FIRSTTIME}">
+				<h:form prependId="false" id="firstForm">
+						<h:panelGrid columns="4" cellpadding="50" styleClass="nameGrid">
+							<p:outputLabel value="#{msgs.REPRESINTATIVENAME}" />
+							<h:outputText value="#{repFirst.updateDirRepDriv.repId.name}"
+								styleClass="green" />
+
+							<p:outputLabel value="#{msgs.DRIVERNAME}" />
+							<h:outputText id="drivText"
+								value="#{repFirst.updateDirRepDriv.drivId.name}" styleClass="green" />
+						</h:panelGrid>
+
+
+					<h:panelGroup id="tablePanel">
+						<p:dataTable id="firstTable" var="firstValue"
+							value="#{repFirst.updatedLastDate.tblRepLastTimeValueList}">
+							<p:column>
+								<h:outputText value="#{firstValue.productId.name} : " />
+							</p:column>
+
+							<p:column headerText="#{msgs.PACKET}">
+								<p:inputText id="firstMax" value="#{firstValue.maxMount}"
+									required="true" requiredMessage="#{msgs.ENTERVALUE}" size="5"
+									converterMessage="#{msgs.ONLYNUMBER}" disabled="true">
+									<f:convertNumber />
+								</p:inputText>
+								<p:message for="firstMax" />
+							</p:column>
+
+
+							<p:column headerText="#{msgs.BOX}">
+								<p:inputText id="firstMin" value="#{firstValue.minMount}"
+									size="5" required="true" requiredMessage="#{msgs.ENTERVALUE}"
+									converterMessage="#{msgs.ONLYNUMBER}" disabled="true">
+									<f:convertNumber />
+								</p:inputText>
+								<p:message for="firstMin" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGroup>
+					<h:commandButton id="saveBtn" value="#{msgs.SAVE}"
+						image="/resources/images/next.ico"
+						action="#{repFirst.updateFirst}" update="firstForm" />
+				</h:form>
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

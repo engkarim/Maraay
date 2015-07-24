@@ -39,6 +39,26 @@ public class LoginBean implements Serializable {
 	private Date companyDailyUpdatedDate;
 	private Date repDailyDate;
 	private int repDirectionId;
+	private Date updateRepDailyDate;
+	private int updateRepDirectionId;
+	
+	public Date getUpdateRepDailyDate() {
+		return updateRepDailyDate;
+	}
+
+	public void setUpdateRepDailyDate(Date updateRepDailyDate) {
+		this.updateRepDailyDate = updateRepDailyDate;
+	}
+
+	public int getUpdateRepDirectionId() {
+		return updateRepDirectionId;
+	}
+
+	public void setUpdateRepDirectionId(int updateRepDirectionId) {
+		this.updateRepDirectionId = updateRepDirectionId;
+	}
+
+
 
 	public int getRepDirectionId() {
 		return repDirectionId;
