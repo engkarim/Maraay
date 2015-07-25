@@ -183,11 +183,11 @@ public class ComDiscountingDao implements Serializable {
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 			List<TblComDiscountDate> discountDateList = criteria.list();
-			for (TblComDiscountDate d : discountDateList) {
-				for (TblComDiscountValue v : d.getTblComDiscountValueList()) {
-					System.out.println(v.getDiscountValue());
-				}
-			}
+//			for (TblComDiscountDate d : discountDateList) {
+//				for (TblComDiscountValue v : d.getTblComDiscountValueList()) {
+//					System.out.println(v.getDiscountValue());
+//				}
+//			}
 
 			tx.commit();
 			return discountDateList;

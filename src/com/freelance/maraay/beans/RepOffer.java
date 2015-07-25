@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 
 import com.freelance.maraay.dao.RepBlendingDao;
 import com.freelance.maraay.dao.RepDefectDao;
+import com.freelance.maraay.dao.RepFirstLoadingDao;
 import com.freelance.maraay.dao.RepLastLoadingDao;
 import com.freelance.maraay.dao.RepOfferDao;
 import com.freelance.maraay.dao.RepSalesDao;
@@ -23,6 +24,7 @@ import com.freelance.maraay.model.Product;
 import com.freelance.maraay.model.TblRepBlendingValue;
 import com.freelance.maraay.model.TblRepDefectDate;
 import com.freelance.maraay.model.TblRepDefectValue;
+import com.freelance.maraay.model.TblRepFirstTimeDate;
 import com.freelance.maraay.model.TblRepLastTimeValue;
 import com.freelance.maraay.model.TblRepOfferDate;
 import com.freelance.maraay.model.TblRepOfferValue;
@@ -205,9 +207,18 @@ public class RepOffer implements Serializable {
 			session = SessionFactoryUtil.getSession();
 			session.update(salesDate);
 
+			// get first load and update to completed
+
+			TblRepFirstTimeDate firstTimeDate = RepFirstLoadingDao
+					.getInstance().findByDate(loginBean.getRepDailyDate(),
+							loginBean.getRepDirectionId());
+
+			firstTimeDate.setIsCompleted(1);
+			session = SessionFactoryUtil.getSession();
+			session.update(firstTimeDate);
 			tx = session.beginTransaction();
 			tx.commit();
-			return "success";
+			return "repSalesOne";
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {
@@ -217,10 +228,10 @@ public class RepOffer implements Serializable {
 		}
 
 	}
-	
+
 	/********************* update logic **********************/
 
-	TblRepOfferDate  updateOfferDate = new TblRepOfferDate();
+	TblRepOfferDate updateOfferDate = new TblRepOfferDate();
 
 	public TblRepOfferDate getUpdateOfferDate() {
 		return updateOfferDate;
@@ -231,8 +242,9 @@ public class RepOffer implements Serializable {
 	}
 
 	public void prerenderUpdate(ComponentSystemEvent event) {
-		TblRepOfferDate	searchedDate = RepOfferDao.getInstance().findByDate(
-				loginBean.getUpdateRepDailyDate() , loginBean.getUpdateRepDirectionId());
+		TblRepOfferDate searchedDate = RepOfferDao.getInstance().findByDate(
+				loginBean.getUpdateRepDailyDate(),
+				loginBean.getUpdateRepDirectionId());
 
 		if (searchedDate == null) {
 			Utils.getInstance().sendRedirect(Constants.loginPage, false);
@@ -240,27 +252,32 @@ public class RepOffer implements Serializable {
 			setUpdateOfferDate(searchedDate);
 		}
 	}
-	
+
 	public String updateOffer() {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			updateOfferDate.setByUserId(new User(loginBean.getId()));
 			updateOfferDate.setDate(loginBean.getUpdateRepDailyDate());
-			updateOfferDate.setDirectionId(new Direction( loginBean.getUpdateRepDirectionId()));
+			updateOfferDate.setDirectionId(new Direction(loginBean
+					.getUpdateRepDirectionId()));
 			session = SessionFactoryUtil.getSession();
 			session.update(updateOfferDate);
 
-			// get and update sales date 
-			TblRepSalesDate salesDate = RepSalesDao.getInstance().findByDate(loginBean.getUpdateRepDailyDate(), loginBean.getUpdateRepDirectionId());
+			// get and update sales date
+			TblRepSalesDate salesDate = RepSalesDao.getInstance().findByDate(
+					loginBean.getUpdateRepDailyDate(),
+					loginBean.getUpdateRepDirectionId());
 			salesDate.setByUserId(new User(loginBean.getId()));
 			salesDate.setDate(loginBean.getUpdateRepDailyDate());
-			salesDate.setDirectionId(new Direction(loginBean.getUpdateRepDirectionId()));
+			salesDate.setDirectionId(new Direction(loginBean
+					.getUpdateRepDirectionId()));
 			session = SessionFactoryUtil.getSession();
 			session.update(salesDate);
 			double allTotalPrice = 0.0;
 			double allTotalPriceS = 0.0;
-			for (TblRepOfferValue offerValue : updateOfferDate.getTblRepOfferValueList()) {
+			for (TblRepOfferValue offerValue : updateOfferDate
+					.getTblRepOfferValueList()) {
 
 				double maxPrice = offerValue.getMaxMount()
 						* offerValue.getProductId().getRepMaxUnPrice();
@@ -285,29 +302,36 @@ public class RepOffer implements Serializable {
 						.getInstance().findByDateAndProduct(
 								loginBean.getUpdateRepDailyDate(),
 								offerValue.getProductId(),
-								new Direction(loginBean.getUpdateRepDirectionId()));
+								new Direction(loginBean
+										.getUpdateRepDirectionId()));
 
 				TblRepBlendingValue blendingValue = RepBlendingDao
 						.getInstance().findByDateAndProduct(
 								loginBean.getUpdateRepDailyDate(),
 								offerValue.getProductId(),
-								new Direction(loginBean.getUpdateRepDirectionId()));
+								new Direction(loginBean
+										.getUpdateRepDirectionId()));
 
 				TblRepDefectValue defectValue = RepDefectDao.getInstance()
-						.findByDateAndProduct(loginBean.getUpdateRepDailyDate(),
+						.findByDateAndProduct(
+								loginBean.getUpdateRepDailyDate(),
 								offerValue.getProductId(),
-								new Direction(loginBean.getUpdateRepDirectionId()));
+								new Direction(loginBean
+										.getUpdateRepDirectionId()));
 
 				TblRepLastTimeValue lastTimeValue = RepLastLoadingDao
 						.getInstance().findByDateAndProduct(
 								Utils.getInstance().decrementDate(
 										loginBean.getUpdateRepDailyDate()),
 								offerValue.getProductId(),
-								new Direction(loginBean.getUpdateRepDirectionId()));
+								new Direction(loginBean
+										.getUpdateRepDirectionId()));
 
 				// insert sales values
 
-				TblRepSalesValue salesValue = RepSalesDao.getInstance().findByproductId(offerValue.getProductId().getId());
+				TblRepSalesValue salesValue = RepSalesDao.getInstance()
+						.findByproduct(loginBean.getUpdateRepDailyDate() , offerValue.getProductId(), new Direction(loginBean
+								.getUpdateRepDirectionId()));
 
 				int maxMountS = totalLoadingValue.getMaxMount()
 						- (blendingValue.getMaxMount()
@@ -360,7 +384,7 @@ public class RepOffer implements Serializable {
 			session.update(salesDate);
 			tx = session.beginTransaction();
 			tx.commit();
-			return "success";
+			return "repSalesOne";
 		} catch (RuntimeException re) {
 			throw re;
 		} finally {

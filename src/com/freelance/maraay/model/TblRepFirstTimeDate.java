@@ -39,7 +39,8 @@ public class TblRepFirstTimeDate implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     private Double total;
     private Integer isEdit = 0;
-    private User byUserId;
+    private Integer isCompleted = 0;
+	private User byUserId;
     private Direction directionId;
     private List<TblRepFirstTimeValue> tblRepFirstTimeValueList;
 
@@ -88,6 +89,15 @@ public class TblRepFirstTimeDate implements Serializable {
     public void setIsEdit(Integer isEdit) {
         this.isEdit = isEdit;
     }
+    @Column(name = "is_completed")
+    public Integer getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(Integer isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
 
     @JoinColumn(name = "by_user_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)

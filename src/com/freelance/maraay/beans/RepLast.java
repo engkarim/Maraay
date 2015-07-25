@@ -20,8 +20,10 @@ import javax.faces.event.ComponentSystemEvent;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.freelance.maraay.dao.LuDirRepDrivDao;
 import com.freelance.maraay.dao.RepLastLoadingDao;
 import com.freelance.maraay.model.Product;
+import com.freelance.maraay.model.TblLuDirRepDriv;
 import com.freelance.maraay.model.TblRepLastTimeDate;
 import com.freelance.maraay.model.TblRepLastTimeValue;
 import com.freelance.maraay.model.User;
@@ -280,6 +282,7 @@ public class RepLast implements Serializable {
 				.getCurrentInstance().getViewRoot().getLocale());
 		String duplicatedDateMsg = bundle.getString("DUPLICATEDATE");
 		String InvalidDateMsg = bundle.getString("INVALIDDATE");
+		String nodrivMsg = bundle.getString("NODRIVANDREP");
 
 		FacesContext fc = FacesContext.getCurrentInstance();
 		UIComponent components = event.getComponent();
@@ -295,9 +298,13 @@ public class RepLast implements Serializable {
 		String todayId = uiInputDate.getClientId();
 
 		Date today = Utils.getInstance().getCurrentDate();
-
+		
 		TblRepLastTimeDate searchedDate = RepLastLoadingDao
 				.getInstance().findByDateNoJoins(todayDate, dir);
+		
+		 TblLuDirRepDriv dirRepDriv = LuDirRepDrivDao.getInstance().
+				 findByDateِAndDir(Utils.getInstance().incrementDate(todayDate), dir);
+		
 
 		// Let required="true" do its job.
 		if (todayDate == null) {
@@ -314,6 +321,13 @@ public class RepLast implements Serializable {
 
 		if (todayDate.after(today)) {
 			FacesMessage msg = new FacesMessage(InvalidDateMsg);
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(todayId, msg);
+			fc.renderResponse();
+		}
+		
+		if (dirRepDriv == null) {
+			FacesMessage msg = new FacesMessage(nodrivMsg);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			fc.addMessage(todayId, msg);
 			fc.renderResponse();

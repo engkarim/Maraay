@@ -23,7 +23,6 @@ import com.freelance.maraay.dao.LuDirRepDrivDao;
 import com.freelance.maraay.dao.RepFirstLoadingDao;
 import com.freelance.maraay.dao.RepLastLoadingDao;
 import com.freelance.maraay.model.Direction;
-import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.model.TblLuDirRepDriv;
 import com.freelance.maraay.model.TblRepFirstTimeDate;
 import com.freelance.maraay.model.TblRepFirstTimeValue;

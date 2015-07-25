@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.freelance.maraay.model.Direction;
+import com.freelance.maraay.model.Product;
 import com.freelance.maraay.model.TblRepBlendingDate;
 import com.freelance.maraay.model.TblRepSalesDate;
 import com.freelance.maraay.model.TblRepSalesValue;
@@ -124,16 +125,47 @@ public class RepSalesDao {
 		}
 	}
 	
-	public TblRepSalesValue findByproductId(int productId) {
+	public List<TblRepSalesDate>  findByDateList(Date date , int directionId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblRepSalesDate.class);
+			criteria.setFetchMode("tblRepSalesValueList", FetchMode.JOIN);
+			criteria.createAlias("tblRepSalesValueList.productId",
+					"productId");
+			criteria.add(Restrictions.eq("directionId.id", directionId));
+			criteria.add(Restrictions.eq("date", date));
+			criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
+			List<TblRepSalesDate> salesDates = criteria.list();
+			System.out.println(salesDates.size());
+			tx.commit();
+			return salesDates;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
+	
+	public TblRepSalesValue findByproduct(Date date, Product product,
+			Direction directionId) {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = SessionFactoryUtil.getSession();
 			tx = session.beginTransaction();
 			Criteria criteria = session.createCriteria(TblRepSalesValue.class);
-			criteria.createAlias("productId",
-					"productId");
-			criteria.add(Restrictions.eq("productId.id", productId));
+			criteria.createAlias("salesDateId", "salesDateId");
+			criteria.createAlias("salesDateId.directionId", "directionId");
+			criteria.add(Restrictions.eq("productId", product));
+
+			criteria.add(Restrictions.eq("salesDateId.date", date));
+			criteria.add(Restrictions.eq("salesDateId.directionId",
+					directionId));
 
 			TblRepSalesValue salesValue= (TblRepSalesValue) criteria
 					.uniqueResult();

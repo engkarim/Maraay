@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.freelance.maraay.model.TblComDiscountDate;
+import com.freelance.maraay.model.TblRepFirstTimeDate;
 import com.freelance.maraay.model.User;
 import com.freelance.maraay.dao.ComDiscountingDao;
+import com.freelance.maraay.dao.RepFirstLoadingDao;
 import com.freelance.maraay.dao.UserDao;
 import com.freelance.maraay.utils.AppUtils;
 import com.freelance.maraay.utils.Performance;
@@ -157,8 +159,11 @@ public class LoginBean implements Serializable {
 				// check company account if non completed operations
 				
 				List<TblComDiscountDate> checkedDiscountList = ComDiscountingDao.getInstance().findByCompletedCalue(0);
-			    AppUtils appUtils = new AppUtils();
+			   List<TblRepFirstTimeDate> checkedFirstDate = RepFirstLoadingDao.getInstance().findByCompletedRep(0);
+				
+				AppUtils appUtils = new AppUtils();
 			    appUtils.deleteNonCompletedCom(checkedDiscountList);
+			    appUtils.deleteNonCompletedRep(checkedFirstDate);
 				Performance.releaseMemory();
 				return "home";
 			} else {

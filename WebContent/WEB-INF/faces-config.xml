@@ -390,6 +390,12 @@
 			<to-view-id>/pages/representative/offer/updateOffer</to-view-id>
 			<redirect />
 		</navigation-case>
+
+<navigation-case>
+			<from-outcome>repSalesOne</from-outcome>
+			<to-view-id>/pages/representative/sales/repSales</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 </faces-config>

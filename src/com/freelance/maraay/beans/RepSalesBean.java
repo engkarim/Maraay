@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import com.freelance.maraay.dao.RepSalesDao;
+import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.model.TblRepSalesDate;
 
 @ManagedBean
@@ -32,8 +33,8 @@ public class RepSalesBean implements Serializable {
 	private List<TblRepSalesDate> salesDates;
 
 	public List<TblRepSalesDate> getSalesDates() {
-		salesDates = repSalesDao.listAllSalesByDirection(loginBean
-				.getRepDirectionId());
+		System.out.println(loginBean.getRepDailyDate() + " ............. " + loginBean.getRepDirectionId());
+		salesDates = repSalesDao.findByDateList(loginBean.getRepDailyDate(),loginBean.getRepDirectionId());
 		return salesDates;
 	}
 

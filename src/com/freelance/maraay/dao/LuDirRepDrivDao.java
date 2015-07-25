@@ -140,6 +140,27 @@ public class LuDirRepDrivDao implements Serializable {
 			tx = null;
 		}
 	}
+	
+	public TblLuDirRepDriv findByDateِAndDirNoJoins(Date date, int dirId) {
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(TblLuDirRepDriv.class);
+			criteria.add(Restrictions.eq("directionId.id", dirId));
+			criteria.add(Restrictions.eq("date", date));
+			TblLuDirRepDriv result = (TblLuDirRepDriv) criteria.uniqueResult();
+			tx.commit();
+			return result;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
 
 	public TblLuDirRepDriv findByDateِAndDirUpdate(Date date, int dirId, long id) {
 		Session session = null;
