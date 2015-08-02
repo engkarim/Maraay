@@ -47,7 +47,7 @@
 							<h:inputText value="#{itemValue.minMount}" />
 						</p:column>
 					</p:dataTable>
-					<h:panelGrid columns="12" cellpadding="10">
+					<h:panelGrid columns="12" cellpadding="10" styleClass="discount_invoice_grid">
 						<p:outputLabel value="#{msgs.DISCOUNTRATE}" />
 						<p:inputText id="disRate"
 							value="#{repInvoiceBean.updateInvoice.discountRate}" size="5" />
@@ -55,34 +55,40 @@
 
 						<p:outputLabel value="#{msgs.ADDTIONALDISCOUNT}" />
 						<p:inputText id="addDis"
-							value="#{repInvoiceBean.updateInvoice.additionalDiscount}" size="5" />
+							value="#{repInvoiceBean.updateInvoice.additionalDiscount}"
+							size="5" />
 						<p:message for="addDis" />
 
-
-								<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
-						<h:outputText id="disValue" 
-							value="#{repInvoiceBean.updateInvoice.discountValue}"
-							styleClass="show-in-val">
-							<f:convertNumber minFractionDigits="2" />
+						<p:commandButton id="calcBtn" value="#{msgs.RESULTS}"
+							actionListener="#{repInvoiceBean.calcUpdateInvoice}"
+							update="resultsGrid"></p:commandButton>
+							</h:panelGrid>
+							
+						<h:panelGroup >
+						<h:panelGrid id="resultsGrid" columns="6" cellpadding="10"
+							styleClass="discount_invoice_grid">
+							<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
+							<h:outputText id="disValue"
+								value="#{repInvoiceBean.updateInvoice.discountValue}"
+								styleClass="show-in-val">
+								<f:convertNumber minFractionDigits="2" />
 							</h:outputText>
-
-
-						<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
-						<h:outputText id="invValue" 
-							value="#{repInvoiceBean.updateInvoice.totalPriceBefore}"
-							styleClass="show-in-val" >
-							<f:convertNumber minFractionDigits="2" />
+							<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
+							<h:outputText id="invValue"
+								value="#{repInvoiceBean.updateInvoice.totalPriceBefore}"
+								styleClass="show-in-val">
+								<f:convertNumber minFractionDigits="2" />
 							</h:outputText>
-
-
-						<p:outputLabel value="#{msgs.INVOICENET}: " />
-						<h:outputText id="invNet" 
-							value="#{repInvoiceBean.updateInvoice.totalPriceAfter}"
-							styleClass="show-in-val" >
-							<f:convertNumber minFractionDigits="2" />
+							<p:outputLabel value="#{msgs.INVOICENET}: " />
+							<h:outputText id="invNet"
+								value="#{repInvoiceBean.updateInvoice.totalPriceAfter}"
+								styleClass="show-in-val">
+								<f:convertNumber minFractionDigits="2" />
 							</h:outputText>
+								</h:panelGrid>
+						</h:panelGroup>
+				
 
-					</h:panelGrid>
 					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
 						update="newInvoiceForm" styleClass="edit-in-btn"
 						action="#{repInvoiceBean.updateInvoice}"></p:commandButton>

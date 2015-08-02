@@ -416,8 +416,122 @@ public class RepInvoiceBean implements Serializable {
 
 	}
 	
-	// validate Number  
+	/******************* View Numbers ********************/
+	private double disVal;
+	private double invoiceVal;
+	private double invoiceNet;
+
+	public double getDisVal() {
+		return disVal;
+	}
+
+	public void setDisVal(double disVal) {
+		this.disVal = disVal;
+	}
+
+	public double getInvoiceVal() {
+		return invoiceVal;
+	}
+
+	public void setInvoiceVal(double invoiceVal) {
+		this.invoiceVal = invoiceVal;
+	}
+
+	public double getInvoiceNet() {
+		return invoiceNet;
+	}
+
+	public void setInvoiceNet(double invoiceNet) {
+		this.invoiceNet = invoiceNet;
+	}
+
+	public void calcNewInvoice() {
+		try {
+			double invoiceTotalBefore = 0.0;
+
+			// insert incoming values
+			for (TblRepInvoiceValues itemValue : invoiceValues) {
+
+				// get total mount
+				double productPriceMax = itemValue.getProductId()
+						.getRepMaxUnPrice();
+
+				double mountPriceMax = productPriceMax
+						* itemValue.getMaxMount();
+
+				double productPriceMin = itemValue.getProductId()
+						.getRepMinUnPrice();
+
+				double mountPriceMin = productPriceMin
+						* itemValue.getMinMount();
+
+				// get total before discount
+				double total_price = mountPriceMax + mountPriceMin;
+
+				invoiceTotalBefore = invoiceTotalBefore + total_price;
+			}
+
+			double normal_discount_value = invoiceTotalBefore
+					* (newInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore
+					* (newInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value
+					+ additional_discount_value;
+			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
+			setDisVal(total_discount);
+			setInvoiceVal(invoiceTotalBefore);
+			setInvoiceNet(invoiceTotalAfter);
+		} catch (Exception e) {
+				e.printStackTrace();
+		} 
+
+	}
 	
+	public void calcUpdateInvoice(){
+		try {
+			double invoiceTotalBefore = 0.0;
+			// insert incoming values
+			for (TblRepInvoiceValues itemValue : updateInvoice.getTblRepInvoiceValuesList()) {
+
+				// get total mount
+
+				double productPriceMax = itemValue.getProductId()
+						.getRepMaxUnPrice();
+
+				double mountPriceMax = productPriceMax
+						* itemValue.getMaxMount();
+
+				double productPriceMin = itemValue.getProductId()
+						.getRepMinUnPrice();
+
+				double mountPriceMin = productPriceMin
+						* itemValue.getMinMount();
+				// get total before discount
+				double total_price = mountPriceMax + mountPriceMin;
+				invoiceTotalBefore = invoiceTotalBefore + total_price;
+			}
+			double normal_discount_value = invoiceTotalBefore
+					* (updateInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore
+					* (updateInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value
+					+ additional_discount_value;
+			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
+			updateInvoice.setDiscountValue(total_discount);
+			updateInvoice.setTotalPriceBefore(invoiceTotalBefore);
+			updateInvoice.setTotalPriceAfter(invoiceTotalAfter);
+		  Session	session = SessionFactoryUtil.getSession();
+			session.update(updateInvoice);
+		 Transaction	tx = session.beginTransaction();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	
+	// validate Number 
+
 	public void validateNum(ComponentSystemEvent event) throws ParseException {
 		// get access to resource bundle
 		String baseName = "messages";

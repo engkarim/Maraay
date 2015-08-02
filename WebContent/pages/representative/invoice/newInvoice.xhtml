@@ -12,7 +12,7 @@
 	<ui:define name="content">
 		<div align="center">
 			<h:form id="newInvoiceForm" prependId="false">
-			<f:event listener="#{repInvoiceBean.validateNum}"
+				<f:event listener="#{repInvoiceBean.validateNum}"
 					type="postValidate" />
 				<p:panel header="#{msgs.NEWINVOICE}" styleClass="panel-class">
 					<h:panelGrid columns="9" cellpadding="5">
@@ -49,9 +49,9 @@
 						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
 						<p:inputText id="dirName"
 							value="#{repInvoiceBean.customer.direction.name}" />
-				
-							
-							
+
+
+
 					</h:panelGrid>
 
 					<p:dataTable id="valuesTable" var="itemValue"
@@ -78,7 +78,7 @@
 							</p:inputText>
 						</p:column>
 					</p:dataTable>
-					<h:panelGrid columns="6" cellpadding="5"
+					<h:panelGrid columns="7" cellpadding="5"
 						styleClass="discount_invoice_grid">
 						<p:outputLabel value="#{msgs.DISCOUNTRATE}" />
 						<p:inputText id="disRate"
@@ -89,22 +89,29 @@
 						<p:inputText id="addDis"
 							value="#{repInvoiceBean.newInvoice.additionalDiscount}" size="5" />
 						<p:message for="addDis" />
+						<p:commandButton id="calcBtn" value="#{msgs.RESULTS}"
+							actionListener="#{repInvoiceBean.calcNewInvoice}"
+							update="resultsGrid"></p:commandButton>
 					</h:panelGrid>
 
-					<h:panelGrid columns="6" cellpadding="10"
-						styleClass="discount_invoice_grid">
-						<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
-						<p:inputText id="disValue" disabled="true" styleClass="invText" />
+					<h:panelGroup>
+						<h:panelGrid id="resultsGrid" columns="6" cellpadding="10"
+							styleClass="discount_invoice_grid">
+							<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
+							<p:inputText id="disValue" value="#{repInvoiceBean.disVal}"
+								disabled="true" styleClass="invText" />
 
 
-						<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
-						<p:inputText id="invValue" disabled="true" styleClass="invText" />
+							<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
+							<p:inputText id="invValue" value="#{repInvoiceBean.invoiceVal}"
+								disabled="true" styleClass="invText" />
 
+							<p:outputLabel value="#{msgs.INVOICENET}: " />
+							<p:inputText id="invNet" value="#{repInvoiceBean.invoiceNet}"
+								disabled="true" styleClass="invText" />
 
-						<p:outputLabel value="#{msgs.INVOICENET}: " />
-						<p:inputText id="invNet" disabled="true" styleClass="invText" />
-
-					</h:panelGrid>
+						</h:panelGrid>
+					</h:panelGroup>
 					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
 						update="newInvoiceForm"
 						action="#{repInvoiceBean.insertNewInvoice}"></p:commandButton>
@@ -112,7 +119,6 @@
 						update="newInvoiceForm"></p:commandButton>
 
 				</p:panel>
-
 
 			</h:form>
 		</div>

@@ -34,7 +34,8 @@ a:link:hover,a:visited:hover {
 }
 
 .invText {
-	background-color: green;
+	color: #ffff !important;
+	font:bold !important;
 }
 
 .fath-logo {
