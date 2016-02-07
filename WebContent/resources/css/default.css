@@ -185,6 +185,8 @@ a:link:hover,a:visited:hover {
 .search-customer-div {
 	margin-left: 993px;
 	margin-top: -49px;
+	margin-right: 400px;
+	
 }
 
 .search-customer-direction {
@@ -205,7 +207,7 @@ a:link:hover,a:visited:hover {
 }
 
 .search-small {
-	margin-right: 361px;
+	margin-right: 453px;
 	margin-top: -41px;
 	margin-bottom: -5px;
 	font-size: 130%;

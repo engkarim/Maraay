@@ -90,7 +90,9 @@
 							<p:confirm header="Confirmation" message="#{msgs.CONFIRMMESSAGE}"
 								icon="ui-icon-alert" />
 						</p:commandButton>
-					</p:column> -->
+					</p:column> --><p:column style="width:32px">
+						<p:button value="#{msgs.EDIT}" outcome="editDirection?dirId=#{direction.id}" />
+					</p:column>
 				</p:dataTable>
 				<p:confirmDialog global="true" showEffect="fade"
 					hideEffect="explode">

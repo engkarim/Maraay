@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,6 +43,11 @@ public class Direction implements Serializable {
 	private List<TblRepLastTimeDate> tblRepLastTimeDateList;
 	private List<TblRepTotalLoadingDate> tblRepTotalLoadingDateList;
 	private List<TblLuDirRepDriv> tblLuDirRepDrivList;
+	private List<TblRepRatAchieved> tblRepRatAchievedList;
+	private List<TblRepRatVisiting> tblRepRatVisitingList;
+	private List<TblRepRatCovering> tblRepRatCoveringList;
+	private List<TblRepRatProduct> tblRepRatProductList;
+	private List<TblRepRatBlending> tblRepRatBlendingList;
 
 	public Direction() {
 	}
@@ -165,6 +171,56 @@ public class Direction implements Serializable {
 
 	public void setTblLuDirRepDrivList(List<TblLuDirRepDriv> tblLuDirRepDrivList) {
 		this.tblLuDirRepDrivList = tblLuDirRepDrivList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "direction", fetch = FetchType.LAZY)
+	public List<TblRepRatAchieved> getTblRepRatAchievedList() {
+		return tblRepRatAchievedList;
+	}
+
+	public void setTblRepRatAchievedList(
+			List<TblRepRatAchieved> tblRepRatAchievedList) {
+		this.tblRepRatAchievedList = tblRepRatAchievedList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "direction", fetch = FetchType.LAZY)
+	public List<TblRepRatVisiting> getTblRepRatVisitingList() {
+		return tblRepRatVisitingList;
+	}
+
+	public void setTblRepRatVisitingList(
+			List<TblRepRatVisiting> tblRepRatVisitingList) {
+		this.tblRepRatVisitingList = tblRepRatVisitingList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "direction", fetch = FetchType.LAZY)
+	public List<TblRepRatCovering> getTblRepRatCoveringList() {
+		return tblRepRatCoveringList;
+	}
+
+	public void setTblRepRatCoveringList(
+			List<TblRepRatCovering> tblRepRatCoveringList) {
+		this.tblRepRatCoveringList = tblRepRatCoveringList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "direction", fetch = FetchType.LAZY)
+	public List<TblRepRatProduct> getTblRepRatProductList() {
+		return tblRepRatProductList;
+	}
+
+	public void setTblRepRatProductList(
+			List<TblRepRatProduct> tblRepRatProductList) {
+		this.tblRepRatProductList = tblRepRatProductList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "direction", fetch = FetchType.LAZY)
+	public List<TblRepRatBlending> getTblRepRatBlendingList() {
+		return tblRepRatBlendingList;
+	}
+
+	public void setTblRepRatBlendingList(
+			List<TblRepRatBlending> tblRepRatBlendingList) {
+		this.tblRepRatBlendingList = tblRepRatBlendingList;
 	}
 
 	@Override

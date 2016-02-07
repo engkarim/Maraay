@@ -2,7 +2,6 @@ package com.freelance.maraay.beans;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -15,11 +14,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.validator.ValidatorException;
 
-import com.freelance.maraay.model.Direction;
-import com.freelance.maraay.model.TblComDiscountDate;
 import com.freelance.maraay.dao.DirectionDao;
+import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.primeFacesService.Service;
+import com.freelance.maraay.utils.Constants;
 import com.freelance.maraay.utils.Performance;
 import com.freelance.maraay.utils.Utils;
 
@@ -34,6 +34,8 @@ public class DirectionBean implements Serializable {
 	DirectionDao directionDao = DirectionDao.getInstance();
 	private List<Direction> directions;
 	private List<Direction> filteredDirections;
+	private String dirID;
+	private Direction updateedDir = new Direction();
 
 	@ManagedProperty("#{service}")
 	private Service service;
@@ -66,6 +68,32 @@ public class DirectionBean implements Serializable {
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
+	public String getDirID() {
+		return dirID;
+	}
+
+	public void setDirID(String dirID) {
+		if (dirID == null || !Utils.getInstance().isInt(dirID)) {
+			Utils.getInstance().sendRedirect(Constants.errorPage, false);
+		} else {
+			this.dirID = dirID;
+		}
+	}
+	
+	public Direction getUpdateedDir() {
+		return updateedDir;
+	}
+
+	public void setUpdateedDir(Direction updateedDir) {
+		this.updateedDir = updateedDir;
+	}
+	
+	public void prerendre(ComponentSystemEvent event) {
+		Direction dir = directionDao.findById(Integer.parseInt(getDirID()));
+		setUpdateedDir(dir);
+	}
+	
+
 
 	public String addDirection() {
 		try {
@@ -76,6 +104,16 @@ public class DirectionBean implements Serializable {
 		} finally {
 			Performance.releaseMemory();
 		}
+	}public String updateDirection(){
+		try {
+			directionDao.updateDirection(updateedDir);
+			return "allDirections";
+		} catch (Exception e) {
+			return "fail";
+		} finally {
+			Performance.releaseMemory();
+		}
+		
 	}
 
 	public String deleteDirection(Direction direction) {
@@ -120,6 +158,22 @@ public class DirectionBean implements Serializable {
 			fc.addMessage(nameId, msg);
 			fc.renderResponse();
 
+		}
+	}
+	public void validateUpdateDirName(FacesContext context, UIComponent components,
+			Object value) throws ValidatorException {
+		// get access to resource bundle
+		String baseName = "messages";
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, FacesContext
+				.getCurrentInstance().getViewRoot().getLocale());
+		String jobMessage = bundle.getString("VALIDATEDIRNAME");
+		String dirName = value.toString();
+		
+		
+		Direction direction = DirectionDao.getInstance().findByNameAndNotId(dirName, getUpdateedDir().getId());
+		if (direction != null) {
+			FacesMessage msg = new FacesMessage(jobMessage);
+			throw new ValidatorException(msg);
 		}
 	}
 

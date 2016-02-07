@@ -87,6 +87,12 @@
 		<mapping class="com.freelance.maraay.model.TblRepDefectDate" />
 		<mapping class="com.freelance.maraay.model.TblRepDefectValue" />
 		<mapping class="com.freelance.maraay.model.TblLuDirRepDriv" />
+		<mapping class="com.freelance.maraay.model.TblRepRatVisiting" />
+		<mapping class="com.freelance.maraay.model.TblRepRatProduct" />
+		<mapping class="com.freelance.maraay.model.TblRepRatCovering" />
+		<mapping class="com.freelance.maraay.model.TblRepRatBlending" />
+		<mapping class="com.freelance.maraay.model.TblRepRatAchieved" />
+
 	</session-factory>
 </hibernate-configuration>
 

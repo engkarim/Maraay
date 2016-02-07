@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,6 +51,11 @@ public class Employee implements Serializable {
 	private Date departure_date;
 	private List<TblLuDirRepDriv> tblLuDirRepDrivList;
 	private List<TblLuDirRepDriv> tblLuDirRepDrivList1;
+	private List<TblRepRatAchieved> tblRepRatAchievedList;
+	private List<TblRepRatVisiting> tblRepRatVisitingList;
+	private List<TblRepRatCovering> tblRepRatCoveringList;
+	private List<TblRepRatProduct> tblRepRatProductList;
+	private List<TblRepRatBlending> tblRepRatBlendingList;
 
 	public Employee() {
 	}
@@ -158,6 +164,36 @@ public class Employee implements Serializable {
 	public void setTblLuDirRepDrivList1(
 			List<TblLuDirRepDriv> tblLuDirRepDrivList1) {
 		this.tblLuDirRepDrivList1 = tblLuDirRepDrivList1;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "representative", fetch = FetchType.LAZY)
+	public List<TblRepRatAchieved> getTblRepRatAchievedList() {
+		return tblRepRatAchievedList;
+	}
+
+	public void setTblRepRatAchievedList(
+			List<TblRepRatAchieved> tblRepRatAchievedList) {
+		this.tblRepRatAchievedList = tblRepRatAchievedList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "representative", fetch = FetchType.LAZY)
+	public List<TblRepRatVisiting> getTblRepRatVisitingList() {
+		return tblRepRatVisitingList;
+	}
+
+	public void setTblRepRatVisitingList(
+			List<TblRepRatVisiting> tblRepRatVisitingList) {
+		this.tblRepRatVisitingList = tblRepRatVisitingList;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "representative", fetch = FetchType.LAZY)
+	public List<TblRepRatCovering> getTblRepRatCoveringList() {
+		return tblRepRatCoveringList;
+	}
+
+	public void setTblRepRatCoveringList(
+			List<TblRepRatCovering> tblRepRatCoveringList) {
+		this.tblRepRatCoveringList = tblRepRatCoveringList;
 	}
 
 	@Override

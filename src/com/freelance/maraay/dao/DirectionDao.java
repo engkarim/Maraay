@@ -147,4 +147,26 @@ public class DirectionDao implements Serializable{
 		}
 
 	}
+	public Direction findByNameAndNotId(String dirName, int id) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(Direction.class);
+			criteria.add(Restrictions.eq("name", dirName));
+			criteria.add(Restrictions.ne("id", id));
+			Direction dir = (Direction) criteria.uniqueResult();
+			tx.commit();
+			return dir;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+	}
 }

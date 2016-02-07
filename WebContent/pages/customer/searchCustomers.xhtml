@@ -10,21 +10,6 @@
 	template="/templates/maraayTemplate.xhtml">
 	<ui:define name="title">#{msgs.CUSTOMERSEARCH}</ui:define>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	 <ui:define name="content"> 
 
 	<h:form prependId="false" styleClass="search-form">
@@ -35,6 +20,7 @@
 				<p:selectOneMenu id="customerDirection"
 					value="#{customerBean.searchedDirection}" required="true"
 					styleClass="search-customer-direction">
+					<f:selectItem itemLabel="#{msgs.PLEAESELECT}" itemValue="" />
 					<f:selectItems value="#{directionBean.directions}" var="direction"
 						itemLabel="#{direction.name}" itemValue="#{direction.id}" />
 				</p:selectOneMenu>
@@ -43,6 +29,7 @@
 				<p:selectOneMenu id="searcheCustomerDays"
 					value="#{customerBean.searchedDay}" required="true"
 					styleClass="search-customer-days">
+					<f:selectItem itemLabel="#{msgs.PLEAESELECT}" itemValue="" />
 					<f:selectItems value="#{allCustomersBean.allDays}" var="searchDay"
 						itemLabel="#{searchDay.dayName}" itemValue="#{searchDay.id}" />
 				</p:selectOneMenu>

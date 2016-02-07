@@ -60,8 +60,6 @@ public class LoginBean implements Serializable {
 		this.updateRepDirectionId = updateRepDirectionId;
 	}
 
-
-
 	public int getRepDirectionId() {
 		return repDirectionId;
 	}
@@ -148,7 +146,6 @@ public class LoginBean implements Serializable {
 			user.setPassword(password);
 
 			List<User> users = new UserDao().findByExample(user);
-			System.out.println(users.size());
 			if (users.size() > 0) {
 				session.setAttribute(LoginBean.AUTH_KEY, users.get(0)
 						.getUserType().getId().toString());
