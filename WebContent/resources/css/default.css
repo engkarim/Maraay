@@ -194,6 +194,15 @@ a:link:hover,a:visited:hover {
 	margin-left: 50px;
 }
 
+.boxCustomerPanel{
+	margin-right: 30px;
+}
+
+.mobile-class-box{
+	direction: ltr;
+	margin-left:10px;
+}
+
 .search-customer-days {
 	direction: ltr;
 	margin-left: 20px;

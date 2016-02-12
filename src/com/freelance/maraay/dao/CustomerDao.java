@@ -115,6 +115,30 @@ public class CustomerDao implements Serializable {
 		}
 
 	}
+	
+	public List<Customer> listAllCustomerByDirectionId(int directionId) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session = SessionFactoryUtil.getSession();
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(Customer.class);
+			criteria.createCriteria("direction", "direction");
+			criteria.add(Restrictions.eq("direction.id", directionId));
+			criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
+			List<Customer> results = criteria.list();
+			tx.commit();
+			return results;
+		} catch (RuntimeException re) {
+			throw re;
+		} finally {
+			if (session.isOpen())
+				session.close();
+			tx = null;
+		}
+
+	}
 
 	public List<Customer> findByVisitingDays(DayWeek visitingDayWeek,
 			Direction direction) {

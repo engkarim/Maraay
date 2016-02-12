@@ -12,14 +12,13 @@
 	<ui:define name="content">
 		<div align="center">
 			<h:form id="newInvoiceForm" prependId="false">
-				<f:event listener="#{repInvoiceBean.validateNum}"
-					type="postValidate" />
 				<p:panel header="#{msgs.NEWINVOICE}" styleClass="panel-class">
 					<h:panelGrid columns="9" cellpadding="5">
 						<p:outputLabel value="#{msgs.INVOICENUMBER}" for="invNumber" />
 						<p:inputText id="invNumber" converterMessage="#{msgs.ONLYNUMBER}"
 							value="#{repInvoiceBean.newInvoice.invoiceNumber}"
-							required="true" requiredMessage="#{msgs.INVNUMVALIDATE}">
+							validator="#{repInvoiceBean.validateNum}" required="true"
+							requiredMessage="#{msgs.INVNUMVALIDATE}">
 							<f:convertNumber integerOnly="true" />
 						</p:inputText>
 						<p:message for="invNumber" />
@@ -38,20 +37,19 @@
 							value="#{repInvoiceBean.customerId}">
 							<p:ajax event="keyup" update="custName dirName" />
 						</p:inputText>
+						<p:commandButton icon="fa fa-fw fa-edit"
+							type="button" onclick="PF('custdg').show();" />
 						<p:message for="custKey" />
+						
 					</h:panelGrid>
 					<h:panelGrid columns="6" cellpadding="5"
 						styleClass="date_invoice_grid">
 						<p:outputLabel value="#{msgs.CUSTOMERNAME}" for="custName" />
 						<p:inputText id="custName" value="#{repInvoiceBean.customer.name}" />
 
-
 						<p:outputLabel value="#{msgs.DIRECTIONNAME}" for="dirName" />
 						<p:inputText id="dirName"
 							value="#{repInvoiceBean.customer.direction.name}" />
-
-
-
 					</h:panelGrid>
 
 					<p:dataTable id="valuesTable" var="itemValue"
@@ -98,18 +96,18 @@
 						<h:panelGrid id="resultsGrid" columns="6" cellpadding="10"
 							styleClass="discount_invoice_grid">
 							<p:outputLabel value="#{msgs.DISCOUNTVALUE}: " />
-							<p:inputText id="disValue" value="#{repInvoiceBean.disVal}"
+							<h:outputText id="disValue" value="#{repInvoiceBean.disVal}"
 								disabled="true" styleClass="invText" />
 
 
 							<p:outputLabel value="#{msgs.INVOICEVALUE}: " />
-							<p:inputText id="invValue" value="#{repInvoiceBean.invoiceVal}"
+							<h:outputText id="invValue" value="#{repInvoiceBean.invoiceVal}"
 								disabled="true" styleClass="invText" />
 
 							<p:outputLabel value="#{msgs.INVOICENET}: " />
-							<p:inputText id="invNet" value="#{repInvoiceBean.invoiceNet}"
+							<h:outputText id="invNet" value="#{repInvoiceBean.invoiceNet}"
 								disabled="true" styleClass="invText" />
-
+								
 						</h:panelGrid>
 					</h:panelGroup>
 					<p:commandButton id="saveBtn" value="#{msgs.SAVE}"
@@ -117,13 +115,44 @@
 						action="#{repInvoiceBean.insertNewInvoice}"></p:commandButton>
 					<p:commandButton id="resetBtn" value="#{msgs.RESET}" type="reset"
 						update="newInvoiceForm"></p:commandButton>
-
 				</p:panel>
-
 			</h:form>
+			<p:dialog id="custDialog" header="#{msgs.CHOOSECUSTOMER}" widgetVar="custdg" modal="true" 
+					height="100" width="800">
+					<h:form prependId="false">
+						<h:panelGrid columns="3" cellpadding="15">
+							<p:selectOneMenu id="customerDirection"
+								value="#{repInvoiceBean.boxDirId}"
+								styleClass="mobile-class">
+								<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+								<f:selectItems value="#{directionBean.directions}"
+									var="direction" itemLabel="#{direction.name}"
+									itemValue="#{direction.id}" />
+								<p:ajax event="change" update="grop" />
+							</p:selectOneMenu>
+
+							<h:panelGroup id="grop" styleClass="boxCustomerPanel">
+								<p:selectOneMenu id="customer"
+									rendered="#{repInvoiceBean.boxDirId != null}"
+									value="#{repInvoiceBean.boxCustomerId}"
+									styleClass="mobile-class">
+									<f:selectItem itemLabel="#{msgs.SELECT}" itemValue="" />
+									<f:selectItems value="#{repInvoiceBean.boxCustomers}"
+										var="customer" itemLabel="#{customer.name}"
+										itemValue="#{customer.id}" />
+									<p:ajax event="change" update="btnGrop" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+
+							<h:panelGroup id="btnGrop">
+								<p:commandButton id="boxChooseBtn" value="#{msgs.DONE}" 
+									icon="icon-thumbs-up-alt" 
+									disabled="#{repInvoiceBean.boxCustomerId == null?'true':'false'}" actionListener="#{repInvoiceBean.updateCutomerKey}">
+									</p:commandButton>
+							</h:panelGroup>
+						</h:panelGrid>
+						</h:form>
+				</p:dialog>
 		</div>
 	</ui:define>
-
-
-
 </ui:composition>

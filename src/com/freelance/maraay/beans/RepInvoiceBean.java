@@ -2,9 +2,7 @@ package com.freelance.maraay.beans;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -14,28 +12,24 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.validator.ValidatorException;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.primefaces.context.RequestContext;
 
-import com.freelance.maraay.dao.ComSalesDao;
 import com.freelance.maraay.dao.CustomerDao;
-import com.freelance.maraay.dao.DirectionDao;
-import com.freelance.maraay.dao.LuDirRepDrivDao;
 import com.freelance.maraay.dao.RepInvoiceDao;
 import com.freelance.maraay.model.Customer;
-import com.freelance.maraay.model.Direction;
 import com.freelance.maraay.model.Product;
-import com.freelance.maraay.model.TblComCalculationEquation;
-import com.freelance.maraay.model.TblComSalesDate;
-import com.freelance.maraay.model.TblLuDirRepDriv;
 import com.freelance.maraay.model.TblRepInvoice;
 import com.freelance.maraay.model.TblRepInvoiceValues;
 import com.freelance.maraay.model.User;
 import com.freelance.maraay.utils.Constants;
+import com.freelance.maraay.utils.Performance;
 import com.freelance.maraay.utils.SessionFactoryUtil;
 import com.freelance.maraay.utils.Utils;
 
@@ -57,16 +51,48 @@ public class RepInvoiceBean implements Serializable {
 	private List<TblRepInvoiceValues> invoiceValues = new ArrayList<TblRepInvoiceValues>();
 	private List<TblRepInvoice> invoices;
 	private List<TblRepInvoice> filteredInvoice;
+	private Integer boxDirId;
+	private Integer boxCustomerId;
+	private List<Customer> boxCustomers;
 
-	// public Date getInvoiceDate() {
-	// System.out.println(",,,,,,,,,,,,,,,,,,,,,,,,,");
-	// return invoiceDate;
-	// }
-	//
-	// public void setInvoiceDate(Date invoiceDate) {
-	// System.out.println("sdsdsdsdsdsdsds");
-	// this.invoiceDate = invoiceDate;
-	// }
+	public List<Customer> getBoxCustomers() {
+		if(boxDirId != null){
+			boxCustomers = customerDao.listAllCustomerByDirectionId(getBoxDirId());
+		}else {
+			boxCustomers = new ArrayList<Customer>();
+		}
+		
+		return boxCustomers;
+	}
+
+	public void setBoxCustomers(List<Customer> boxCustomers) {
+		this.boxCustomers = boxCustomers;
+	}
+
+	public Integer getBoxCustomerId() {
+		return boxCustomerId;
+	}
+
+	public void setBoxCustomerId(Integer boxCustomerId) {
+		this.boxCustomerId = boxCustomerId;
+	}
+
+	public Integer getBoxDirId() {
+		return boxDirId;
+	}
+
+	public void setBoxDirId(Integer boxDirId) {
+		this.boxDirId = boxDirId;
+	}
+
+	public void updateCutomerKey(ActionEvent event){
+		setCustomerId(getBoxCustomerId());
+		RequestContext context = RequestContext.getCurrentInstance();
+		context.update("custKey");
+		context.update("custName");
+		context.update("dirName");
+		context.execute("PF('custdg').hide();");
+	}
 
 	public List<TblRepInvoice> getInvoices() {
 		invoices = RepInvoiceDao.getInstance().listAll();
@@ -87,23 +113,6 @@ public class RepInvoiceBean implements Serializable {
 		}
 		return customer;
 	}
-
-	//
-	// public TblLuDirRepDriv getDirRepDriv() {
-	//
-	// System.out.println( customer.getDirection() + " ............... " +
-	// invoiceDate );
-	// if(customer != null && customer.getDirection() != null && invoiceDate !=
-	// null){
-	// System.out.println("222222222222222222222222222222");
-	// dirRepDriv = LuDirRepDrivDao.getInstance().findByDateِAndDir(invoiceDate,
-	// customer.getDirection().getId());
-	// System.out.println(dirRepDriv.getRepId().getName());
-	// }
-	//
-	// return dirRepDriv;
-	// }
-
 	public List<TblRepInvoiceValues> getInvoiceValues() {
 		return invoiceValues;
 	}
@@ -151,6 +160,8 @@ public class RepInvoiceBean implements Serializable {
 	public List<Product> getAllProducts() {
 		return allProducts;
 	}
+	
+
 
 	public String insertNewInvoice() {
 		Session session = null;
@@ -170,24 +181,19 @@ public class RepInvoiceBean implements Serializable {
 
 				// get total mount
 
-				double productPriceMax = itemValue.getProductId()
-						.getRepMaxUnPrice();
+				double productPriceMax = itemValue.getProductId().getRepMaxUnPrice();
 
-				double mountPriceMax = productPriceMax
-						* itemValue.getMaxMount();
+				double mountPriceMax = productPriceMax * itemValue.getMaxMount();
 
-				double productPriceMin = itemValue.getProductId()
-						.getRepMinUnPrice();
+				double productPriceMin = itemValue.getProductId().getRepMinUnPrice();
 
-				double mountPriceMin = productPriceMin
-						* itemValue.getMinMount();
+				double mountPriceMin = productPriceMin * itemValue.getMinMount();
 
 				// get total before discount
 				double total_price = mountPriceMax + mountPriceMin;
 
 				// get shown mount
-				String showen_total_mount = itemValue.getMaxMount() + "."
-						+ itemValue.getMinMount();
+				String showen_total_mount = itemValue.getMaxMount() + "." + itemValue.getMinMount();
 
 				itemValue.setShowenMount(showen_total_mount);
 				itemValue.setMaxPrice(mountPriceMax);
@@ -202,12 +208,9 @@ public class RepInvoiceBean implements Serializable {
 				invoiceTotalBefore = invoiceTotalBefore + total_price;
 			}
 
-			double normal_discount_value = invoiceTotalBefore
-					* (newInvoice.getDiscountRate() / 100);
-			double additional_discount_value = invoiceTotalBefore
-					* (newInvoice.getAdditionalDiscount() / 100);
-			double total_discount = normal_discount_value
-					+ additional_discount_value;
+			double normal_discount_value = invoiceTotalBefore * (newInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore * (newInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value + additional_discount_value;
 			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
 
 			newInvoice.setCustomerId(customer);
@@ -220,13 +223,16 @@ public class RepInvoiceBean implements Serializable {
 			tx = session.beginTransaction();
 			tx.commit();
 			return "success";
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			tx.rollback();
 			return "fail";
-		} finally {
+		}
+		finally {
 			if (session.isOpen())
 				session.close();
 			tx = null;
+			Performance.releaseMemory();
 
 		}
 
@@ -245,10 +251,12 @@ public class RepInvoiceBean implements Serializable {
 		if (passedParam != null) {
 			if (utils.isLong(passedParam)) {
 				setInvoiceId(Long.parseLong(passedParam));
-			} else {
+			}
+			else {
 				utils.sendRedirect(Constants.errorPage, false);
 			}
-		} else {
+		}
+		else {
 			utils.sendRedirect(Constants.errorPage, false);
 		}
 	}
@@ -273,18 +281,16 @@ public class RepInvoiceBean implements Serializable {
 	}
 
 	public void prerender(ComponentSystemEvent event) {
-		TblRepInvoice searchedInvoice = RepInvoiceDao.getInstance()
-				.findById(invoiceId);
+		TblRepInvoice searchedInvoice = RepInvoiceDao.getInstance().findById(invoiceId);
 		if (searchedInvoice == null) {
 			utils.sendRedirect(Constants.errorPage, false);
-		} else {
+		}
+		else {
 			setReviewedInvoice(searchedInvoice);
 		}
 
 	}
-	
-	
-	
+
 	/*********************** update *************************/
 	private String updatePassedParam;
 	private Long updateInvoiceId;
@@ -298,10 +304,12 @@ public class RepInvoiceBean implements Serializable {
 		if (updatePassedParam != null) {
 			if (utils.isLong(updatePassedParam)) {
 				setUpdateInvoiceId(Long.parseLong(updatePassedParam));
-			} else {
+			}
+			else {
 				utils.sendRedirect(Constants.errorPage, false);
 			}
-		} else {
+		}
+		else {
 			utils.sendRedirect(Constants.errorPage, false);
 		}
 	}
@@ -326,17 +334,17 @@ public class RepInvoiceBean implements Serializable {
 	}
 
 	public void prerenderUpdate(ComponentSystemEvent event) {
-		TblRepInvoice searchedInvoice = RepInvoiceDao.getInstance()
-				.findById(updateInvoiceId);
+		TblRepInvoice searchedInvoice = RepInvoiceDao.getInstance().findById(updateInvoiceId);
 		if (searchedInvoice == null) {
 			utils.sendRedirect(Constants.errorPage, false);
-		} else {
+		}
+		else {
 			setUpdateInvoice(searchedInvoice);
 		}
 
 	}
-	
-	public String updateInvoice(){
+
+	public String updateInvoice() {
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -354,24 +362,19 @@ public class RepInvoiceBean implements Serializable {
 
 				// get total mount
 
-				double productPriceMax = itemValue.getProductId()
-						.getRepMaxUnPrice();
+				double productPriceMax = itemValue.getProductId().getRepMaxUnPrice();
 
-				double mountPriceMax = productPriceMax
-						* itemValue.getMaxMount();
+				double mountPriceMax = productPriceMax * itemValue.getMaxMount();
 
-				double productPriceMin = itemValue.getProductId()
-						.getRepMinUnPrice();
+				double productPriceMin = itemValue.getProductId().getRepMinUnPrice();
 
-				double mountPriceMin = productPriceMin
-						* itemValue.getMinMount();
+				double mountPriceMin = productPriceMin * itemValue.getMinMount();
 
 				// get total before discount
 				double total_price = mountPriceMax + mountPriceMin;
 
 				// get shown mount
-				String showen_total_mount = itemValue.getMaxMount() + "."
-						+ itemValue.getMinMount();
+				String showen_total_mount = itemValue.getMaxMount() + "." + itemValue.getMinMount();
 
 				itemValue.setShowenMount(showen_total_mount);
 				itemValue.setMaxPrice(mountPriceMax);
@@ -386,14 +389,10 @@ public class RepInvoiceBean implements Serializable {
 				invoiceTotalBefore = invoiceTotalBefore + total_price;
 			}
 
-			double normal_discount_value = invoiceTotalBefore
-					* (updateInvoice.getDiscountRate() / 100);
-			double additional_discount_value = invoiceTotalBefore
-					* (updateInvoice.getAdditionalDiscount() / 100);
-			double total_discount = normal_discount_value
-					+ additional_discount_value;
+			double normal_discount_value = invoiceTotalBefore * (updateInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore * (updateInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value + additional_discount_value;
 			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
-
 
 			updateInvoice.setTotalPriceBefore(invoiceTotalBefore);
 			updateInvoice.setTotalPriceAfter(invoiceTotalAfter);
@@ -404,10 +403,12 @@ public class RepInvoiceBean implements Serializable {
 			tx = session.beginTransaction();
 			tx.commit();
 			return "success";
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			tx.rollback();
 			return "fail";
-		} finally {
+		}
+		finally {
 			if (session.isOpen())
 				session.close();
 			tx = null;
@@ -415,7 +416,7 @@ public class RepInvoiceBean implements Serializable {
 		}
 
 	}
-	
+
 	/******************* View Numbers ********************/
 	private double disVal;
 	private double invoiceVal;
@@ -453,17 +454,13 @@ public class RepInvoiceBean implements Serializable {
 			for (TblRepInvoiceValues itemValue : invoiceValues) {
 
 				// get total mount
-				double productPriceMax = itemValue.getProductId()
-						.getRepMaxUnPrice();
+				double productPriceMax = itemValue.getProductId().getRepMaxUnPrice();
 
-				double mountPriceMax = productPriceMax
-						* itemValue.getMaxMount();
+				double mountPriceMax = productPriceMax * itemValue.getMaxMount();
 
-				double productPriceMin = itemValue.getProductId()
-						.getRepMinUnPrice();
+				double productPriceMin = itemValue.getProductId().getRepMinUnPrice();
 
-				double mountPriceMin = productPriceMin
-						* itemValue.getMinMount();
+				double mountPriceMin = productPriceMin * itemValue.getMinMount();
 
 				// get total before discount
 				double total_price = mountPriceMax + mountPriceMin;
@@ -471,23 +468,21 @@ public class RepInvoiceBean implements Serializable {
 				invoiceTotalBefore = invoiceTotalBefore + total_price;
 			}
 
-			double normal_discount_value = invoiceTotalBefore
-					* (newInvoice.getDiscountRate() / 100);
-			double additional_discount_value = invoiceTotalBefore
-					* (newInvoice.getAdditionalDiscount() / 100);
-			double total_discount = normal_discount_value
-					+ additional_discount_value;
+			double normal_discount_value = invoiceTotalBefore * (newInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore * (newInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value + additional_discount_value;
 			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
 			setDisVal(total_discount);
 			setInvoiceVal(invoiceTotalBefore);
 			setInvoiceNet(invoiceTotalAfter);
-		} catch (Exception e) {
-				e.printStackTrace();
-		} 
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
-	
-	public void calcUpdateInvoice(){
+
+	public void calcUpdateInvoice() {
 		try {
 			double invoiceTotalBefore = 0.0;
 			// insert incoming values
@@ -495,78 +490,48 @@ public class RepInvoiceBean implements Serializable {
 
 				// get total mount
 
-				double productPriceMax = itemValue.getProductId()
-						.getRepMaxUnPrice();
+				double productPriceMax = itemValue.getProductId().getRepMaxUnPrice();
 
-				double mountPriceMax = productPriceMax
-						* itemValue.getMaxMount();
+				double mountPriceMax = productPriceMax * itemValue.getMaxMount();
 
-				double productPriceMin = itemValue.getProductId()
-						.getRepMinUnPrice();
+				double productPriceMin = itemValue.getProductId().getRepMinUnPrice();
 
-				double mountPriceMin = productPriceMin
-						* itemValue.getMinMount();
+				double mountPriceMin = productPriceMin * itemValue.getMinMount();
 				// get total before discount
 				double total_price = mountPriceMax + mountPriceMin;
 				invoiceTotalBefore = invoiceTotalBefore + total_price;
 			}
-			double normal_discount_value = invoiceTotalBefore
-					* (updateInvoice.getDiscountRate() / 100);
-			double additional_discount_value = invoiceTotalBefore
-					* (updateInvoice.getAdditionalDiscount() / 100);
-			double total_discount = normal_discount_value
-					+ additional_discount_value;
+			double normal_discount_value = invoiceTotalBefore * (updateInvoice.getDiscountRate() / 100);
+			double additional_discount_value = invoiceTotalBefore * (updateInvoice.getAdditionalDiscount() / 100);
+			double total_discount = normal_discount_value + additional_discount_value;
 			double invoiceTotalAfter = invoiceTotalBefore - total_discount;
 			updateInvoice.setDiscountValue(total_discount);
 			updateInvoice.setTotalPriceBefore(invoiceTotalBefore);
 			updateInvoice.setTotalPriceAfter(invoiceTotalAfter);
-		  Session	session = SessionFactoryUtil.getSession();
+			Session session = SessionFactoryUtil.getSession();
 			session.update(updateInvoice);
-		 Transaction	tx = session.beginTransaction();
+			Transaction tx = session.beginTransaction();
 			tx.commit();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-	
-	
-	// validate Number 
 
-	public void validateNum(ComponentSystemEvent event) throws ParseException {
+	// validate Number
+
+	public void validateNum(FacesContext context, UIComponent components, Object value) throws ValidatorException {
 		// get access to resource bundle
 		String baseName = "messages";
-		ResourceBundle bundle = ResourceBundle.getBundle(baseName, FacesContext
-				.getCurrentInstance().getViewRoot().getLocale());
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, FacesContext.getCurrentInstance().getViewRoot().getLocale());
 		String duplicatedNumMsg = bundle.getString("DUPLICATENUM");
-
-
-		FacesContext fc = FacesContext.getCurrentInstance();
-		UIComponent components = event.getComponent();
-
-
-		// get number
-		UIInput uiInputNum = (UIInput) components
-				.findComponent("invNumber");
-		String num = uiInputNum.getLocalValue() == null ? "" : uiInputNum
-				.getLocalValue().toString();
-
-		String numId = uiInputNum.getClientId();
+		String num = value.toString();
 		TblRepInvoice invoice = RepInvoiceDao.getInstance().findByNumber(BigInteger.valueOf(Long.parseLong(num)));
-
-		// Let required="true" do its job.
-		if (num.isEmpty()) {
-			return;
-		}
 		if (invoice != null) {
 			FacesMessage msg = new FacesMessage(duplicatedNumMsg);
-			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-			fc.addMessage(numId, msg);
-			fc.renderResponse();
-
+			throw new ValidatorException(msg);
 		}
 
 	}
-	
-
 
 }

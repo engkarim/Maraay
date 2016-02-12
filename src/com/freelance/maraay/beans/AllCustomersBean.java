@@ -37,7 +37,7 @@ public class AllCustomersBean implements Serializable {
 	private List<String> selectedProducts;
 	private List<String> selectedDays;
 	private Customer customer = new Customer();
-
+	
 	public List<Customer> getFilteredCustomers() {
 		return filteredCustomers;
 	}
@@ -106,7 +106,8 @@ public class AllCustomersBean implements Serializable {
 		List<DayWeek> selectedWeekDays = new ArrayList<DayWeek>();
 		if (selectedDays.contains(new String("0"))) {
 			selectedWeekDays = dayWeekDao.listAllDayWeek();
-		} else {
+		}
+		else {
 			for (String customerDay : selectedDays) {
 				DayWeek dayWeek = dayWeekDao.findByName(customerDay);
 				selectedWeekDays.add(dayWeek);
@@ -117,7 +118,8 @@ public class AllCustomersBean implements Serializable {
 
 		if (selectedProducts.contains(new String("0"))) {
 			selectedProductsList = productDao.listAllproduct();
-		} else {
+		}
+		else {
 			for (String productName : selectedProducts) {
 				Product product = productDao.findByName(productName);
 				selectedProductsList.add(product);
@@ -137,9 +139,11 @@ public class AllCustomersBean implements Serializable {
 		try {
 			customerDao.deleteCustomer(customer);
 			return "allCustomers";
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return "fail";
-		} finally {
+		}
+		finally {
 			Performance.releaseMemory();
 		}
 	}
@@ -150,7 +154,8 @@ public class AllCustomersBean implements Serializable {
 			List<DayWeek> selectedWeekDays = new ArrayList<DayWeek>();
 			if (selectedDays.contains(new String("0"))) {
 				selectedWeekDays = dayWeekDao.listAllDayWeek();
-			} else {
+			}
+			else {
 				for (String customerDay : selectedDays) {
 					DayWeek dayWeek = dayWeekDao.findByName(customerDay);
 					selectedWeekDays.add(dayWeek);
@@ -162,7 +167,8 @@ public class AllCustomersBean implements Serializable {
 
 			if (selectedProducts.contains(new String("0"))) {
 				selectedProductsList = productDao.listAllproduct();
-			} else {
+			}
+			else {
 				for (String productName : selectedProducts) {
 					Product product = productDao.findByName(productName);
 					selectedProductsList.add(product);
@@ -170,9 +176,11 @@ public class AllCustomersBean implements Serializable {
 			}
 			updatedCustomer.setProductsList(selectedProductsList);
 			customerDao.updateCustomer(updatedCustomer);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 
-		} finally {
+		}
+		finally {
 			Performance.releaseMemory();
 		}
 
